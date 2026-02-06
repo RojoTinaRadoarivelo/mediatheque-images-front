@@ -1,0 +1,30 @@
+#app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // important pour prendre toute la hauteur
+}
+
+/* Header fixe en hauteur */
+#header-container {
+  background-color: #fff;
+  color: #888;
+  font-size: large;
+}
+
+/* Le contenu prend tout l'espace restant */
+#main-container {
+  flex: 1; // ici le secret : prend tout l'espace restant 
+  display: flex; // si Layout utilise aussi du flex 
+  flex-direction: column; // selon ton Layout Vertical / Horizontal 
+  gap: 1rem; // facultatif, espace entre enfants 
+  padding: 1rem 0;
+}
+
+/* Footer fixe en hauteur */
+#footer-container {
+  background-color: #fff;
+  color: #888;
+  font-size: large;
+  max-height: 100px;
+  padding: 1rem 2rem;
+}
