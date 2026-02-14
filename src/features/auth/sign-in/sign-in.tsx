@@ -6,10 +6,9 @@ import {
 } from "./validators/sign-in.validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "../context/auth.context";
 
 function SignIn() {
-  const userService = new UserService();
-
   const {
     register,
     handleSubmit,
@@ -18,8 +17,10 @@ function SignIn() {
     resolver: zodResolver(SIGNIN_SCHEMA),
   });
 
+  const { login } = useAuth();
+
   const handleSignin = (data: SigninFormData): void => {
-    userService.logIn(data);
+    login(data);
   };
 
   return (

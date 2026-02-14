@@ -2,7 +2,7 @@ import "./user.scss";
 import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { UserService } from "../services/user.service";
+import { useAuth } from "../context/auth.context";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;
@@ -10,9 +10,9 @@ type UserProps = {
 
 function User({ openModal }: UserProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const isAuthenticated = false; // 🔥 plus tard: venant du contexte auth
+
+  const { isAuthenticated, user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
-  const userService = new UserService();
 
   // Fermer le menu quand on clique dehors
   useEffect(() => {
@@ -27,9 +27,6 @@ function User({ openModal }: UserProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const logOut = (): void => {
-    userService.logOut();
-  };
   const navigateToGalery = () => {};
 
   return (
@@ -39,7 +36,21 @@ function User({ openModal }: UserProps) {
         className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center hover:bg-gray-100"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <img src="/vite.svg" alt="User" className="h-6" />
+        {isAuthenticated ? (
+          user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt="User"
+              className="h-8 w-8 rounded-full"
+            />
+          ) : (
+            <span className="text-sm font-semibold">
+              {user?.userName?.charAt(0).toUpperCase()}
+            </span>
+          )
+        ) : (
+          <img src="/vite.svg" alt="Guest" className="h-6" />
+        )}
       </div>
 
       {/* Dropdown */}
@@ -76,7 +87,7 @@ function User({ openModal }: UserProps) {
               </button>
               <button
                 className="dropdown-item text-red-500"
-                onClick={() => logOut()}
+                onClick={() => logout()}
               >
                 Se déconnecter
               </button>
