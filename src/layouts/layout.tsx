@@ -1,7 +1,7 @@
-import Horizontal from "./horizontal/Horizontal";
-import Vertical from "./vertical/Vertical";
 import "./Layout.scss";
 import { useLayout } from "./context/layout.context";
+import Horizontal from "./horizontal/horizontal";
+import Vertical from "./vertical/vertical";
 
 const layout = () => {
   const { layout } = useLayout();

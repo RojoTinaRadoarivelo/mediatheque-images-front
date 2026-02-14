@@ -1,8 +1,8 @@
 import "./App.scss";
-import Layout from "../layouts/Layout";
-import Footer from "../shared/components/footer/Footer";
-import Header from "../shared/components/header/Header";
 import { LayoutProvider } from "../layouts/context/layout.context";
+import Layout from "../layouts/layout";
+import Footer from "../shared/components/footer/footer";
+import Header from "../shared/components/header/header";
 
 function App() {
   return (
