@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Couleurs custom */
+@theme {
+  --color-testred: #0ff000;
+}
