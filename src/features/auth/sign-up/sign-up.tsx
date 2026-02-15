@@ -16,6 +16,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
     handleSubmit,
     getValues,
     formState: { errors },
+    trigger,
   } = useForm<SignUpFormData>({
     resolver: zodResolver(SIGNUP_SCHEMA),
   });
@@ -35,6 +36,15 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
   }, [isAuthenticated, closeModal]);
 
   const handleSendCode = async () => {
+    // On valide uniquement les champs du premier step
+    const isValid = await trigger(["email", "password", "confirmPassword"]);
+
+    if (!isValid) {
+      // S'il y a des erreurs, on ne fait rien et on laisse les messages d'erreur s'afficher
+      return;
+    }
+
+    // Sinon on continue
     const email = localStorage.getItem("sentTo") ?? getValues("email");
     await sendingEmailVerification(email);
     setStep("code");
@@ -42,7 +52,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Sign Up
+      Inscription
       <form className="space-y-4 mt-4" onSubmit={handleSubmit(handleSignUp)}>
         <div className="relative overflow-hidden w-full">
           <div
@@ -66,7 +76,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.email && (
-                  <p className="error">{errors.email.message}</p>
+                  <p className="text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
@@ -81,7 +91,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.password && (
-                  <p className="error">{errors.password.message}</p>
+                  <p className="text-red-500">{errors.password.message}</p>
                 )}
               </div>
 
@@ -96,7 +106,9 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.confirmPassword && (
-                  <p className="error">{errors.confirmPassword.message}</p>
+                  <p className="text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
                 )}
               </div>
 
@@ -121,7 +133,9 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                   {...register("code")}
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {errors.code && <p className="error">{errors.code.message}</p>}
+                {errors.code && (
+                  <p className="text-red-500">{errors.code.message}</p>
+                )}
               </div>
 
               <button

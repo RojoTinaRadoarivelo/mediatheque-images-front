@@ -7,8 +7,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/auth.context";
 import { useEffect } from "react";
+import type { ModalKey } from "../../../shared/utils/modals.type";
 
-function SignIn({ closeModal }: { closeModal: () => void }) {
+function SignIn({
+  closeModal,
+  switchModal,
+}: {
+  closeModal: () => void;
+  switchModal: (key: ModalKey) => void;
+}) {
   const {
     register,
     handleSubmit,
@@ -31,8 +38,11 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Sign In
-      <form className="space-y-4" onSubmit={handleSubmit(handleSignin)}>
+      Se connecter
+      <form
+        className="w-5/6 space-y-4 mt-4"
+        onSubmit={handleSubmit(handleSignin)}
+      >
         {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -76,7 +86,10 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
       {/* Signup link */}
       <p className="text-sm text-center text-gray-600 mt-6">
         Pas encore de compte ?{" "}
-        <a href="/signup" className="text-blue-600 font-medium hover:underline">
+        <a
+          onClick={() => switchModal("sign-up")}
+          className="text-blue-600 font-medium hover:cursor-pointer"
+        >
           S’inscrire
         </a>
       </p>
