@@ -2,9 +2,7 @@ import type { ApiResult } from "../../../shared/interfaces/api-response.interfac
 import API, { safeApiCall } from "../../../shared/utils/apis.util";
 import type { SigninDto, SignupDto, UsersType } from "../users.type";
 
-export class UserService {
-
-    users: UsersType[] = [];
+export class AuthService {
     userSigned: UsersType | null = null;
 
     constructor() { }
@@ -23,7 +21,6 @@ export class UserService {
         return { session, searchUser };
     }
 
-    getUsers() { }
     async logIn(data: SigninDto) {
         const session = await safeApiCall<{ sess_id: string }>(
             API.post(`/auth/sign-in`, data)
@@ -40,8 +37,20 @@ export class UserService {
 
 
     }
-    SignUp(data: SignupDto) { }
-    RemoveUser(id: string) { }
+    async SignUp(data: SignupDto) {
+        const session = await safeApiCall<{ sess_id: string }>(
+            API.post(`/auth/sign-up`, data)
+        );
+        if (session.data?.sess_id) {
+            localStorage.setItem('SESS_ID', session.data.sess_id);
+        }
+
+
+        const searchUser = await this.reloadUserInfo();
+
+
+        return { session, searchUser };
+    }
     async logOut() {
         this.resetUserData();
         const userSignout = await safeApiCall<{ sess_id: string }>(
@@ -59,7 +68,11 @@ export class UserService {
 
     private resetUserData() {
         this.userSigned = null;
-        this.users = [];
+    }
+
+    async sendEmailVerification(email: string) {
+        const verifiedEmail = await safeApiCall<any>(API.post(`/auth/send-verification-code`, { email }))
+        return { verifiedEmail };
     }
 
 

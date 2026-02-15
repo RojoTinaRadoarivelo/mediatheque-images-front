@@ -1,24 +1,37 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import type { SigninDto, UsersType } from "../users.type";
-import { UserService } from "../services/user.service";
+import type { SigninDto, SignupDto, UsersType } from "../users.type";
+import { AuthService } from "../services/auth.service";
 
 type AuthContextType = {
   user: UsersType | null;
   isAuthenticated: boolean;
   login: (data: SigninDto) => Promise<void>;
+  signup: (data: SignupDto) => Promise<void>;
+  sendingEmailVerification: (email: string) => Promise<void>;
   logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const userService = new UserService(); // 🔥 une seule instance globale
+const authService = new AuthService(); // 🔥 une seule instance globale
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<UsersType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (data: SigninDto) => {
-    const { session, searchUser } = await userService.logIn(data);
+    const { session, searchUser } = await authService.logIn(data);
+
+    if (session.success && searchUser.data) {
+      setUser(searchUser.data);
+      setIsAuthenticated(true);
+    }
+  };
+
+  const signup = async (data: SignupDto) => {
+    const { session, searchUser } = await authService.SignUp(data);
 
     if (session.success && searchUser.data) {
       setUser(searchUser.data);
@@ -27,15 +40,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    const { userSignout } = await userService.logOut();
+    const { userSignout } = await authService.logOut();
     if (userSignout.success) {
       setUser(null);
       setIsAuthenticated(false);
     }
   };
 
+  const sendingEmailVerification = async (email: string) => {
+    const { verifiedEmail } = await authService.sendEmailVerification(email);
+    if (verifiedEmail.success) {
+      localStorage.setItem("sentTo", email);
+    }
+  };
+
   const refreshingUserData = async () => {
-    const { session, searchUser } = await userService.refreshToken();
+    const { session, searchUser } = await authService.refreshToken();
     if (!localStorage.getItem("SESS_ID")) {
       logout();
     }
@@ -55,7 +75,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        signup,
+        sendingEmailVerification,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -36,7 +36,7 @@ function header() {
       <div className="w-2/4 flex items-center space-x-3">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Rechercher"
           className="w-3/4 border-2 border-gray-200 p-2 rounded-md"
         />
         <button className="bg-black">S</button>
@@ -57,7 +57,12 @@ function header() {
         <div className="">
           <User openModal={setActiveModal}></User>
           <Modal isOpen={!!activeModal} onClose={() => setActiveModal(null)}>
-            {ModalContent && <ModalContent />}
+            {ModalContent && (
+              <ModalContent
+                closeModal={() => setActiveModal(null)}
+                switchModal={(key: ModalKey) => setActiveModal(key)}
+              />
+            )}
           </Modal>
         </div>
       </div>
