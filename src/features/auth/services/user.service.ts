@@ -42,11 +42,15 @@ export class UserService {
     }
     SignUp(data: SignupDto) { }
     RemoveUser(id: string) { }
-    logOut() {
+    async logOut() {
         this.resetUserData();
+        const userSignout = await safeApiCall<{ sess_id: string }>(
+            API.post(`/auth/sign-out`, {})
+        );
         window.localStorage.removeItem("SESS_ID")
         window.location.replace("/");
         window.location.reload();
+        return { userSignout }
     }
 
     async reloadUserInfo(): Promise<ApiResult<any>> {
