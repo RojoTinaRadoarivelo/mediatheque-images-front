@@ -26,10 +26,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = () => {
-    userService.logOut();
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
+    const { userSignout } = await userService.logOut();
+    if (userSignout.success) {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
   };
 
   const refreshingUserData = async () => {
