@@ -57,7 +57,9 @@ function header() {
         <div className="">
           <User openModal={setActiveModal}></User>
           <Modal isOpen={!!activeModal} onClose={() => setActiveModal(null)}>
-            {ModalContent && <ModalContent />}
+            {ModalContent && (
+              <ModalContent closeModal={() => setActiveModal(null)} />
+            )}
           </Modal>
         </div>
       </div>

@@ -1,14 +1,14 @@
-import { UserService } from "../services/user.service";
 import "./sign-in.scss";
 import {
   SIGNIN_SCHEMA,
   type SigninFormData,
-} from "./validators/sign-in.validation";
+} from "./validators/sign-in.validator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/auth.context";
+import { useEffect } from "react";
 
-function SignIn() {
+function SignIn({ closeModal }: { closeModal: () => void }) {
   const {
     register,
     handleSubmit,
@@ -17,11 +17,17 @@ function SignIn() {
     resolver: zodResolver(SIGNIN_SCHEMA),
   });
 
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   const handleSignin = (data: SigninFormData): void => {
     login(data);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      closeModal();
+    }
+  }, [isAuthenticated, closeModal]);
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
