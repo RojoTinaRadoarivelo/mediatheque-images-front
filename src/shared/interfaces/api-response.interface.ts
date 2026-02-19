@@ -2,6 +2,6 @@
 export interface ApiResult<T = any> {
     success: boolean;
     message?: string;
-    data?: T;
+    data?: T | T[] | any;
     statusCode?: number;
 }
