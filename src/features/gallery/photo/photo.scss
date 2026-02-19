@@ -1,0 +1,48 @@
+.photo-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+/* L'image invisible au début mais dans le DOM pour onLoad */
+.photo {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.photo.visible {
+    opacity: 1;
+    position: relative;
+    /* devient normale */
+}
+
+/* Placeholder gris animé */
+.placeholder {
+    width: 100%;
+    padding-top: 66%;
+    /* ratio 3:2 approximatif */
+    background: #ccc;
+    animation: pulse 1.5s infinite;
+    border-radius: 0.75rem;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: #ddd;
+    }
+
+    50% {
+        background-color: #ccc;
+    }
+
+    100% {
+        background-color: #ddd;
+    }
+}
