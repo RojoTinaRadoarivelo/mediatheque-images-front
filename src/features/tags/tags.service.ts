@@ -4,8 +4,6 @@ import type { TagDto, TagsType } from "./tags.type";
 
 export class TagService {
 
-    tags: TagsType[] = [];
-
     constructor() { }
 
     async getAllTags() {
