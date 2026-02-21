@@ -1,8 +1,8 @@
 import "./tags.scss";
 
 // modals for creation/update
-function tags() {
+function Tags() {
   return <div>tags</div>;
 }
 
-export default tags;
+export default Tags;

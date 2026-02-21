@@ -5,6 +5,7 @@ import { AuthService } from "../services/auth.service";
 type AuthContextType = {
   user: UsersType | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (data: SigninDto) => Promise<void>;
   signup: (data: SignupDto) => Promise<void>;
   sendingEmailVerification: (email: string) => Promise<void>;
@@ -20,6 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<UsersType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const login = async (data: SigninDto) => {
     const { session, searchUser } = await authService.logIn(data);
@@ -68,10 +70,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // 🔥 Rechargement automatique si refresh page
   useEffect(() => {
     const sessId = localStorage.getItem("SESS_ID");
-    if (sessId) {
-      setIsAuthenticated(true);
-      refreshingUserData();
-    }
+    const initAuth = async () => {
+      if (sessId) {
+        setIsAuthenticated(true);
+        refreshingUserData();
+      }
+      setIsLoading(false);
+    };
+    initAuth();
   }, []);
 
   return (
@@ -79,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         isAuthenticated,
+        isLoading,
         login,
         signup,
         sendingEmailVerification,
