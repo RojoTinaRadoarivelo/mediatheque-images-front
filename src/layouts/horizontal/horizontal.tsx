@@ -1,3 +1,4 @@
+import Gallery from "../../features/gallery/gallery";
 import NavbarMenu from "../../shared/components/navbar/navbar-menu";
 import "./horizontal.scss";
 
@@ -8,45 +9,7 @@ const Horizontal = () => {
         <NavbarMenu orientation="horizontal"></NavbarMenu>
       </div>
       <div className="p-0.5">
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
-        <div>GALERY + SMOOTH PAGINATION</div>
+        <Gallery />
       </div>
     </>
   );

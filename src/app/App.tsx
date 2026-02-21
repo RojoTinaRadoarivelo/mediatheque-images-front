@@ -1,9 +1,9 @@
 import "./App.scss";
 import { LayoutProvider } from "../layouts/context/layout.context";
-import Layout from "../layouts/layout";
 import Footer from "../shared/components/footer/footer";
 import Header from "../shared/components/header/header";
 import { AuthProvider } from "../features/auth/context/auth.context";
+import AppRouter from "./App.route";
 
 function App() {
   return (
@@ -16,7 +16,8 @@ function App() {
             </div>
 
             <div id="main-container">
-              <Layout></Layout>
+              <AppRouter></AppRouter>
+              {/* <Layout></Layout> */}
             </div>
             <div id="footer-container">
               <Footer></Footer>

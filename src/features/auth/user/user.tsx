@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;
@@ -10,6 +11,7 @@ type UserProps = {
 
 function User({ openModal }: UserProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { isAuthenticated, user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -27,13 +29,21 @@ function User({ openModal }: UserProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navigateToGalery = () => {};
+  const navigateToGalery = () => {
+    setIsOpen(false);
+    navigate("/galleries");
+  };
+
+  const signOut = () => {
+    logout();
+    navigate("/home");
+  };
 
   return (
     <div className="relative" ref={menuRef}>
       {/* Avatar */}
       <div
-        className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center hover:bg-gray-100"
+        className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center hover:bg-gray-300 border border-b-cyan-600 bg-gray-700"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isAuthenticated ? (
@@ -81,13 +91,25 @@ function User({ openModal }: UserProps) {
             <>
               <button
                 className="dropdown-item"
+                onClick={() => navigate("/settings")}
+              >
+                Settings
+              </button>
+              <button
+                className="dropdown-item"
+                onClick={() => navigate("/profile")}
+              >
+                Profile
+              </button>
+              <button
+                className="dropdown-item"
                 onClick={() => navigateToGalery()}
               >
                 Galerie
               </button>
               <button
                 className="dropdown-item text-red-500"
-                onClick={() => logout()}
+                onClick={() => signOut()}
               >
                 Se déconnecter
               </button>

@@ -2,19 +2,19 @@ import { useEffect } from "react";
 import { type ModalProps } from "../../utils/modals.type";
 
 function Modal({ isOpen, onClose, children }: ModalProps) {
-  if (!isOpen) return null;
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
