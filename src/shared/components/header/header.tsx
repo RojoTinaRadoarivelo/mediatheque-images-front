@@ -61,7 +61,10 @@ function header() {
             <option value="Horizontal">Horizontal</option>
           </select>
         )}
-        <div className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center border  hover:bg-gray-100">
+        <div
+          className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center border  hover:bg-gray-100"
+          onClick={() => navigate("faq")}
+        >
           ?
         </div>
 
