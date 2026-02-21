@@ -23,3 +23,11 @@ export type GalleryDto = {
     user_id: string;
     photo_id?: string;
 }
+
+export type FilterGalleryDto = {
+    isAuthentified: boolean,
+    name?: string,
+    tagNames?: string[],
+    userName?: string,
+    userId?: string
+}

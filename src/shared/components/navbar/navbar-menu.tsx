@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { TagsType } from "../../../features/tags/tags.type";
 import { useTags } from "../../services/tags.queries";
 import "./navbar-menu.scss";
@@ -7,7 +8,16 @@ type NavbarMenuProps = {
 };
 
 const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
-  const { data, isLoading, error } = useTags();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useTags(page);
+
+  const nextTagPage = () => {
+    setPage((p) => p + 1);
+  };
+
+  const prevTagPage = () => {
+    setPage((p) => (p > 1 ? p - 1 : p));
+  };
 
   if (isLoading) return null;
   if (error) return <span>Erreur</span>;
@@ -21,7 +31,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
       }
     >
       {data?.tags?.data?.map((t: TagsType) => (
-        <button key={t.id} className="p-1 border">
+        <button key={t.id} className="p-1 border ">
           {t.name}
         </button>
       ))}

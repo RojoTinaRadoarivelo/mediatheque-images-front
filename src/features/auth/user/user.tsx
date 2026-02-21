@@ -33,7 +33,7 @@ function User({ openModal }: UserProps) {
     <div className="relative" ref={menuRef}>
       {/* Avatar */}
       <div
-        className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center hover:bg-gray-100"
+        className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center hover:bg-gray-100 border border-b-cyan-600"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isAuthenticated ? (

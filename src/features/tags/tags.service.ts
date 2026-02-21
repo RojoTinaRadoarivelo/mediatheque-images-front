@@ -6,9 +6,9 @@ export class TagService {
 
     constructor() { }
 
-    async getAllTags() {
+    async getAllTags(page?: number, limit: number = 12) {
         const tags = await safeApiCall<TagsType[]>(
-            API.get(`/tags`)
+            API.get(`/tags?page=${page}&limit=${limit}`)
         );
 
         return { tags };
