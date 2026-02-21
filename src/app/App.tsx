@@ -4,6 +4,7 @@ import Layout from "../layouts/layout";
 import Footer from "../shared/components/footer/footer";
 import Header from "../shared/components/header/header";
 import { AuthProvider } from "../features/auth/context/auth.context";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -16,7 +17,17 @@ function App() {
             </div>
 
             <div id="main-container">
-              <Layout></Layout>
+              <Routes>
+                {/* page par défaut */}
+                <Route path="/" element={<Navigate to="/gallery" />} />
+
+                {/* PAGE GALLERY */}
+                <Route path="/gallery" element={<Layout />} />
+
+                {/* PROFILE PAGE */}
+                {/* <Route path="/profile" element={<Profile />} /> */}
+              </Routes>
+              {/* <Layout></Layout> */}
             </div>
             <div id="footer-container">
               <Footer></Footer>
