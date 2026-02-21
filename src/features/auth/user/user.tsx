@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;
@@ -10,6 +11,7 @@ type UserProps = {
 
 function User({ openModal }: UserProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { isAuthenticated, user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -27,7 +29,15 @@ function User({ openModal }: UserProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navigateToGalery = () => {};
+  const navigateToGalery = () => {
+    setIsOpen(false);
+    navigate("/galleries");
+  };
+
+  const signOut = () => {
+    logout();
+    navigate("/home");
+  };
 
   return (
     <div className="relative" ref={menuRef}>
@@ -79,6 +89,8 @@ function User({ openModal }: UserProps) {
             </>
           ) : (
             <>
+              <button className="dropdown-item">Settings</button>
+              <button className="dropdown-item">Profile</button>
               <button
                 className="dropdown-item"
                 onClick={() => navigateToGalery()}
@@ -87,7 +99,7 @@ function User({ openModal }: UserProps) {
               </button>
               <button
                 className="dropdown-item text-red-500"
-                onClick={() => logout()}
+                onClick={() => signOut()}
               >
                 Se déconnecter
               </button>

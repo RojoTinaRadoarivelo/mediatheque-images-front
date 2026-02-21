@@ -27,7 +27,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
       className={
         orientation === "horizontal"
           ? "flex space-x-1 w-full overflow-x-auto"
-          : "flex flex-col space-y-1  h-full overflow-y-auto"
+          : "flex flex-col space-y-1  h-full overflow-y-auto pt-4"
       }
     >
       {data?.tags?.data?.map((t: TagsType) => (

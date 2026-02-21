@@ -4,30 +4,34 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "../layouts/layout";
 import NotFoundPage from "../shared/components/page-not-found/page-not-found";
 import ProtectedRoute from "../features/auth/guards/auth.guard";
-import Tags from "../features/tags/tags";
 
 /* 🔥 Lazy loaded pages */
-const GalleryPage = lazy(() => import("../features/gallery/gallery"));
+const HomePage = lazy(() => import("../features/gallery/gallery"));
 // const Profile = lazy(() => import("../pages/Profile"));
 // const Settings = lazy(() => import("../pages/Settings"));
+const GalleryPage = lazy(
+  () => import("../features/gallery/collections/user-collection"),
+);
 
 const AppRouter = () => {
   return (
     <Suspense fallback={<div> Chargement...</div>}>
       <Routes>
         {/* redirect racine */}
-        <Route path="/" element={<Navigate to="/gallery" replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* pages publiques */}
-        <Route path="/gallery" element={<Layout />}>
-          <Route index element={<GalleryPage />} />
+        <Route path="/home" element={<Layout />}>
+          <Route index element={<HomePage />} />
         </Route>
 
         {/* pages protégées */}
         <Route element={<ProtectedRoute />}>
-          {/* <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} /> */}
-          <Route path="/tags" element={<Tags />} />
+          {/* 
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />           
+          */}
+          <Route path="/galleries" element={<GalleryPage />} />
         </Route>
 
         {/* 404 */}

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { SigninDto, SignupDto, UsersType } from "../users.type";
 import { AuthService } from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   user: UsersType | null;
@@ -22,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<UsersType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const login = async (data: SigninDto) => {
     const { session, searchUser } = await authService.logIn(data);
@@ -29,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setUser(searchUser.data);
       setIsAuthenticated(true);
+      navigate("/galleries");
     }
   };
 
@@ -38,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setUser(searchUser.data);
       setIsAuthenticated(true);
+      navigate("/galleries");
     }
   };
 
