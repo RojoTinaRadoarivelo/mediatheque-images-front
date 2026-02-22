@@ -1,8 +1,11 @@
 export class GalleryType {
     id?: string;
     photo?: {
+        id?: string;
         name: string;
         path: string;
+        title?: string;
+        description?: string;
     };
     tag?: {
         name: string;

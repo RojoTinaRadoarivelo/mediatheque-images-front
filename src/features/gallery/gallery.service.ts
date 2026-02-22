@@ -1,5 +1,6 @@
 import type { ApiResult } from "../../shared/interfaces/api-response.interface";
 import API, { safeApiCall } from "../../shared/utils/apis.util";
+import { MAX_LIST_LIMIT } from "../../shared/utils/queryClient";
 import type { GalleryDto, GalleryType } from "./gallery.type";
 
 
@@ -7,7 +8,7 @@ export class GalleryService {
 
     constructor() { }
 
-    async getAllPhotos(page?: number, limit: number = 12) {
+    async getAllPhotos(page?: number, limit: number = MAX_LIST_LIMIT) {
         let Photos: ApiResult<GalleryType[]>
         if (!page || page === 0) {
             Photos = await safeApiCall<GalleryType[]>(

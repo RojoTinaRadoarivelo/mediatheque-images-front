@@ -22,3 +22,27 @@ export function useCreatePhoto() {
         },
     });
 }
+
+export function useUpdatePhoto() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: FormData) =>
+            galleryService.updatePhoto(data as any),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["photos"] });
+        },
+    });
+}
+
+export function useDeletePhoto() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: string) =>
+            galleryService.deletePhoto(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["photos"] });
+        },
+    });
+}
