@@ -1,13 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./add-photo.scss";
-import { useTags } from "../../../../shared/services/tags.queries";
+import {
+  useCreateTag,
+  useTags,
+} from "../../../../shared/services/tags.queries";
 import type { TagsType } from "../../../tags/tags.type";
+import { useCreatePhoto } from "../../../../shared/services/gallery.queries";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../../auth/context/auth.context";
 
 const AddPhotoForm = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagSearch, setTagSearch] = useState("");
-  const { data, isLoading, error } = useTags(0);
+  const { data, isLoading, error: tagsError } = useTags(0);
+  const [file, setFile] = useState<File | null>(null);
+  const { isAuthenticated, user } = useAuth();
+
+  const {
+    mutate: createTag,
+    isPending: isCreatingTag,
+    isError: isCreateTagError,
+    error: createTagError,
+  } = useCreateTag();
+
+  const {
+    mutate: createPhoto,
+    isPending: isCreatingPhoto,
+    isError: isCreatePhotoError,
+    error: createPhotoError,
+  } = useCreatePhoto();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const allTags: TagsType[] = data?.tags?.data ?? [];
 
@@ -17,9 +47,37 @@ const AddPhotoForm = () => {
       !selectedTags.includes(tag?.name),
   );
 
+  const normalizeTag = (tag: string) => tag.trim();
+
+  const tagExistsGlobally = allTags.some(
+    (t) => normalizeTag(t.name ?? "") === normalizeTag(tagSearch),
+  );
+
   const addTag = (tag: string) => {
-    setSelectedTags([...selectedTags, tag]);
-    setTagSearch("");
+    const normalized = normalizeTag(tag);
+
+    if (selectedTags.includes(normalized)) return;
+
+    const tagAlreadyExists = allTags.some(
+      (t) =>
+        normalizeTag(t.name ?? "")?.toLowerCase() === normalized.toLowerCase(),
+    );
+
+    if (tagAlreadyExists) {
+      setSelectedTags((prev) => [...prev, normalized]);
+      setTagSearch("");
+      return;
+    }
+
+    createTag(
+      { name: normalized },
+      {
+        onSuccess: () => {
+          setSelectedTags((prev) => [...prev, normalized]);
+          setTagSearch("");
+        },
+      },
+    );
   };
 
   const removeTag = (tag: string) => {
@@ -27,14 +85,56 @@ const AddPhotoForm = () => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setPreview(URL.createObjectURL(file));
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
   };
 
-  const Cancel = () => {};
+  const onSubmit = (data: any) => {
+    if (!file) {
+      alert("Please upload an image");
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("objectFile", file);
+    formData.append("name", data.name);
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+
+    const tagsIds: string[] = [];
+    selectedTags.forEach((tag) => {
+      const found = allTags.find((el) => el.name === tag)?.id;
+      if (found) {
+        tagsIds.push(found);
+        formData.append("tags_id", found);
+      }
+    });
+    formData.append("user_id", user?.id!);
+
+    createPhoto(formData, {
+      onSuccess: (res) => {
+        console.log("created photo successfuly : ", res);
+
+        Cancel();
+      },
+    });
+
+    console.log("FORM DATA READY", [...formData.entries()]);
+  };
+
+  const Cancel = () => {
+    reset();
+    setSelectedTags([]);
+    setPreview(null);
+    setFile(null);
+  };
 
   return (
-    <div className="w-full max-w-5xl p-6 ">
+    <form className="w-full max-w-5xl p-6 " onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-6">
         {/* IMAGE */}
         <label
@@ -69,11 +169,13 @@ const AddPhotoForm = () => {
           <input
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Name"
+            {...register("name", { required: true })}
           />
 
           <input
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Title ( alt )"
+            {...register("title")}
           />
 
           {/* TAGS */}
@@ -100,7 +202,11 @@ const AddPhotoForm = () => {
             />
 
             {tagSearch && (
-              <div className="mt-2 border rounded-lg max-h-40 overflow-y-auto bg-white shadow">
+              <div
+                className={`mt-2 max-h-40 overflow-y-auto bg-white
+                  ${!tagExistsGlobally ? "border rounded-lg shadow" : ""}
+                `}
+              >
                 {filteredTags.map((tag) => (
                   <div
                     key={tag?.id}
@@ -111,13 +217,19 @@ const AddPhotoForm = () => {
                   </div>
                 ))}
 
-                {!filteredTags.length && (
+                {!filteredTags.length && !tagExistsGlobally && (
                   <div
                     className="px-4 py-2 text-primary cursor-pointer"
                     onClick={() => addTag(tagSearch)}
                   >
                     + Create "{tagSearch}"
                   </div>
+                )}
+                {isCreateTagError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {(createTagError as any)?.message ??
+                      "Erreur lors de la création du tag"}
+                  </p>
                 )}
               </div>
             )}
@@ -127,6 +239,7 @@ const AddPhotoForm = () => {
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             rows={3}
             placeholder="Short description"
+            {...register("description")}
           />
         </div>
       </div>
@@ -139,11 +252,14 @@ const AddPhotoForm = () => {
         >
           Cancel
         </button>
-        <button className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700">
+        <button
+          type="submit"
+          className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+        >
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

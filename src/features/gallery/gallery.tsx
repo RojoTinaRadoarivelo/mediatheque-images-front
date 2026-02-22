@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./gallery.scss";
 import Photo from "./photo/photo";
+import { useGallery } from "../../shared/services/gallery.queries";
 
 const initialImages = [
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
@@ -17,10 +18,13 @@ const moreImages = [
 
 const Gallery = () => {
   const [images, setImages] = useState<string[]>(initialImages);
+  const { data: listPhoto, error: photoError } = useGallery(1);
   const handleLoadMore = () => {
     // On ajoute les nouvelles images
     setImages((prev) => [...prev, ...moreImages]);
   };
+
+  useEffect(() => {}, [listPhoto]);
 
   return (
     <>
