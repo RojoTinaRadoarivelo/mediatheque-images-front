@@ -7,7 +7,9 @@ type PhotoProps = {
   alt?: string;
   title?: string;
   description?: string;
-  tags?: string[];
+  tags?: {
+    name: string;
+  }[];
 };
 
 const Photo = ({ src, alt, title, description, tags = [] }: PhotoProps) => {
@@ -50,9 +52,9 @@ const Photo = ({ src, alt, title, description, tags = [] }: PhotoProps) => {
         <div className="overlay-bottom">
           <p>{description}</p>
           <div className="tags">
-            {tags.map((tag, index) => (
-              <span key={index} className="tag">
-                #{tag}
+            {tags.map((tag) => (
+              <span key={tag.name} className="tag">
+                #{tag.name}
               </span>
             ))}
           </div>

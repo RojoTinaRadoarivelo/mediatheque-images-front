@@ -47,7 +47,7 @@ const Gallery = () => {
               alt={item.photo?.name ?? ""}
               title={item.photo?.title ?? ""}
               description={item.photo?.description ?? ""}
-              tags={item.tag ? [item.tag.name] : []}
+              tags={item.tag ? item.tag : []}
             />
           </div>
         ))}

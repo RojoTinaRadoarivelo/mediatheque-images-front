@@ -9,7 +9,7 @@ export class GalleryType {
     };
     tag?: {
         name: string;
-    };
+    }[];
     user?: {
         userName: string;
         email: string;
