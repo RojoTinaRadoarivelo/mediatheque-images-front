@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./photo.scss";
 import { ENV } from "../../../environment/env.local";
+import { useAuth } from "../../auth/context/auth.context";
 
 type PhotoProps = {
   src: string;
@@ -17,6 +18,7 @@ const Photo = ({ src, alt, title, description, tags = [] }: PhotoProps) => {
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
   const uploadPath = ENV.API_URL + "/";
+  const { isAuthenticated } = useAuth();
 
   // Petits délais pour simuler un affichage progressif
   useEffect(() => {
@@ -59,8 +61,17 @@ const Photo = ({ src, alt, title, description, tags = [] }: PhotoProps) => {
             ))}
           </div>
           <div className="actions">
-            <button className="edit-btn">Modifier</button>
-            <button className="delete-btn">Supprimer</button>
+            {isAuthenticated ? (
+              <>
+                <button className="edit-btn">Modifier</button>
+                <button className="delete-btn">Supprimer</button>
+              </>
+            ) : (
+              <>
+                {/* <button className="edit-btn">Like</button> */}
+                <button className="edit-btn">Telecharger</button>
+              </>
+            )}
           </div>
         </div>
       </div>
