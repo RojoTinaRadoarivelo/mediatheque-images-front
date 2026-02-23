@@ -63,4 +63,11 @@ export class GalleryService {
 
         return { Photos };
     }
+
+    async downloadPhoto(id: string) {
+        return API.get(`/gallery/photos/${id}/download`, {
+            responseType: 'blob',
+            withCredentials: true,
+        });
+    }
 }

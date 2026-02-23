@@ -3,7 +3,10 @@ import "./photo.scss";
 import { ENV } from "../../../environment/env.local";
 import { useAuth } from "../../auth/context/auth.context";
 import ConfirmModal from "./delete-photo/delete-photo";
-import { useDeletePhoto } from "../../../shared/services/gallery.queries";
+import {
+  useDeletePhoto,
+  useDownloadPhoto,
+} from "../../../shared/services/gallery.queries";
 
 type PhotoProps = {
   id: string;
@@ -30,6 +33,8 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
     error: deletePhotoError,
   } = useDeletePhoto();
 
+  const downloadMutation = useDownloadPhoto();
+
   // Petits délais pour simuler un affichage progressif
   useEffect(() => {
     const timer = setTimeout(() => setShow(true), Math.random() * 300); // 0 à 300ms
@@ -40,6 +45,10 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
     deletePhoto(id, {
       onSuccess: () => {},
     });
+  };
+
+  const handleDownload = async (id: string) => {
+    downloadMutation.mutate(id);
   };
 
   return (
@@ -98,7 +107,9 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
             ) : (
               <>
                 {/* <button className="edit-btn">Like</button> */}
-                <button className="edit-btn">Telecharger</button>
+                <button className="edit-btn" onClick={() => handleDownload(id)}>
+                  Telecharger
+                </button>
               </>
             )}
           </div>

@@ -46,3 +46,35 @@ export function useDeletePhoto() {
         },
     });
 }
+
+export function useDownloadPhoto() {
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await galleryService.downloadPhoto(id);
+
+            // Nom du fichier depuis Content-Disposition
+            const disposition = response.headers['content-disposition'];
+            console.log(disposition);
+
+            let fileName = 'photo.jpg'; // fallback
+
+            if (disposition) {
+                const matches = disposition.match(/filename="?(.+?)"?$/);
+                if (matches && matches[1]) {
+                    fileName = matches[1].split(/[/\\]/).pop()!;
+                }
+            }
+
+            // Blob avec type MIME exact
+            const contentType = response.headers['content-type'] || 'application/octet-stream';
+            const blob = new Blob([response.data], { type: contentType });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName; // Photo-xxx.png
+            a.click();
+            window.URL.revokeObjectURL(url);
+        },
+    });
+}
