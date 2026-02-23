@@ -76,8 +76,8 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
       {/* Overlay hover */}
       <div className={`photo-overlay ${hover ? "visible" : ""}`}>
         <div className="overlay-top">
-          <strong>{title?.toUpperCase()}</strong>
-          <span>{alt}</span>
+          <strong>{alt?.toUpperCase()}</strong>
+          <span>{title}</span>
         </div>
         <div className="overlay-bottom">
           <p>{description}</p>
