@@ -7,6 +7,8 @@ import {
   useDeletePhoto,
   useDownloadPhoto,
 } from "../../../shared/services/gallery.queries";
+import Modal from "../../../shared/components/modals/modal";
+import UpdatePhotoForm from "./edit-photo/edit-photo";
 
 type PhotoProps = {
   id: string;
@@ -25,7 +27,8 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
   const [hover, setHover] = useState(false);
   const uploadPath = ENV.API_URL + "/";
   const { isAuthenticated } = useAuth();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const {
     mutate: deletePhoto,
     isPending: isCreatingPhoto,
@@ -88,21 +91,44 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
           <div className="actions">
             {isAuthenticated ? (
               <>
-                <button className="edit-btn">Modifier</button>
+                <button
+                  className="edit-btn"
+                  onClick={() => setUpdateModalOpen(true)}
+                >
+                  Modifier
+                </button>
+
                 <button
                   className="delete-btn"
-                  onClick={() => setModalOpen(true)}
+                  onClick={() => setDeleteModalOpen(true)}
                 >
                   Supprimer
                 </button>
                 {/* delete photo move to gallery - update modal also*/}
                 <ConfirmModal
-                  isOpen={isModalOpen}
-                  onClose={() => setModalOpen(false)}
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setDeleteModalOpen(false)}
                   onConfirm={() => handleDelete(id)}
                   title="Supprimer la photo"
                   message="Êtes-vous sûr de vouloir supprimer cette photo ?"
                 />
+                <Modal
+                  isOpen={isUpdateModalOpen}
+                  onClose={() => setUpdateModalOpen(false)}
+                  width="w-1-2"
+                >
+                  <UpdatePhotoForm
+                    photo={{
+                      id,
+                      src,
+                      title,
+                      description,
+                      tags,
+                      name: alt,
+                    }}
+                    onClose={() => setUpdateModalOpen(false)}
+                  />
+                </Modal>
               </>
             ) : (
               <>
