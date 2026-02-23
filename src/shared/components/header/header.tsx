@@ -34,7 +34,10 @@ function header() {
         ${isFixed ? "fixed top-0 left-0 drop-shadow-xl" : "relative"}
       `}
     >
-      <div className="w-32 flex items-center" onClick={() => navigate("/")}>
+      <div
+        className="w-32 flex items-center hover:cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <img src="/vite.svg" alt="LOGO" className="h-6" />
         <p>LOGO</p>
       </div>

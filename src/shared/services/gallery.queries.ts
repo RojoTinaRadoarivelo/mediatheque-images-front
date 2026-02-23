@@ -1,48 +1,52 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GalleryService } from "../../features/gallery/gallery.service";
+import { useAuth } from "../../features/auth/context/auth.context";
 
 const galleryService = new GalleryService();
 
-export function useGallery(page: number) {
+export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string) {
     return useQuery({
-        queryKey: ["photos"],
-        queryFn: () => galleryService.getAllPhotos(+page),
+        queryKey: ["photos", userId ?? "all", page, route],
+        queryFn: () => isAuthenticated && userId ? galleryService.getFilteredPhoto({ userId }) : galleryService.getAllPhotos(+page),
         staleTime: 5 * 60 * 1000, // 5 min
     });
 }
 
 export function useCreatePhoto() {
     const queryClient = useQueryClient();
+    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (data: FormData) =>
             galleryService.createPhoto(data as any),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos"] });
+            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
 
 export function useUpdatePhoto() {
     const queryClient = useQueryClient();
+    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (data: FormData) =>
             galleryService.updatePhoto(data as any),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos"] });
+            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
 
 export function useDeletePhoto() {
     const queryClient = useQueryClient();
+    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (id: string) =>
             galleryService.deletePhoto(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos"] });
+            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
