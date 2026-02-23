@@ -117,13 +117,9 @@ const AddPhotoForm = () => {
 
     createPhoto(formData, {
       onSuccess: (res) => {
-        console.log("created photo successfuly : ", res);
-
         Cancel();
       },
     });
-
-    console.log("FORM DATA READY", [...formData.entries()]);
   };
 
   const Cancel = () => {

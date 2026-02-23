@@ -55,21 +55,6 @@ export class GalleryService {
         return { Photos };
     }
 
-    async moveToBinPhoto(id: string) {
-        const Photos = await safeApiCall<GalleryType | null>(
-            API.put(`/gallery/photos/moveToBin/${id}`)
-        );
-
-        return { Photos };
-    }
-
-    async restoreFromBinPhoto(id: string) {
-        const Photos = await safeApiCall<GalleryType | null>(
-            API.put(`/gallery/photos/restoreFromBin/${id}`)
-        );
-
-        return { Photos };
-    }
 
     async deletePhoto(id: string) {
         const Photos = await safeApiCall<GalleryType | null>(

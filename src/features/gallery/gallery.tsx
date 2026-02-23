@@ -43,11 +43,14 @@ const Gallery = () => {
         {images.map((item) => (
           <div key={item.photo!.id} className="masonry-item">
             <Photo
+              id={item.photo!.id!}
               src={item.photo?.path ?? ""}
               alt={item.photo?.name ?? ""}
               title={item.photo?.title ?? ""}
               description={item.photo?.description ?? ""}
               tags={item.tag ? item.tag : []}
+              // moving confimation modal and update modal with action buttons here
+              // must rehandle style
             />
           </div>
         ))}
