@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { type ModalProps } from "../../utils/modals.type";
+import { createPortal } from "react-dom";
 
 function Modal({ isOpen, onClose, children }: ModalProps) {
   useEffect(() => {
@@ -16,8 +17,8 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       {/* backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
@@ -32,7 +33,8 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./gallery.scss";
 import Photo from "./photo/photo";
+import { useGallery } from "../../shared/services/gallery.queries";
+import type { GalleryType } from "./gallery.type";
+import { MAX_LIST_LIMIT } from "../../shared/utils/queryClient";
 
 const initialImages = [
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
@@ -16,22 +19,43 @@ const moreImages = [
 ];
 
 const Gallery = () => {
-  const [images, setImages] = useState<string[]>(initialImages);
+  // const [images, setImages] = useState<string[]>(initialImages);
+  const { data: listPhoto, error: photoError } = useGallery(1);
+  const [images, setImages] = useState<GalleryType[]>([]);
+  const [page, setPage] = useState(1);
+
   const handleLoadMore = () => {
     // On ajoute les nouvelles images
-    setImages((prev) => [...prev, ...moreImages]);
+    setImages((prev) => [...prev, ...listPhoto?.Photos.data]);
   };
+
+  useEffect(() => {
+    if (listPhoto?.Photos.data && Array.isArray(listPhoto?.Photos.data)) {
+      setImages(listPhoto?.Photos.data);
+    }
+  }, [listPhoto]);
+
+  if (photoError) return <p>Erreur lors du chargement des photos</p>;
 
   return (
     <>
       <div className="masonry px-4">
-        {images.map((src, index) => (
-          <div key={index} className="masonry-item">
-            <Photo src={src} />
+        {images.map((item) => (
+          <div key={item.photo!.id} className="masonry-item">
+            <Photo
+              id={item.photo!.id!}
+              src={item.photo?.path ?? ""}
+              alt={item.photo?.name ?? ""}
+              title={item.photo?.title ?? ""}
+              description={item.photo?.description ?? ""}
+              tags={item.tag ? item.tag : []}
+              // moving confimation modal and update modal with action buttons here
+              // must rehandle style
+            />
           </div>
         ))}
       </div>
-      {images.length < initialImages.length + moreImages.length && (
+      {images.length >= MAX_LIST_LIMIT && (
         <div style={{ textAlign: "center", margin: "1rem 0" }}>
           <button className="load-more-btn" onClick={handleLoadMore}>
             Voir plus d'images
