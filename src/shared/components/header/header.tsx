@@ -12,6 +12,7 @@ function header() {
   const [activeModal, setActiveModal] = useState<ModalKey | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
 
@@ -24,6 +25,37 @@ function header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (search.trim()) {
+        navigate({
+          pathname: location.pathname,
+          search: `?q=${encodeURIComponent(search)}`,
+        });
+      } else {
+        navigate({
+          pathname: location.pathname,
+          search: "",
+        });
+      }
+    }, 400); // debounce
+
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  const searchGallery = () => {
+    navigate({
+      pathname: location.pathname === "/galleries" ? "/galleries" : "/home",
+      search: search ? `?q=${encodeURIComponent(search)}` : "",
+    });
+  };
+  const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchGallery();
+    }
+  };
+
   const showLayoutSelect = location.pathname === "/home";
 
   return (
@@ -34,7 +66,10 @@ function header() {
         ${isFixed ? "fixed top-0 left-0 drop-shadow-xl" : "relative"}
       `}
     >
-      <div className="w-32 flex items-center" onClick={() => navigate("/")}>
+      <div
+        className="w-32 flex items-center hover:cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <img src="/vite.svg" alt="LOGO" className="h-6" />
         <p>LOGO</p>
       </div>
@@ -43,8 +78,13 @@ function header() {
           type="text"
           placeholder="Rechercher"
           className="w-3/4 border-2 border-gray-200 p-2 rounded-md"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => onEnterPressed(e)}
         />
-        <button className="bg-black">S</button>
+        <button className="bg-black" onClick={() => searchGallery()}>
+          S
+        </button>
       </div>
       <div className="flex items-center space-x-2">
         {showLayoutSelect && (

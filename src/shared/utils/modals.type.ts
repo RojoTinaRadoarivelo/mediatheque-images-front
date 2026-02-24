@@ -13,4 +13,7 @@ export type ModalProps = {
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;
+    width?: string;  // ex: "500px", "50%", "max-w-xl"
+    height?: string; // ex: "400px", "80vh"
+
 };

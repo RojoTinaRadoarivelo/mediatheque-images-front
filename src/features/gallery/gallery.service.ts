@@ -45,7 +45,7 @@ export class GalleryService {
 
     async updatePhoto(data: GalleryDto) {
         const Photos = await safeApiCall<GalleryType | null>(
-            API.put(`/photos/update`, data, {
+            API.put(`/gallery/photos/update`, data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

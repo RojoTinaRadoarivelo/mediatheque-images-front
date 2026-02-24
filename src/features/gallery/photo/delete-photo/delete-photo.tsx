@@ -22,7 +22,7 @@ const ConfirmModal = ({
 }: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-2">
         <h2 className="text-lg font-semibold">{title}</h2>
         <p>{message}</p>
 
