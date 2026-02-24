@@ -13,15 +13,40 @@ const Gallery = () => {
   const [images, setImages] = useState<GalleryType[]>([]);
   const [page, setPage] = useState(1);
 
+  const params = new URLSearchParams(location.search);
+
+  const searchQuery = params.get("q") ?? "";
+  const tagQuery = params.get("tags") ?? "";
+  const withTags = tagQuery ? tagQuery.split(",") : undefined;
+
   // Détecte la route pour savoir si on affiche tout ou filtré
-  const showAll = location.pathname === "/home";
+  const pathName = location.pathname;
+  // CONTEXTE pour filtrage
+  const showAll = pathName === "/home";
+  const isMyGallery = pathName === "/galleries";
+
+  // 👉 condition d'affichage et ou avec recherche
+  let effectiveUserId: string | undefined;
+  let effectiveAuth = false;
+
+  if (showAll) {
+    // /home → toutes les photos
+    effectiveUserId = undefined;
+    effectiveAuth = false;
+  } else if (isMyGallery) {
+    // /galleries → photos du user
+    effectiveUserId = user?.id;
+    effectiveAuth = true;
+  }
 
   // On inclut la route dans la queryKey pour que React Query recharge automatiquement
   const { data: listPhoto, error: photoError } = useGallery(
-    showAll ? undefined : user?.id,
-    showAll ? false : isAuthenticated,
+    effectiveUserId,
+    effectiveAuth,
     page,
-    location.pathname, // <--- nouvelle dépendance pour invalider automatiquement
+    pathName,
+    searchQuery,
+    withTags,
   );
 
   const handleLoadMore = () => {
@@ -30,10 +55,15 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    if (listPhoto?.Photos.data && Array.isArray(listPhoto?.Photos.data)) {
-      setImages(listPhoto?.Photos.data);
+    // Reset images et page dès que l'utilisateur, la recherche ou la route change
+    setImages([]);
+    setPage(1);
+
+    // Dès que listPhoto arrive, on met à jour les images
+    if (listPhoto?.Photos?.data && Array.isArray(listPhoto.Photos.data)) {
+      setImages(listPhoto.Photos.data);
     }
-  }, [listPhoto]);
+  }, [listPhoto, user?.id, searchQuery, pathName]);
 
   if (photoError) return <p>Erreur lors du chargement des photos</p>;
 

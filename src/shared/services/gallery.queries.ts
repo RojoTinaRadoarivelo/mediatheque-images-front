@@ -1,14 +1,34 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GalleryService } from "../../features/gallery/gallery.service";
 import { useAuth } from "../../features/auth/context/auth.context";
+import { MAX_LIST_LIMIT } from "../utils/queryClient";
 
 const galleryService = new GalleryService();
 
-export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string) {
+export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string, search?: string, withTags?: string[]) {
     return useQuery({
-        queryKey: ["photos", userId ?? "all", page, route],
-        queryFn: () => isAuthenticated && userId ? galleryService.getFilteredPhoto({ userId }) : galleryService.getAllPhotos(+page),
-        staleTime: 5 * 60 * 1000, // 5 min
+        queryKey: ["photos", userId ?? "all", isAuthenticated, page, route, search, withTags],
+        queryFn: () => {
+            const isAuth = route === "/galleries" ? true : isAuthenticated;
+            const queryParams: any = {
+                userId: userId ?? undefined,
+                isAuthentified: isAuth,
+                title: search || undefined,
+                name: search || undefined,
+                tagNames: withTags && withTags.length > 0 ? withTags : search ? [search] : undefined,
+                page,
+                limit: MAX_LIST_LIMIT,
+            };
+
+            if (search || (withTags && withTags.length > 0)) {
+                return galleryService.getFilteredPhoto(queryParams);
+            } else if (userId && isAuthenticated) {
+                return galleryService.getFilteredPhoto(queryParams);
+            } else {
+                return galleryService.getAllPhotos(page);
+            }
+        },
+        staleTime: 5 * 60 * 1000, // 5 min    
     });
 }
 

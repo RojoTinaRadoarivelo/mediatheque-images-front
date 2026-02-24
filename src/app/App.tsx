@@ -17,7 +17,6 @@ function App() {
 
             <div id="main-container">
               <AppRouter></AppRouter>
-              {/* <Layout></Layout> */}
             </div>
             <div id="footer-container">
               <Footer></Footer>
