@@ -40,7 +40,10 @@ export function useCreatePhoto() {
         mutationFn: (data: FormData) =>
             galleryService.createPhoto(data as any),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey[0] === "photos"
+            });
+            // queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
@@ -53,7 +56,10 @@ export function useUpdatePhoto() {
         mutationFn: (data: FormData) =>
             galleryService.updatePhoto(data as any),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey[0] === "photos"
+            });
+            // queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
@@ -66,7 +72,10 @@ export function useDeletePhoto() {
         mutationFn: (id: string) =>
             galleryService.deletePhoto(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey[0] === "photos"
+            });
+            // queryClient.invalidateQueries({ queryKey: ["photos", user?.id ?? "all"] });
         },
     });
 }
