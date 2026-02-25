@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   SIGNUP_SCHEMA,
   type SignUpFormData,
-} from "../sign-in/validators/sign-up.validator";
+} from "../validators/sign-up.validator";
 import "./sign-up.scss";
 import { useAuth } from "../context/auth.context";
 import { useForm } from "react-hook-form";

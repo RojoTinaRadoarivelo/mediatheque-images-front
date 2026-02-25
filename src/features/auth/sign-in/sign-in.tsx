@@ -2,7 +2,7 @@ import "./sign-in.scss";
 import {
   SIGNIN_SCHEMA,
   type SigninFormData,
-} from "./validators/sign-in.validator";
+} from "../validators/sign-in.validator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/auth.context";
