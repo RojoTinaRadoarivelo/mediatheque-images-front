@@ -1,6 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-import AddPhotoForm from "../photo/add-photo/add-photo";
 import "./user-collection.scss";
 
 function UserCollection() {
@@ -31,13 +30,6 @@ function UserCollection() {
         </Link>
       </div>
       <div className="flex flex-col px-1 w-11/12 max-sm:w-full">
-        {/* Add photo form  if path is galleries */}
-        {location.pathname === "/galleries" && (
-          <div className="w-full min-h-52 flex space-x-2 px-4 py-2 mb-2">
-            <AddPhotoForm />
-          </div>
-        )}
-        {/* user collection */}
         <div className="w-full min-h-screen">
           <Outlet />
         </div>

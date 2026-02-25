@@ -6,6 +6,7 @@ import type { GalleryType } from "./gallery.type";
 import { MAX_LIST_LIMIT } from "../../shared/utils/queryClient";
 import { useAuth } from "../auth/context/auth.context";
 import { useLocation } from "react-router-dom";
+import AddPhotoForm from "./photo/add-photo/add-photo";
 
 const Gallery = () => {
   const { isAuthenticated, user } = useAuth();
@@ -69,6 +70,11 @@ const Gallery = () => {
 
   return (
     <>
+      {isAuthenticated && isMyGallery && (
+        <div className="w-full min-h-52 flex space-x-2 px-4 py-2 mb-2">
+          <AddPhotoForm />
+        </div>
+      )}
       <div className="masonry px-4">
         {images.map((item) => (
           <div key={item.photo!.id} className="masonry-item">
