@@ -19,9 +19,18 @@ type PhotoProps = {
   tags?: {
     name: string;
   }[];
+  isGallery?: boolean;
 };
 
-const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
+const Photo = ({
+  id,
+  src,
+  alt,
+  title,
+  description,
+  tags = [],
+  isGallery,
+}: PhotoProps) => {
   const [loaded, setLoaded] = useState(false);
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
@@ -89,7 +98,7 @@ const Photo = ({ id, src, alt, title, description, tags = [] }: PhotoProps) => {
             ))}
           </div>
           <div className="actions">
-            {isAuthenticated ? (
+            {isAuthenticated && isGallery ? (
               <>
                 <button
                   className="edit-btn"

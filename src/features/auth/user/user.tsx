@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
+import { ENV } from "../../../environment/env.local";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;
@@ -12,7 +13,7 @@ type UserProps = {
 function User({ openModal }: UserProps) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-
+  const [preview, setPreview] = useState<string | null>(null);
   const { isAuthenticated, user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +30,13 @@ function User({ openModal }: UserProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Pre-fill image preview
+  useEffect(() => {
+    if (user?.avatar) {
+      setPreview(ENV.API_URL + "/" + user?.avatar);
+    }
+  }, [user?.avatar]);
+
   const navigateToGalery = () => {
     setIsOpen(false);
     navigate("/galleries");
@@ -37,6 +45,7 @@ function User({ openModal }: UserProps) {
   const signOut = () => {
     logout();
     navigate("/home");
+    setPreview(null);
   };
 
   return (
@@ -47,12 +56,8 @@ function User({ openModal }: UserProps) {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isAuthenticated ? (
-          user?.avatar ? (
-            <img
-              src={user.avatar}
-              alt="User"
-              className="h-8 w-8 rounded-full"
-            />
+          preview ? (
+            <img src={preview} alt="User" className="h-8 w-8 rounded-full" />
           ) : (
             <span className="text-sm font-semibold">
               {user?.userName?.charAt(0).toUpperCase()}

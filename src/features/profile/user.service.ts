@@ -8,9 +8,9 @@ export class UserService {
 
     constructor() { }
 
-    async update(id: string, data: UserDto) {
+    async update(data: UserDto) {
         const userUpdated = await safeApiCall<UsersType | null>(
-            API.put(`/users/${id}`, data, {
+            API.put(`/users/me`, data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -20,7 +20,7 @@ export class UserService {
         return { userUpdated };
     }
 
-    async deleteTag(id: string) {
+    async delete(id: string) {
         const userDeleted = await safeApiCall<UsersType | null>(
             API.delete(`/users/${id}`)
         );

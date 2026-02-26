@@ -85,6 +85,7 @@ const Gallery = () => {
               title={item.photo?.title ?? ""}
               description={item.photo?.description ?? ""}
               tags={item.tag ? item.tag : []}
+              isGallery={isMyGallery}
             />
           </div>
         ))}
