@@ -11,6 +11,7 @@ type AuthContextType = {
   signup: (data: SignupDto) => Promise<void>;
   sendingEmailVerification: (email: string) => Promise<void>;
   logout: () => void;
+  refreshingUserData: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -94,6 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signup,
         sendingEmailVerification,
         logout,
+        refreshingUserData,
       }}
     >
       {children}
