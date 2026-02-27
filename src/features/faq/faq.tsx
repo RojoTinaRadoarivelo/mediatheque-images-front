@@ -48,19 +48,20 @@ function Faq() {
 
   return (
     <div className="w-full h-full">
-      <h1 className="text-2xl text-center mb-4">
-        ❓ FAQ — Foire aux questions
-      </h1>
-
-      {/* 🔍 SEARCH */}
-      <div className="flex justify-center mb-4">
-        <input
-          type="text"
-          placeholder="Rechercher dans la FAQ..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-1/2 px-3 py-2 border rounded-md"
-        />
+      <div className="w-full flex space-x-2 items-center mb-4">
+        {/* 🔍 SEARCH */}
+        <div className="w-80">
+          <input
+            type="text"
+            placeholder="Rechercher dans la FAQ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-5/6 mx-2 px-3 py-2 border rounded-md"
+          />
+        </div>
+        <h1 className="text-2xl text-center mb-4">
+          ❓ FAQ — Foire aux questions
+        </h1>
       </div>
 
       <div className="faq-doc">
