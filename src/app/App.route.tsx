@@ -12,6 +12,7 @@ const Profile = lazy(() => import("../features/profile/profile"));
 const UserCollection = lazy(
   () => import("../features/gallery/collections/user-collection"),
 );
+const FaqPage = lazy(() => import("../features/faq/faq"));
 
 const AppRouter = () => {
   return (
@@ -31,7 +32,7 @@ const AppRouter = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="galleries" element={<HomePage />} />
             <Route path="settings" element={<div>Settings</div>} />
-            <Route path="faq" element={<div>FAQ</div>} />
+            <Route path="faq" element={<FaqPage />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
           </Route>
         </Route>
