@@ -76,7 +76,7 @@ function header() {
       <div className="w-2/4 flex items-center space-x-3">
         <input
           type="text"
-          placeholder="Rechercher"
+          placeholder="Search"
           className="w-3/4 border-2 border-gray-200 p-2 rounded-md"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

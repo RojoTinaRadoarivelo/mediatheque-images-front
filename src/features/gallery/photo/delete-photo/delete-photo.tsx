@@ -16,9 +16,9 @@ const ConfirmModal = ({
   onClose,
   onConfirm,
   title = "Confirmation",
-  message = "Êtes-vous sûr ?",
-  confirmText = "Oui",
-  cancelText = "Non",
+  message = "You are about to delete this image, are you sure ?",
+  confirmText = "Yes",
+  cancelText = "No",
 }: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

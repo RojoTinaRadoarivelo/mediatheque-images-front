@@ -15,7 +15,7 @@ const UserCollection = lazy(
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<div> Chargement...</div>}>
+    <Suspense fallback={<div> Loading...</div>}>
       <Routes>
         {/* redirect racine */}
         <Route path="/" element={<Navigate to="/home" replace />} />
