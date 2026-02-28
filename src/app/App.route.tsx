@@ -16,7 +16,7 @@ const FaqPage = lazy(() => import("../features/faq/faq"));
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<div> Chargement...</div>}>
+    <Suspense fallback={<div> Loading...</div>}>
       <Routes>
         {/* redirect racine */}
         <Route path="/" element={<Navigate to="/home" replace />} />

@@ -66,7 +66,7 @@ const Gallery = () => {
     }
   }, [listPhoto, user?.id, searchQuery, pathName]);
 
-  if (photoError) return <p>Erreur lors du chargement des photos</p>;
+  if (photoError) return <p>There was an error wile loading the images</p>;
 
   return (
     <>
@@ -93,7 +93,7 @@ const Gallery = () => {
       {images.length >= MAX_LIST_LIMIT && (
         <div style={{ textAlign: "center", margin: "1rem 0" }}>
           <button className="load-more-btn" onClick={handleLoadMore}>
-            Voir plus d'images
+            See more...
           </button>
         </div>
       )}

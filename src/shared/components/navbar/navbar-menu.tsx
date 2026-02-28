@@ -20,7 +20,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   };
 
   if (isLoading) return null;
-  if (error) return <span>Erreur</span>;
+  if (error) return <span>Error while loading tags</span>;
 
   return (
     <div

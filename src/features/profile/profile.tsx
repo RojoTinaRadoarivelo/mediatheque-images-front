@@ -133,7 +133,6 @@ function profile() {
             ) : (
               <>
                 <div className="text-6xl text-gray-400">+</div>
-                {/* <p className="text-sm text-gray-500 mt-2">Upload photo</p> */}
               </>
             )}
             <input
@@ -165,11 +164,11 @@ function profile() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Nom utilisateur
+              Username
             </label>
             <input
               type="text"
-              placeholder="Nom utilisateur"
+              placeholder="Username"
               {...register("userName")}
               className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -194,14 +193,22 @@ function profile() {
               Save
             </button>
           </div>
-          <div className="">
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={() => Delete(user?.id!)}
-            >
-              Supprimer
-            </button>
-          </div>
+        </div>
+        <div className="mt-10 border-t pt-6">
+          <h3 className="text-sm font-semibold text-red-600 mb-2">
+            Danger zone
+          </h3>
+          <p className="text-sm my-2">
+            All infos and photos will be removed permanently after the account
+            deletion.
+          </p>
+
+          <button
+            onClick={() => Delete(user?.id!)}
+            className="text-sm px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete my account
+          </button>
         </div>
       </form>
     </div>
