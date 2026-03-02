@@ -8,7 +8,7 @@ import ProtectedRoute from "../features/auth/guards/auth.guard";
 /* 🔥 Lazy loaded pages */
 const HomePage = lazy(() => import("../features/gallery/gallery"));
 const Profile = lazy(() => import("../features/profile/profile"));
-// const Settings = lazy(() => import("../pages/Settings"));
+const Settings = lazy(() => import("../features/settings/settings"));
 const UserCollection = lazy(
   () => import("../features/gallery/collections/user-collection"),
 );
@@ -31,9 +31,8 @@ const AppRouter = () => {
           <Route element={<UserCollection />}>
             <Route path="profile" element={<Profile />} />
             <Route path="galleries" element={<HomePage />} />
-            <Route path="settings" element={<div>Settings</div>} />
+            <Route path="settings" element={<Settings />} />
             <Route path="faq" element={<FaqPage />} />
-            {/* <Route path="/settings" element={<Settings />} /> */}
           </Route>
         </Route>
 
