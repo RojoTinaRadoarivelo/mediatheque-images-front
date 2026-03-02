@@ -53,7 +53,7 @@ function Faq() {
         <div className="w-80">
           <input
             type="text"
-            placeholder="Rechercher dans la FAQ..."
+            placeholder="Search into FAQ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-5/6 mx-2 px-3 py-2 border rounded-md"

@@ -103,7 +103,7 @@ function profile() {
       onSuccess: (res) => {
         reset();
         setPreview(null);
-        setFile(null);
+        // setFile(null);
         logout();
         navigate("/home");
       },
@@ -146,7 +146,7 @@ function profile() {
         </div>
 
         {/* user form */}
-        <div className="w-1/2 pr-4 space-y-4">
+        <div className="w-full pr-4 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
@@ -178,7 +178,7 @@ function profile() {
           </div>
         </div>
         {/* ACTIONS */}
-        <div className="mt-6 flex justify-between">
+        <div className="mt-6 flex justify-end">
           <div className="flex gap-3">
             <button
               onClick={() => Cancel()}
