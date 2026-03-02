@@ -52,7 +52,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Inscription
+      Signup
       <form className="space-y-4 mt-4" onSubmit={handleSubmit(handleSignUp)}>
         <div className="relative overflow-hidden w-full">
           <div
@@ -71,7 +71,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 </label>
                 <input
                   type="email"
-                  placeholder="email@exemple.com"
+                  placeholder="email@example.com"
                   {...register("email")}
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -82,7 +82,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Mot de passe
+                  Password
                 </label>
                 <input
                   type="password"
@@ -97,7 +97,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Confirmer mot de passe
+                  Confirm password
                 </label>
                 <input
                   type="password"
@@ -117,7 +117,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 onClick={handleSendCode}
                 className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Envoyer le code
+                Send code
               </button>
             </div>
 
@@ -125,7 +125,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             <div className="w-1/2 pl-4 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Code de vérification
+                  Validation code
                 </label>
                 <input
                   type="text"
@@ -142,7 +142,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Créer le compte
+                Save
               </button>
             </div>
           </div>

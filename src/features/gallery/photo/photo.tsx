@@ -104,22 +104,22 @@ const Photo = ({
                   className="edit-btn"
                   onClick={() => setUpdateModalOpen(true)}
                 >
-                  Modifier
+                  Update
                 </button>
 
                 <button
                   className="delete-btn"
                   onClick={() => setDeleteModalOpen(true)}
                 >
-                  Supprimer
+                  Delete
                 </button>
                 {/* delete photo move to gallery - update modal also*/}
                 <ConfirmModal
                   isOpen={isDeleteModalOpen}
                   onClose={() => setDeleteModalOpen(false)}
                   onConfirm={() => handleDelete(id)}
-                  title="Supprimer la photo"
-                  message="Êtes-vous sûr de vouloir supprimer cette photo ?"
+                  title="Delete the image"
+                  message="Are you sure, you want to delete this image ?"
                 />
                 <Modal
                   isOpen={isUpdateModalOpen}
@@ -141,9 +141,9 @@ const Photo = ({
               </>
             ) : (
               <>
-                {/* <button className="edit-btn">Like</button> */}
+                {/* <button className="like-btn">Like</button> */}
                 <button className="edit-btn" onClick={() => handleDownload(id)}>
-                  Telecharger
+                  Download
                 </button>
               </>
             )}

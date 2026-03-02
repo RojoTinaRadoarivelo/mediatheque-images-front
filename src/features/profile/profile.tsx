@@ -103,7 +103,7 @@ function profile() {
       onSuccess: (res) => {
         reset();
         setPreview(null);
-        setFile(null);
+        // setFile(null);
         logout();
         navigate("/home");
       },
@@ -111,37 +111,42 @@ function profile() {
   };
 
   return (
-    <div className="">
-      <div className="">profile</div>
-      <form className="w-full max-w-5xl p-6 " onSubmit={handleSubmit(onSubmit)}>
-        {/* avatar */}
-        <label
-          htmlFor="photo"
-          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center border border-dashed rounded-lg cursor-pointer hover:border-primary transition"
-        >
-          {preview ? (
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-full h-full object-cover rounded-lg"
+    <div className="flex space-x-1">
+      <form
+        className="w-1/2 max-w-2xl rounded-2xl shadow-sm p-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="flex flex-col items-center gap-4 mb-8">
+          <div className="uppercase">profile</div>
+          {/* avatar */}
+          <label
+            htmlFor="photo"
+            className="relative w-60 h-60 rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden hover:border-blue-500 transition"
+            title="Upload photo"
+          >
+            {preview ? (
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            ) : (
+              <>
+                <div className="text-6xl text-gray-400">+</div>
+              </>
+            )}
+            <input
+              id="photo"
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleImageChange}
             />
-          ) : (
-            <>
-              <div className="text-6xl text-gray-400">+</div>
-              <p className="text-sm text-gray-500 mt-2">Upload photo</p>
-            </>
-          )}
-          <input
-            id="photo"
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={handleImageChange}
-          />
-        </label>
+          </label>
+        </div>
 
         {/* user form */}
-        <div className="w-1/2 pr-4 space-y-4">
+        <div className="w-full pr-4 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
@@ -159,11 +164,11 @@ function profile() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Nom utilisateur
+              Username
             </label>
             <input
               type="text"
-              placeholder="Nom utilisateur"
+              placeholder="Username"
               {...register("userName")}
               className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -173,22 +178,48 @@ function profile() {
           </div>
         </div>
         {/* ACTIONS */}
-        <div className="flex justify-start gap-3 mt-6">
+        <div className="mt-6 flex justify-end">
+          <div className="flex gap-3">
+            <button
+              onClick={() => Cancel()}
+              className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+        <div className="mt-10 border-t pt-6">
+          <h3 className="text-sm font-semibold text-red-600 mb-2">
+            Danger zone
+          </h3>
+          <p className="text-sm my-2">
+            All infos and photos will be removed permanently after the account
+            deletion.
+          </p>
+
           <button
-            onClick={() => Cancel()}
-            className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
+            onClick={() => Delete(user?.id!)}
+            className="text-sm px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Save
+            Delete my account
           </button>
         </div>
       </form>
-      <button onClick={() => Delete(user?.id!)}>Supprimer</button>
+      {/* statistics */}
+      <div className="w-1/2">
+        <div className="w-full h-1/2 max-h-96">graph</div>
+        <div className="flex space-x-1">
+          <div className="">downloads</div>
+          <div className="">stars/likes</div>
+          <div className="">dons</div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,45 @@
+.faq-doc {
+    display: flex;
+    height: 100vh;
+    gap: 16px;
+}
+
+/* ⬅️ Sidebar */
+.faq-sidebar {
+    width: 320px;
+    border-right: 1px solid #e5e5e5;
+    overflow-y: auto;
+    padding-bottom: 16px;
+}
+
+.faq-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.faq-link:hover {
+    background: #f4f4f4;
+}
+
+.faq-link.active {
+    background: #eef2ff;
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+/* ➡️ Contenu */
+.faq-content {
+    flex: 1;
+    padding-right: 40px;
+}
+
+.faq-content h2 {
+    margin-bottom: 16px;
+}

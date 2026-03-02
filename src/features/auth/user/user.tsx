@@ -80,7 +80,7 @@ function User({ openModal }: UserProps) {
                   setIsOpen(false);
                 }}
               >
-                S’inscrire
+                Signup
               </button>
               <button
                 className="dropdown-item"
@@ -89,7 +89,7 @@ function User({ openModal }: UserProps) {
                   setIsOpen(false);
                 }}
               >
-                Se connecter
+                Signin
               </button>
             </>
           ) : (
@@ -110,13 +110,13 @@ function User({ openModal }: UserProps) {
                 className="dropdown-item"
                 onClick={() => navigateToGalery()}
               >
-                Galerie
+                Gallery
               </button>
               <button
                 className="dropdown-item text-red-500"
                 onClick={() => signOut()}
               >
-                Se déconnecter
+                Signout
               </button>
             </>
           )}

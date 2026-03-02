@@ -20,7 +20,7 @@ function UserCollection() {
         </Link>
         <Link to={"/galleries"}>
           <span className=" hover:underline text-gray-700 hover:text-blue-500 ">
-            Galerie
+            Gallery
           </span>
         </Link>
         <Link to={"/faq"}>
