@@ -7,6 +7,8 @@ import "./assets/styles/tailwind.css"; // Tailwind
 import "./index.scss";
 import App from "./app/App.tsx";
 import { queryClient } from "./shared/utils/queryClient.ts";
+// translation
+import "./assets/i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

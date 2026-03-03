@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./faq.scss";
 import { FAQ_DATA_FR, FAQ_DATA_EN, type FaqItem } from "./faq.types";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Faq() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ function Faq() {
   const FAQ_DATA = FAQ_DATA_EN;
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string>(FAQ_DATA[0].id);
+  const { t: tFaq } = useTranslation("faq");
 
   /* 🔗 Sync URL → état */
   useEffect(() => {
@@ -59,10 +61,7 @@ function Faq() {
             className="w-5/6 mx-2 px-3 py-2 border rounded-md"
           />
         </div>
-        {/* fr : FAQ — Foire aux questions */}
-        <h1 className="text-2xl text-center mb-4">
-          ❓ FAQ — Frequently ask questions
-        </h1>
+        <h1 className="text-2xl text-center mb-4">❓ {tFaq("title")}</h1>
       </div>
 
       <div className="faq-doc">

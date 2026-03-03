@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { ModalMapping, type ModalKey } from "../../utils/modals.type";
 import Modal from "../modals/modal";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import i18n from "../../../assets/i18n";
 
 function header() {
   const { layout, setLayout } = useLayout();
@@ -13,6 +15,7 @@ function header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const { t } = useTranslation();
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
 
@@ -58,6 +61,11 @@ function header() {
 
   const showLayoutSelect = location.pathname === "/home";
 
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("lng", lang);
+  };
+
   return (
     <div
       className={`
@@ -87,6 +95,16 @@ function header() {
         </button>
       </div>
       <div className="flex items-center space-x-2">
+        {/* 🌍 Language Select */}
+        <select
+          className="border-2 border-gray-200 p-2 rounded-md"
+          value={i18n.language}
+          onChange={(e) => changeLanguage(e.target.value)}
+        >
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+        </select>
+
         {showLayoutSelect && (
           <select
             name="layoutSelection"
