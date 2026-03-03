@@ -77,13 +77,13 @@ function header() {
         <input
           type="text"
           placeholder="Search"
-          className="w-3/4 border-2 border-gray-200 p-2 rounded-md"
+          className="w-3/4 border-2 border-gray-200 p-2 rounded-md text-base"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => onEnterPressed(e)}
         />
         <button className="bg-black" onClick={() => searchGallery()}>
-          S
+          <img src="/images/search.svg" alt="search" className="w-4 h-4" />
         </button>
       </div>
       <div className="flex items-center space-x-2">

@@ -5,7 +5,7 @@ export type FaqItem = {
     answer: string;
 };
 
-export const FAQ_DATA: FaqItem[] = [
+export const FAQ_DATA_FR: FaqItem[] = [
     /* =======================
        1. GÉNÉRAL
     ======================== */
@@ -271,5 +271,274 @@ Cela nous aide à corriger le problème plus rapidement.`,
 • Collaboration
 • Recherche avancée
 • Amélioration des performances`,
+    },
+];
+
+export const FAQ_DATA_EN: FaqItem[] = [
+    /* =======================
+       1. GENERAL
+    ======================== */
+    {
+        id: "general-what-is-platform",
+        category: "General",
+        question: "What is this platform?",
+        answer: `This platform is an image media library that allows you to centralize, organize, browse, and download your images easily.
+It is designed to simplify the management of large collections of personal or professional images.`,
+    },
+    {
+        id: "general-who-is-it-for",
+        category: "General",
+        question: "Who is this application for?",
+        answer: `It is intended for:
+• Photographers
+• Designers
+• Content creators
+• Companies
+• Anyone who wants to efficiently organize their images`,
+    },
+    {
+        id: "general-account-required",
+        category: "General",
+        question: "Do I need to create an account to use the platform?",
+        answer: `Yes.
+An account is required in order to:
+• Protect your images
+• Save your preferences
+• Access your personal collections`,
+    },
+
+    /* =======================
+       2. GALLERY & IMAGES
+    ======================== */
+    {
+        id: "gallery-import-image",
+        category: "Gallery & Images",
+        question: "How do I import an image?",
+        answer: `To import an image:
+1. Go to the Gallery page
+2. Click the Import button
+3. Select one or more images from your device
+4. Confirm the import
+
+The images will automatically appear in your gallery.`,
+    },
+    {
+        id: "gallery-supported-formats",
+        category: "Gallery & Images",
+        question: "Which image formats are supported?",
+        answer: `The currently supported formats are:
+• JPG / JPEG
+• PNG
+• WEBP
+
+Additional formats may be added in the future.`,
+    },
+    {
+        id: "gallery-image-size-limit",
+        category: "Gallery & Images",
+        question: "Is there a size limit for images?",
+        answer: `Yes, each image must not exceed the maximum size allowed by the platform (e.g., 10 MB).
+If an image exceeds this limit, it will be rejected during import.`,
+    },
+    {
+        id: "gallery-image-not-visible",
+        category: "Gallery & Images",
+        question: "Why doesn’t my image appear after importing?",
+        answer: `Several possible reasons:
+• The format is not supported
+• The image size is too large
+• A connection issue occurred
+• The import was not confirmed
+
+Try refreshing the page or importing the image again.`,
+    },
+    {
+        id: "gallery-edit-delete-image",
+        category: "Gallery & Images",
+        question: "Can I edit or delete an image?",
+        answer: `Yes.
+You can:
+• Edit the image information
+• Change its collection
+• Permanently delete the image
+
+⚠️ Deletion is irreversible.`,
+    },
+
+    /* =======================
+       3. COLLECTIONS
+    ======================== */
+    {
+        id: "collections-what-is-collection",
+        category: "Collections",
+        question: "What is a collection?",
+        answer:
+            "A collection is a custom folder that allows you to group your images by theme, project, or category.",
+    },
+    {
+        id: "collections-create",
+        category: "Collections",
+        question: "How do I create a collection?",
+        answer: `1. Go to the Collections section
+2. Click Create a collection
+3. Give the collection a name
+4. Add images if you wish`,
+    },
+    {
+        id: "collections-multiple",
+        category: "Collections",
+        question: "Can an image belong to multiple collections?",
+        answer:
+            "Yes. The same image can be added to multiple collections without duplicating the file.",
+    },
+
+    /* =======================
+       4. ACCOUNT & PROFILE
+    ======================== */
+    {
+        id: "profile-edit-info",
+        category: "Account & Profile",
+        question: "Where can I edit my personal information?",
+        answer: `Go to the Profile section to:
+• Edit your name
+• Update your information
+• Change your password`,
+    },
+    {
+        id: "profile-change-password",
+        category: "Account & Profile",
+        question: "How do I change my password?",
+        answer:
+            "On the Profile page, select the Change Password option and follow the instructions.",
+    },
+    {
+        id: "profile-forgot-password",
+        category: "Account & Profile",
+        question: "I forgot my password, what should I do?",
+        answer:
+            "Use the Forgot Password feature on the login page. A reset link will be sent to your email.",
+    },
+
+    /* =======================
+       5. SETTINGS
+    ======================== */
+    {
+        id: "settings-purpose",
+        category: "Settings",
+        question: "What are the settings used for?",
+        answer: `Settings allow you to personalize your user experience:
+• Appearance
+• Language
+• Gallery behavior
+• Download preferences`,
+    },
+    {
+        id: "settings-language",
+        category: "Settings",
+        question: "Can I change the interface language?",
+        answer:
+            "Yes. You can choose the application language from the Settings page.",
+    },
+    {
+        id: "settings-dark-mode",
+        category: "Settings",
+        question: "Can I enable dark mode?",
+        answer:
+            "Yes. Light, dark, or automatic mode (based on your system) is available in the appearance settings.",
+    },
+    {
+        id: "settings-save-preferences",
+        category: "Settings",
+        question: "Are my settings saved?",
+        answer:
+            "Yes. Your preferences are automatically saved and restored during your next login.",
+    },
+
+    /* =======================
+       6. SECURITY
+    ======================== */
+    {
+        id: "security-privacy-images",
+        category: "Security & Privacy",
+        question: "Are my images private?",
+        answer:
+            "Yes. Your images are strictly private and accessible only by you, unless you choose to share them.",
+    },
+    {
+        id: "security-delete-account",
+        category: "Security & Privacy",
+        question: "Can I delete my account?",
+        answer: `Yes.
+In the Settings > Security section, you can request the permanent deletion of your account.
+
+⚠️ This action will delete:
+• Your account
+• Your images
+• Your collections
+
+It is irreversible.`,
+    },
+    {
+        id: "security-logout-all-devices",
+        category: "Security & Privacy",
+        question: "Can I log out from all devices?",
+        answer: "Yes. An option is available in the security settings.",
+    },
+
+    /* =======================
+       7. ISSUES
+    ======================== */
+    {
+        id: "issues-slow-page",
+        category: "Common Issues",
+        question: "The page loads slowly, what should I do?",
+        answer: `• Check your internet connection
+• Refresh the page
+• Try using another browser`,
+    },
+    {
+        id: "issues-feature-not-working",
+        category: "Common Issues",
+        question: "A feature is not working properly",
+        answer: `If a problem persists:
+• Refresh the page
+• Log out and log back in
+• Contact support`,
+    },
+
+    /* =======================
+       8. SUPPORT
+    ======================== */
+    {
+        id: "support-contact",
+        category: "Support & Contact",
+        question: "How can I contact support?",
+        answer: `• Email: support@yoursite.com
+• Contact form (if available)`,
+    },
+    {
+        id: "support-report-bug",
+        category: "Support & Contact",
+        question: "How do I report a bug?",
+        answer: `Please describe:
+• The issue encountered
+• Steps to reproduce it
+• Your browser and device
+
+This helps us fix the problem more quickly.`,
+    },
+
+    /* =======================
+       9. FUTURE
+    ======================== */
+    {
+        id: "future-features",
+        category: "Future Improvements",
+        question: "Will the platform evolve?",
+        answer: `Yes. New features are planned:
+• Image sharing
+• Collaboration
+• Advanced search
+• Performance improvements`,
     },
 ];

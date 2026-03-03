@@ -4,7 +4,7 @@ import "./vertical.scss";
 
 const Vertical = () => {
   return (
-    <div className="w-full h-full flex gap-0.5 max-sm:flex-col">
+    <div className="w-full h-screen flex gap-0.5 max-sm:flex-col overflow-y-auto">
       <div className="px-1 w-1/12 max-sm:w-full min-w-[140px] bg-white  text-center">
         <NavbarMenu orientation="vertical"></NavbarMenu>
       </div>
