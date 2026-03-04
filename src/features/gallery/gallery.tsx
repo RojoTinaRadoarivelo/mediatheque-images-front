@@ -7,12 +7,14 @@ import { MAX_LIST_LIMIT } from "../../shared/utils/queryClient";
 import { useAuth } from "../auth/context/auth.context";
 import { useLocation } from "react-router-dom";
 import AddPhotoForm from "./photo/add-photo/add-photo";
+import { useTranslation } from "react-i18next";
 
 const Gallery = () => {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   const [images, setImages] = useState<GalleryType[]>([]);
   const [page, setPage] = useState(1);
+  const { t } = useTranslation("common");
 
   const params = new URLSearchParams(location.search);
 
@@ -66,7 +68,7 @@ const Gallery = () => {
     }
   }, [listPhoto, user?.id, searchQuery, pathName]);
 
-  if (photoError) return <p>There was an error wile loading the images</p>;
+  if (photoError) return <p>{t("loadingImagesError")}</p>;
 
   return (
     <>
@@ -93,7 +95,7 @@ const Gallery = () => {
       {images.length >= MAX_LIST_LIMIT && (
         <div style={{ textAlign: "center", margin: "1rem 0" }}>
           <button className="load-more-btn" onClick={handleLoadMore}>
-            See more...
+            {t("seemore")}...
           </button>
         </div>
       )}

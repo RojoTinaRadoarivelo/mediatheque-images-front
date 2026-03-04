@@ -15,7 +15,7 @@ function header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
 
@@ -84,7 +84,7 @@ function header() {
       <div className="w-2/4 flex items-center space-x-3">
         <input
           type="text"
-          placeholder="Search"
+          placeholder={t("general.search")}
           className="w-3/4 border-2 border-gray-200 p-2 rounded-md text-base"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -97,7 +97,7 @@ function header() {
       <div className="flex items-center space-x-2">
         {/* 🌍 Language Select */}
         <select
-          className="border-2 border-gray-200 p-2 rounded-md"
+          className="border-2 border-gray-200 p-2 rounded-md selection"
           value={i18n.language}
           onChange={(e) => changeLanguage(e.target.value)}
         >
@@ -109,7 +109,7 @@ function header() {
           <select
             name="layoutSelection"
             id="layoutSelection"
-            className="border-2 border-gray-200 p-2 rounded-md"
+            className="border-2 border-gray-200 p-2 rounded-md selection"
             value={layout}
             onChange={(e) =>
               setLayout(e.target.value as "Vertical" | "Horizontal")

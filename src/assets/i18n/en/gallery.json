@@ -1,1 +1,7 @@
-{}
+{
+  "download": "download",
+  "deletion": {
+    "title": "Delete the image",
+    "message": "Are you sure, you want to delete this image ?"
+  }
+}

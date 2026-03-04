@@ -1,26 +1,28 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import "./user-collection.scss";
+import { useTranslation } from "react-i18next";
 
 function UserCollection() {
   const location = useLocation();
+  const { t } = useTranslation("common");
   return (
     <div className="w-full h-full flex gap-0.5 max-sm:flex-col">
       {/* left menu */}
       <div className="px-1 w-1/12 max-sm:w-full min-w-[140px] bg-white  flex flex-col items-center space-y-4 pt-4">
         <Link to={"/settings"}>
           <span className=" hover:underline text-gray-700 hover:text-blue-500 ">
-            Settings
+            {t("settings")}
           </span>
         </Link>
         <Link to={"/profile"}>
           <span className=" hover:underline text-gray-700 hover:text-blue-500 ">
-            Profile
+            {t("profile")}
           </span>
         </Link>
         <Link to={"/galleries"}>
           <span className=" hover:underline text-gray-700 hover:text-blue-500 ">
-            Gallery
+            {t("gallery")}
           </span>
         </Link>
         <Link to={"/faq"}>

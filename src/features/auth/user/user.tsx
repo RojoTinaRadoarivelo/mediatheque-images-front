@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
 import { ENV } from "../../../environment/env.local";
+import { useTranslation } from "react-i18next";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;
@@ -16,6 +17,7 @@ function User({ openModal }: UserProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const { isAuthenticated, user, logout } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation("common");
 
   // Fermer le menu quand on clique dehors
   useEffect(() => {
@@ -80,7 +82,7 @@ function User({ openModal }: UserProps) {
                   setIsOpen(false);
                 }}
               >
-                Signup
+                {t("auth.signup")}
               </button>
               <button
                 className="dropdown-item"
@@ -89,7 +91,7 @@ function User({ openModal }: UserProps) {
                   setIsOpen(false);
                 }}
               >
-                Signin
+                {t("auth.signin")}
               </button>
             </>
           ) : (
@@ -98,25 +100,25 @@ function User({ openModal }: UserProps) {
                 className="dropdown-item"
                 onClick={() => navigate("/settings")}
               >
-                Settings
+                {t("settings")}
               </button>
               <button
                 className="dropdown-item"
                 onClick={() => navigate("/profile")}
               >
-                Profile
+                {t("profile")}
               </button>
               <button
                 className="dropdown-item"
                 onClick={() => navigateToGalery()}
               >
-                Gallery
+                {t("gallery")}
               </button>
               <button
                 className="dropdown-item text-red-500"
                 onClick={() => signOut()}
               >
-                Signout
+                {t("auth.signout")}
               </button>
             </>
           )}

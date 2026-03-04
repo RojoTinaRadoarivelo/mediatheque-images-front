@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import "./photo.scss";
 import { ENV } from "../../../environment/env.local";
 import { useAuth } from "../../auth/context/auth.context";
-import ConfirmModal from "./delete-photo/delete-photo";
+import ConfirmModal from "../../../shared/components/modals/confirmation-modal/confirmation-modal";
 import {
   useDeletePhoto,
   useDownloadPhoto,
 } from "../../../shared/services/gallery.queries";
 import Modal from "../../../shared/components/modals/modal";
 import UpdatePhotoForm from "./edit-photo/edit-photo";
+import { useTranslation } from "react-i18next";
 
 type PhotoProps = {
   id: string;
@@ -44,6 +45,7 @@ const Photo = ({
     isError: isdeletePhotoError,
     error: deletePhotoError,
   } = useDeletePhoto();
+  const { t } = useTranslation(["common", "gallery"]);
 
   const downloadMutation = useDownloadPhoto();
 
@@ -104,22 +106,25 @@ const Photo = ({
                   className="edit-btn"
                   onClick={() => setUpdateModalOpen(true)}
                 >
-                  Update
+                  {t("common:general.update")}
                 </button>
 
                 <button
                   className="delete-btn"
                   onClick={() => setDeleteModalOpen(true)}
                 >
-                  Delete
+                  {t("common:general.delete")}
                 </button>
                 {/* delete photo move to gallery - update modal also*/}
                 <ConfirmModal
                   isOpen={isDeleteModalOpen}
                   onClose={() => setDeleteModalOpen(false)}
                   onConfirm={() => handleDelete(id)}
-                  title="Delete the image"
-                  message="Are you sure, you want to delete this image ?"
+                  title={t("gallery:deletion.title")}
+                  message={t("gallery:deletion.message")}
+                  warningText={t("common:general.deletionWarning")}
+                  confirmText={t("common:general.confirm")}
+                  cancelText={t("common:general.cancel")}
                 />
                 <Modal
                   isOpen={isUpdateModalOpen}
@@ -143,7 +148,7 @@ const Photo = ({
               <>
                 {/* <button className="like-btn">Like</button> */}
                 <button className="edit-btn" onClick={() => handleDownload(id)}>
-                  Download
+                  {t("gallery:download")}
                 </button>
               </>
             )}

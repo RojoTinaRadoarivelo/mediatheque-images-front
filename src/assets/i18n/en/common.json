@@ -1,1 +1,22 @@
-{}
+{
+  "general": {
+    "search": "search",
+    "save": "save",
+    "cancel": "cancel",
+    "update": "update",
+    "delete": "delete",
+    "confirm": "confirm",
+    "deletionWarning": "this action is irreversible"
+  },
+  "auth": {
+    "signin": "sign in",
+    "signup": "sign up",
+    "signout": "log out",
+    "password": "password"
+  },
+  "gallery": "gallery",
+  "profile": "profile",
+  "settings": "settings",
+  "loadingImagesError": "There was an error wile loading the images",
+  "seemore": "see more"
+}

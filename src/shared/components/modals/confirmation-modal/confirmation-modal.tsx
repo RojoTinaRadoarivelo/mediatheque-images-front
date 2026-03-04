@@ -1,5 +1,5 @@
-import Modal from "../../../../shared/components/modals/modal";
-import "./delete-photo.scss";
+import Modal from "../modal";
+import "./confirmation-modal.scss";
 
 type ConfirmModalProps = {
   isOpen: boolean;
@@ -7,6 +7,7 @@ type ConfirmModalProps = {
   onConfirm: () => void;
   title?: string;
   message?: string;
+  warningText?: string;
   confirmText?: string;
   cancelText?: string;
 };
@@ -19,14 +20,16 @@ const ConfirmModal = ({
   message = "You are about to delete this image, are you sure ?",
   confirmText = "Yes",
   cancelText = "No",
+  warningText,
 }: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-4 p-2">
-        <h2 className="text-lg font-semibold">{title}</h2>
+      <div className=" py-2 px-4">
+        <h2 className="text-lg font-semibold mb-2">{title}</h2>
         <p>{message}</p>
+        <p className="">{warningText ?? ""}</p>
 
-        <div className="flex justify-end gap-3 mt-4">
+        <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
