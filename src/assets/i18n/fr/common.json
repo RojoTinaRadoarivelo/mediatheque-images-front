@@ -18,7 +18,11 @@
     "signin": "se connecter",
     "signup": "s'inscrire",
     "signout": "se déconnecter",
-    "password": "mot de passe"
+    "password": "mot de passe",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "sendCode": "envoyer le code",
+    "validationCode": "code de validation",
+    "confirmPassword": "confirmer le mot de passe"
   },
   "gallery": "gallerie",
   "profile": "profile",

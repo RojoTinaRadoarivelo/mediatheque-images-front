@@ -12,13 +12,18 @@
     "new_f": "new",
     "create": "create",
     "updating": "updating",
-    "creation": "creation"
+    "creation": "creation",
+    "email": "email"
   },
   "auth": {
     "signin": "sign in",
     "signup": "sign up",
     "signout": "log out",
-    "password": "password"
+    "password": "password",
+    "dontHaveAccount": "Don't have an account ?",
+    "sendCode": "send code",
+    "validationCode": "validation code",
+    "confirmPassword": "confirm password"
   },
   "gallery": "gallery",
   "profile": "profile",

@@ -7,9 +7,11 @@ import "./sign-up.scss";
 import { useAuth } from "../context/auth.context";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function SignUp({ closeModal }: { closeModal: () => void }) {
   const [step, setStep] = useState<"form" | "code">("form");
+  const { t } = useTranslation();
 
   const {
     register,
@@ -52,7 +54,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Signup
+      {t("common:auth.signup")}
       <form className="space-y-4 mt-4" onSubmit={handleSubmit(handleSignUp)}>
         <div className="relative overflow-hidden w-full">
           <div
@@ -67,7 +69,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             <div className="w-1/2 pr-4 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Email
+                  {t("common:general.email")}
                 </label>
                 <input
                   type="email"
@@ -82,7 +84,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Password
+                  {t("common:auth.password")}
                 </label>
                 <input
                   type="password"
@@ -97,7 +99,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Confirm password
+                  {t("common:auth.confirmPassword")}
                 </label>
                 <input
                   type="password"
@@ -117,7 +119,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 onClick={handleSendCode}
                 className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Send code
+                {t("common:auth.sendCode")}
               </button>
             </div>
 
@@ -125,7 +127,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             <div className="w-1/2 pl-4 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Validation code
+                  {t("common:auth.validationCode")}
                 </label>
                 <input
                   type="text"
@@ -142,7 +144,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Save
+                {t("common:general.save")}
               </button>
             </div>
           </div>

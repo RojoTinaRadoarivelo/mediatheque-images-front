@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/auth.context";
 import { useEffect } from "react";
 import type { ModalKey } from "../../../shared/utils/modals.type";
+import { useTranslation } from "react-i18next";
 
 function SignIn({
   closeModal,
@@ -25,6 +26,7 @@ function SignIn({
   });
 
   const { login, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   const handleSignin = (data: SigninFormData): void => {
     login(data);
@@ -38,7 +40,7 @@ function SignIn({
 
   return (
     <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Signin
+      {t("common:auth.signin")}
       <form
         className="w-5/6 space-y-4 mt-4"
         onSubmit={handleSubmit(handleSignin)}
@@ -46,7 +48,7 @@ function SignIn({
         {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Email
+            {t("common:general.email")}
           </label>
           <input
             type="email"
@@ -62,7 +64,7 @@ function SignIn({
         {/* Password */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Password
+            {t("common:auth.password")}
           </label>
           <input
             type="password"
@@ -80,17 +82,17 @@ function SignIn({
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
         >
-          Connexion
+          {t("common:auth.signin")}
         </button>
       </form>
       {/* Signup link */}
       <p className="text-sm text-center text-gray-600 mt-6">
-        Don't have an account ?{" "}
+        {t("common:auth.dontHaveAccount")}{" "}
         <a
           onClick={() => switchModal("sign-up")}
           className="text-blue-600 font-medium hover:cursor-pointer"
         >
-          Signup
+          {t("common:auth.signup")}
         </a>
       </p>
     </div>
