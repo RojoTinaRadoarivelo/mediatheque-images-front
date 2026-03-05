@@ -8,6 +8,7 @@ import type { TagsType } from "../../../tags/tags.type";
 import { useCreatePhoto } from "../../../../shared/services/gallery.queries";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../auth/context/auth.context";
+import { useTranslation } from "react-i18next";
 
 const AddPhotoForm = () => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -16,6 +17,7 @@ const AddPhotoForm = () => {
   const { data, isLoading, error: tagsError } = useTags(0);
   const [file, setFile] = useState<File | null>(null);
   const { isAuthenticated, user } = useAuth();
+  const { t } = useTranslation();
 
   const {
     mutate: createTag,
@@ -146,7 +148,9 @@ const AddPhotoForm = () => {
           ) : (
             <>
               <div className="text-6xl text-gray-400">+</div>
-              <p className="text-sm text-gray-500 mt-2">Upload photo</p>
+              <p className="text-sm text-gray-500 mt-2">
+                {t("common:upload") + " " + t("common:photo")}
+              </p>
             </>
           )}
           <input
@@ -160,17 +164,19 @@ const AddPhotoForm = () => {
 
         {/* FORM */}
         <div className="w-7/12 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold">Add photo</h3>
+          <h3 className="text-xl font-semibold">
+            {t("common:general.new_f") + " " + t("common:photo")}
+          </h3>
 
           <input
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Name"
+            placeholder={t("common:name")}
             {...register("name", { required: true })}
           />
 
           <input
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Title ( alt )"
+            placeholder={t("common:alt")}
             {...register("title")}
           />
 
@@ -192,7 +198,14 @@ const AddPhotoForm = () => {
 
             <input
               className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search or add tag..."
+              placeholder={
+                t("common:general.search") +
+                " " +
+                t("common:or") +
+                " " +
+                t("common:general.add") +
+                " tag..."
+              }
               value={tagSearch}
               onChange={(e) => setTagSearch(e.target.value)}
             />
@@ -218,7 +231,7 @@ const AddPhotoForm = () => {
                     className="px-4 py-2 text-primary cursor-pointer"
                     onClick={() => addTag(tagSearch)}
                   >
-                    + Create "{tagSearch}"
+                    + {t("common:general.create")} "{tagSearch}"
                   </div>
                 )}
                 {isCreateTagError && (
@@ -234,7 +247,7 @@ const AddPhotoForm = () => {
           <textarea
             className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             rows={3}
-            placeholder="Short description"
+            placeholder={t("common:description")}
             {...register("description")}
           />
         </div>
@@ -246,13 +259,13 @@ const AddPhotoForm = () => {
           onClick={() => Cancel()}
           className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
         >
-          Cancel
+          {t("common:general.cancel")}
         </button>
         <button
           type="submit"
           className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
         >
-          Save
+          {t("common:general.save")}
         </button>
       </div>
     </form>

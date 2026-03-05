@@ -6,7 +6,13 @@
     "update": "modifier",
     "delete": "supprimer",
     "confirm": "confirmer",
-    "deletionWarning": "cette action est irreversible"
+    "deletionWarning": "cette action est irreversible",
+    "add": "ajouter",
+    "new": "nouveau",
+    "new_f": "nouvelle",
+    "create": "créer",
+    "updating": "modification",
+    "creation": "creation"
   },
   "auth": {
     "signin": "se connecter",
@@ -20,5 +26,13 @@
   "loadingImagesError": "Il y a eu une erreur lors du chargement des images",
   "seemore": "voir plus",
   "into": "dans",
-  "noresult": "Aucun resultat trouvé"
+  "noresult": "Aucun resultat trouvé",
+  "image": "image",
+  "avatar": "avatar",
+  "photo": "photo",
+  "upload": "téléverser",
+  "name": "nom",
+  "description": "description",
+  "or": "ou",
+  "alt": "alt"
 }

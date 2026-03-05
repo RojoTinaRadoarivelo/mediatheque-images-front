@@ -6,7 +6,13 @@
     "update": "update",
     "delete": "delete",
     "confirm": "confirm",
-    "deletionWarning": "this action is irreversible"
+    "deletionWarning": "this action is irreversible",
+    "add": "add",
+    "new": "new",
+    "new_f": "new",
+    "create": "create",
+    "updating": "updating",
+    "creation": "creation"
   },
   "auth": {
     "signin": "sign in",
@@ -20,5 +26,13 @@
   "loadingImagesError": "There was an error wile loading the images",
   "seemore": "see more",
   "into": "into",
-  "noresult": "No result found"
+  "noresult": "No result found",
+  "image": "image",
+  "avatar": "avatar",
+  "photo": "photo",
+  "upload": "upload",
+  "name": "name",
+  "description": "description",
+  "or": "or",
+  "alt": "alt"
 }
