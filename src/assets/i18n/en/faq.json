@@ -1,3 +1,146 @@
 {
-  "title": "FAQ — Frequently ask questions"
+  "title": "FAQ — Frequently ask questions",
+  "categories": {
+    "general": "General",
+    "gallery": "Gallery & Images",
+    "collections": "Collections",
+    "profile": "Account & Profile",
+    "settings": "Settings",
+    "security": "Security & Privacy",
+    "issues": "Common Issues",
+    "support": "Support & Contact",
+    "future": "Future Improvements"
+  },
+
+  "items": {
+    "general-what-is-platform": {
+      "question": "What is this platform?",
+      "answer": "This platform is an image media library that allows you to centralize, organize, browse, and download your images easily."
+    },
+
+    "general-who-is-it-for": {
+      "question": "Who is this application for?",
+      "answer": "It is intended for photographers, designers, content creators, companies and anyone who wants to organize their images."
+    },
+
+    "general-account-required": {
+      "question": "Do I need to create an account?",
+      "answer": "Yes. An account protects your images and saves your preferences."
+    },
+
+    "gallery-import-image": {
+      "question": "How do I import an image?",
+      "answer": "Go to the gallery and click Import."
+    },
+
+    "gallery-supported-formats": {
+      "question": "Which image formats are supported?",
+      "answer": "JPG, PNG and WEBP."
+    },
+
+    "gallery-image-size-limit": {
+      "question": "Is there a size limit for images?",
+      "answer": "Yes, images must not exceed the maximum allowed size."
+    },
+
+    "gallery-image-not-visible": {
+      "question": "Why doesn't my image appear?",
+      "answer": "It may be due to format, size, or connection issues."
+    },
+
+    "gallery-edit-delete-image": {
+      "question": "Can I edit or delete an image?",
+      "answer": "Yes, but deletion is irreversible."
+    },
+
+    "collections-what-is-collection": {
+      "question": "What is a collection?",
+      "answer": "A collection is a folder grouping images."
+    },
+
+    "collections-create": {
+      "question": "How do I create a collection?",
+      "answer": "Go to collections and click Create."
+    },
+
+    "collections-multiple": {
+      "question": "Can an image belong to multiple collections?",
+      "answer": "Yes."
+    },
+
+    "profile-edit-info": {
+      "question": "Where can I edit my information?",
+      "answer": "In the profile section."
+    },
+
+    "profile-change-password": {
+      "question": "How do I change my password?",
+      "answer": "Use the change password option in profile."
+    },
+
+    "profile-forgot-password": {
+      "question": "I forgot my password.",
+      "answer": "Use the reset password feature."
+    },
+
+    "settings-purpose": {
+      "question": "What are settings used for?",
+      "answer": "They personalize your experience."
+    },
+
+    "settings-language": {
+      "question": "Can I change the language?",
+      "answer": "Yes, from the settings page."
+    },
+
+    "settings-dark-mode": {
+      "question": "Is dark mode available?",
+      "answer": "Yes."
+    },
+
+    "settings-save-preferences": {
+      "question": "Are my settings saved?",
+      "answer": "Yes."
+    },
+
+    "security-privacy-images": {
+      "question": "Are my images private?",
+      "answer": "Yes."
+    },
+
+    "security-delete-account": {
+      "question": "Can I delete my account?",
+      "answer": "Yes from the security settings."
+    },
+
+    "security-logout-all-devices": {
+      "question": "Can I logout all devices?",
+      "answer": "Yes."
+    },
+
+    "issues-slow-page": {
+      "question": "Page loads slowly.",
+      "answer": "Check internet connection."
+    },
+
+    "issues-feature-not-working": {
+      "question": "A feature is not working.",
+      "answer": "Try refreshing the page."
+    },
+
+    "support-contact": {
+      "question": "How to contact support?",
+      "answer": "Send an email to support."
+    },
+
+    "support-report-bug": {
+      "question": "How to report a bug?",
+      "answer": "Describe the issue and steps."
+    },
+
+    "future-features": {
+      "question": "Will the platform evolve?",
+      "answer": "Yes. New features are planned."
+    }
+  }
 }

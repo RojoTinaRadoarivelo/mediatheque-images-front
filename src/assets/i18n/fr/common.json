@@ -18,5 +18,7 @@
   "profile": "profile",
   "settings": "paramètres",
   "loadingImagesError": "Il y a eu une erreur lors du chargement des images",
-  "seemore": "voir plus"
+  "seemore": "voir plus",
+  "into": "dans",
+  "noresult": "Aucun resultat trouvé"
 }
