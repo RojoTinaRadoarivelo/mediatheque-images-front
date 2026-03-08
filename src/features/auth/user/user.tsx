@@ -37,7 +37,7 @@ function User({ openModal }: UserProps) {
     if (user?.avatar) {
       setPreview(ENV.API_URL + "/" + user?.avatar);
     }
-  }, [preview ?? user?.avatar]);
+  }, [user?.avatar]);
 
   const navigateToGalery = () => {
     setIsOpen(false);
@@ -45,9 +45,9 @@ function User({ openModal }: UserProps) {
   };
 
   const signOut = () => {
+    setPreview(null);
     logout();
     navigate("/home");
-    setPreview(null);
   };
 
   return (

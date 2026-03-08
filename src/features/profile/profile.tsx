@@ -45,7 +45,7 @@ function profile() {
     if (user?.avatar) {
       setPreview(ENV.API_URL + "/" + user?.avatar);
     }
-  }, [preview ?? user?.avatar]);
+  }, [user?.avatar]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -69,6 +69,15 @@ function profile() {
     updateUser(formData, {
       onSuccess: (res) => {
         Cancel();
+        const result = res.userUpdated;
+        if (result.statusCode == 200) {
+          if (result?.data.avatar) {
+            setPreview(ENV.API_URL + "/" + result?.data.avatar);
+          } else {
+            setPreview(null);
+            setFile(null);
+          }
+        }
       },
     });
   };
@@ -80,8 +89,6 @@ function profile() {
         userName: user.userName ?? "",
       });
     }
-    setPreview(null);
-    setFile(null);
   };
 
   return (

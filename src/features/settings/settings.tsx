@@ -4,10 +4,12 @@ import { useState } from "react";
 import Appearance from "./appearance/appearance";
 import Preference from "./preferences/preferences";
 import Security from "./security/security";
+// import { useAuth } from "../auth/context/auth.context";
 
 function settings() {
   const [activeTab, setActiveTab] = useState("appearance");
   const { t } = useTranslation();
+  // const { user } = useAuth();
 
   return (
     <div className="w-full h-screen flex gap-4">
