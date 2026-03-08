@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import {
+  Layouts,
   useLayout,
   type LayoutType,
 } from "../../../layouts/context/layout.context";
-import { useTheme, type ThemeType } from "../../../shared/context/themes";
+import {
+  themes,
+  useTheme,
+  type ThemeType,
+} from "../../../shared/context/themes";
 import { useTranslation } from "react-i18next";
 
 function Appearance() {
@@ -39,8 +44,11 @@ function Appearance() {
             value={layout}
             onChange={(e) => setLayout(e.target.value as LayoutType)}
           >
-            <option value="Vertical">Vertical</option>
-            <option value="Horizontal">Horizontal</option>
+            {Layouts.map((el) => (
+              <option key={el} value={el}>
+                {el}
+              </option>
+            ))}
           </select>
         </div>
         <div className="">
@@ -56,8 +64,11 @@ function Appearance() {
             onChange={(e) => changeTheme(e.target.value as ThemeType)}
             id="Theme"
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
+            {themes.map((el) => (
+              <option key={el} value={el}>
+                {el}
+              </option>
+            ))}
           </select>
         </div>
       </div>

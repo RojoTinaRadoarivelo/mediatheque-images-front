@@ -1,14 +1,15 @@
 import { useTranslation } from "react-i18next";
-import i18n from "../../../assets/i18n";
+import i18n, { LanguageList } from "../../../assets/i18n";
 import { useState } from "react";
-
-type DefaultSortType = "Recent" | "Popular";
+import { sortings, type sortingType } from "../DTOs/preference.dto";
 
 function Preference() {
   const { t } = useTranslation();
-  const [defaultSort, setDefaultSorting] = useState<DefaultSortType>(
-    (localStorage.getItem("sort") ?? "Recent") as DefaultSortType,
+  const [defaultSort, setDefaultSorting] = useState<sortingType>(
+    (localStorage.getItem("sort") ?? "Default") as sortingType,
   );
+  const languages: string[] = LanguageList;
+  const sortingList: string[] = sortings;
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -16,7 +17,7 @@ function Preference() {
   };
 
   const changeDefaultSorting = (sort: string) => {
-    setDefaultSorting(sort as DefaultSortType);
+    setDefaultSorting(sort as sortingType);
     localStorage.setItem("sort", sort);
   };
 
@@ -29,12 +30,15 @@ function Preference() {
             {t("common:general.language")}
           </label>
           <select
-            className="border-2 border-gray-200 p-2 rounded-md selection w-1/2"
+            className="border-2 border-gray-200 p-2 rounded-md selection w-1/2 uppercase"
             value={i18n.language}
             onChange={(e) => changeLanguage(e.target.value)}
           >
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
+            {languages.map((el) => (
+              <option key={el} value={el} className="uppercase">
+                {el}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -49,8 +53,11 @@ function Preference() {
             value={defaultSort}
             onChange={(e) => changeDefaultSorting(e.target.value)}
           >
-            <option value="Recent">Recent</option>
-            <option value="Popular">Popular</option>
+            {sortingList.map((el) => (
+              <option key={el} value={el}>
+                {el}
+              </option>
+            ))}
           </select>
         </div>
       </div>

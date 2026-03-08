@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 export type ThemeType = "Light" | "Dark";
+export const themes: string[] = ["Light", "Dark"];
 interface ThemeContextProps {
   Theme: ThemeType;
   setTheme: (Theme: ThemeType) => void;

@@ -14,6 +14,10 @@ import frGallery from "./fr/gallery.json";
 import frProfile from "./fr/profile.json";
 import frFaq from "./fr/faq.json";
 
+// languages list
+export type LanguageListType = "en" | "fr";
+export const LanguageList = ["en", "fr"];
+
 i18n
     .use(initReactI18next)
     .init({

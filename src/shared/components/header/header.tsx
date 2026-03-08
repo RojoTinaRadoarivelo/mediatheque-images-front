@@ -1,5 +1,6 @@
 import "./Header.scss";
 import {
+  Layouts,
   useLayout,
   type LayoutType,
 } from "../../../layouts/context/layout.context";
@@ -9,8 +10,8 @@ import { ModalMapping, type ModalKey } from "../../utils/modals.type";
 import Modal from "../modals/modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import i18n from "../../../assets/i18n";
-import { useTheme, type ThemeType } from "../../context/themes";
+import i18n, { LanguageList } from "../../../assets/i18n";
+import { themes, useTheme, type ThemeType } from "../../context/themes";
 
 function header() {
   const { layout, setLayout } = useLayout();
@@ -21,6 +22,7 @@ function header() {
   const [search, setSearch] = useState("");
   const { t } = useTranslation("common");
   const { Theme, setTheme } = useTheme();
+  const languages: string[] = LanguageList;
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
 
@@ -117,17 +119,23 @@ function header() {
           value={Theme}
           onChange={(e) => changeTheme(e.target.value as ThemeType)}
         >
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
+          {themes.map((el) => (
+            <option key={el} value={el}>
+              {el}
+            </option>
+          ))}
         </select>
         {/* 🌍 Language Select */}
         <select
-          className="border-2 border-gray-200 p-2 rounded-md selection"
+          className="border-2 border-gray-200 p-2 rounded-md selection uppercase"
           value={i18n.language}
           onChange={(e) => changeLanguage(e.target.value)}
         >
-          <option value="en">EN</option>
-          <option value="fr">FR</option>
+          {languages.map((el) => (
+            <option key={el} value={el} className="uppercase">
+              {el}
+            </option>
+          ))}
         </select>
 
         {showLayoutSelect && (
@@ -138,8 +146,11 @@ function header() {
             value={layout}
             onChange={(e) => setLayout(e.target.value as LayoutType)}
           >
-            <option value="Vertical">Vertical</option>
-            <option value="Horizontal">Horizontal</option>
+            {Layouts.map((el) => (
+              <option key={el} value={el}>
+                {el}
+              </option>
+            ))}
           </select>
         )}
         <div
