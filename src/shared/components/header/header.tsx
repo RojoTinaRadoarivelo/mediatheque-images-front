@@ -1,5 +1,8 @@
 import "./Header.scss";
-import { useLayout } from "../../../layouts/context/layout.context";
+import {
+  useLayout,
+  type LayoutType,
+} from "../../../layouts/context/layout.context";
 import User from "../../../features/auth/user/user";
 import { useEffect, useState } from "react";
 import { ModalMapping, type ModalKey } from "../../utils/modals.type";
@@ -7,6 +10,7 @@ import Modal from "../modals/modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18n from "../../../assets/i18n";
+import { useTheme, type ThemeType } from "../../context/themes";
 
 function header() {
   const { layout, setLayout } = useLayout();
@@ -16,6 +20,7 @@ function header() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const { t } = useTranslation("common");
+  const { Theme, setTheme } = useTheme();
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
 
@@ -66,6 +71,18 @@ function header() {
     localStorage.setItem("lng", lang);
   };
 
+  const changeTheme = (newTheme: ThemeType) => {
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      const currentTheme = (localStorage.getItem("Theme") ??
+        "Light") as ThemeType;
+      changeTheme(currentTheme);
+    }, 200);
+  }, [Theme]);
+
   return (
     <div
       className={`
@@ -95,6 +112,14 @@ function header() {
         </button>
       </div>
       <div className="flex items-center space-x-2">
+        <select
+          className="border-2 border-gray-200 p-2 rounded-md selection"
+          value={Theme}
+          onChange={(e) => changeTheme(e.target.value as ThemeType)}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
         {/* 🌍 Language Select */}
         <select
           className="border-2 border-gray-200 p-2 rounded-md selection"
@@ -111,9 +136,7 @@ function header() {
             id="layoutSelection"
             className="border-2 border-gray-200 p-2 rounded-md selection"
             value={layout}
-            onChange={(e) =>
-              setLayout(e.target.value as "Vertical" | "Horizontal")
-            }
+            onChange={(e) => setLayout(e.target.value as LayoutType)}
           >
             <option value="Vertical">Vertical</option>
             <option value="Horizontal">Horizontal</option>
