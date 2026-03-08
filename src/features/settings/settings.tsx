@@ -1,34 +1,13 @@
 import { useTranslation } from "react-i18next";
 import "./settings.scss";
-import i18n from "../../assets/i18n";
-import { useEffect, useState } from "react";
-import {
-  useLayout,
-  type LayoutType,
-} from "../../layouts/context/layout.context";
-import { useTheme, type ThemeType } from "../../shared/context/themes";
+import { useState } from "react";
+import Appearance from "./appearance/appearance";
+import Preference from "./preferences/preferences";
+import Security from "./security/security";
 
 function settings() {
   const [activeTab, setActiveTab] = useState("appearance");
-  const { layout, setLayout } = useLayout();
-  const { Theme, setTheme } = useTheme();
   const { t } = useTranslation();
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("lng", lang);
-  };
-
-  const changeTheme = (newTheme: ThemeType) => {
-    setTheme(newTheme);
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      const currentTheme = (localStorage.getItem("Theme") ??
-        "Light") as ThemeType;
-      changeTheme(currentTheme);
-    }, 200);
-  }, [Theme]);
 
   return (
     <div className="w-full h-screen flex gap-4">
@@ -68,76 +47,9 @@ function settings() {
         </ul>
       </div>
       <div className="flex flex-col flex-1 p-2 bg-white">
-        {activeTab === "preferences" && (
-          <form className="">
-            {/* user form */}
-            <div className="w-full pr-4 space-y-4">
-              <div className="">
-                <label className="block text-sm font-medium text-gray-700">
-                  {t("common:general.language")}
-                </label>
-                <select
-                  className="border-2 border-gray-200 p-2 rounded-md selection w-1/2"
-                  value={i18n.language}
-                  onChange={(e) => changeLanguage(e.target.value)}
-                >
-                  <option value="en">EN</option>
-                  <option value="fr">FR</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Layout
-                </label>
-                <select
-                  name="layoutSelection"
-                  id="layoutSelection"
-                  className="border-2 border-gray-200 p-2 rounded-md selection w-1/2"
-                  value={layout}
-                  onChange={(e) => setLayout(e.target.value as LayoutType)}
-                >
-                  <option value="Vertical">Vertical</option>
-                  <option value="Horizontal">Horizontal</option>
-                </select>
-              </div>
-              <div className="">
-                <label
-                  htmlFor="Theme"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Theme
-                </label>
-                <select
-                  className="border-2 border-gray-200 p-2 rounded-md selection w-1/2"
-                  value={Theme}
-                  onChange={(e) => changeTheme(e.target.value as ThemeType)}
-                  id="Theme"
-                >
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </div>
-            </div>
-            {/* ACTIONS */}
-            <div className="mt-6 flex justify-start">
-              <div className="flex gap-3">
-                <button
-                  // onClick={() => Cancel()}
-                  className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
-                >
-                  {t("common:general.cancel")}
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  {t("common:general.save")}
-                </button>
-              </div>
-            </div>
-          </form>
-        )}
+        {activeTab === "appearance" && <Appearance></Appearance>}
+        {activeTab === "preferences" && <Preference></Preference>}
+        {activeTab === "security" && <Security></Security>}
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ function User({ openModal }: UserProps) {
     if (user?.avatar) {
       setPreview(ENV.API_URL + "/" + user?.avatar);
     }
-  }, [user?.avatar]);
+  }, [preview ?? user?.avatar]);
 
   const navigateToGalery = () => {
     setIsOpen(false);

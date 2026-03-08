@@ -7,31 +7,19 @@ import {
   type UserFormData,
 } from "../auth/validators/user.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useDeleteUser,
-  useUpdateUser,
-} from "../../shared/services/user.queries";
+import { useUpdateUser } from "../../shared/services/user.queries";
 import { ENV } from "../../environment/env.local";
-import { useNavigate } from "react-router-dom";
 
 function profile() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const navigate = useNavigate();
   const {
     mutate: updateUser,
     isPending: isUpdatingUser,
     isError: isUpdateUserError,
     error: updateUserError,
   } = useUpdateUser();
-
-  const {
-    mutate: deleteUser,
-    isPending: isdeletingUser,
-    isError: isdeleteUserError,
-    error: deleteUserError,
-  } = useDeleteUser();
 
   const {
     register,
@@ -57,7 +45,7 @@ function profile() {
     if (user?.avatar) {
       setPreview(ENV.API_URL + "/" + user?.avatar);
     }
-  }, [user?.avatar]);
+  }, [preview ?? user?.avatar]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -68,17 +56,15 @@ function profile() {
   };
 
   const onSubmit = (data: any) => {
-    if (!file) {
-      alert("Please upload an image");
-      return;
+    const formData = new FormData();
+    if (file) {
+      formData.append("objectFile", file);
+      // return;
     }
 
-    const formData = new FormData();
-
-    formData.append("objectFile", file);
     formData.append("email", data.email);
     formData.append("userName", data.userName);
-    formData.append("avatar", data.userName);
+    formData.append("avatar", user?.avatar ?? "");
 
     updateUser(formData, {
       onSuccess: (res) => {
@@ -96,18 +82,6 @@ function profile() {
     }
     setPreview(null);
     setFile(null);
-  };
-
-  const Delete = (id: string) => {
-    deleteUser(id, {
-      onSuccess: (res) => {
-        reset();
-        setPreview(null);
-        // setFile(null);
-        logout();
-        navigate("/home");
-      },
-    });
   };
 
   return (
@@ -193,22 +167,6 @@ function profile() {
               Save
             </button>
           </div>
-        </div>
-        <div className="mt-10 border-t pt-6">
-          <h3 className="text-sm font-semibold text-red-600 mb-2">
-            Danger zone
-          </h3>
-          <p className="text-sm my-2">
-            All infos and photos will be removed permanently after the account
-            deletion.
-          </p>
-
-          <button
-            onClick={() => Delete(user?.id!)}
-            className="text-sm px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Delete my account
-          </button>
         </div>
       </form>
       {/* statistics */}
