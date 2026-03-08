@@ -94,7 +94,7 @@ function profile() {
   return (
     <div className="flex space-x-1">
       <form
-        className="w-1/2 max-w-2xl rounded-2xl shadow-sm p-8"
+        className="w-1/2 max-w-2xl p-8 h-screen"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col items-center gap-4 mb-8">
@@ -177,7 +177,7 @@ function profile() {
         </div>
       </form>
       {/* statistics */}
-      <div className="w-1/2">
+      <div className="w-1/2 border-l border-l-gray-300 pl-4">
         <div className="w-full h-1/2 max-h-96">graph</div>
         <div className="flex space-x-1">
           <div className="">downloads</div>

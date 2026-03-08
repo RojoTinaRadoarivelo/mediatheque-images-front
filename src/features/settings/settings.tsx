@@ -14,7 +14,7 @@ function settings() {
   return (
     <div className="w-full h-screen flex gap-4">
       {/* SIDEBAR */}
-      <div className="border-r border-gray-200 w-72 p-4 bg-gray-50">
+      <div className="border-r border-gray-200 w-48 p-4 bg-gray-50">
         <ul className="space-y-2">
           <li
             onClick={() => setActiveTab("appearance")}
@@ -48,7 +48,7 @@ function settings() {
           </li>
         </ul>
       </div>
-      <div className="flex flex-col flex-1 p-2 bg-white">
+      <div className="flex flex-col flex-1  p-3 pl-5 bg-white">
         {activeTab === "appearance" && <Appearance></Appearance>}
         {activeTab === "preferences" && <Preference></Preference>}
         {activeTab === "security" && <Security></Security>}
