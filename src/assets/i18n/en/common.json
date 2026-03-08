@@ -13,7 +13,8 @@
     "create": "create",
     "updating": "updating",
     "creation": "creation",
-    "email": "email"
+    "email": "email",
+    "language": "language"
   },
   "auth": {
     "signin": "sign in",

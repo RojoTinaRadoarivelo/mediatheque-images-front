@@ -1,1 +1,7 @@
-{}
+{
+  "appearance": "appearance",
+  "preferences": "preferences",
+  "security": "security",
+  "notifications": "notifications",
+  "privacy": "privacy"
+}

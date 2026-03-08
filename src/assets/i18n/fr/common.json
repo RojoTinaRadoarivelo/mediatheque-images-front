@@ -12,7 +12,8 @@
     "new_f": "nouvelle",
     "create": "créer",
     "updating": "modification",
-    "creation": "creation"
+    "creation": "creation",
+    "language": "langue"
   },
   "auth": {
     "signin": "se connecter",
