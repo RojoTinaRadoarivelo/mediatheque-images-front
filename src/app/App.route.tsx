@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "../layouts/layout";
 import NotFoundPage from "../shared/components/page-not-found/page-not-found";
 import ProtectedRoute from "../features/auth/guards/auth.guard";
+import { useAuth } from "../features/auth/context/auth.context";
 
 /* 🔥 Lazy loaded pages */
 const HomePage = lazy(() => import("../features/gallery/gallery"));
@@ -13,6 +14,22 @@ const UserCollection = lazy(
   () => import("../features/gallery/collections/user-collection"),
 );
 const FaqPage = lazy(() => import("../features/faq/faq"));
+
+const FaqRoute = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!isAuthenticated) {
+    return <FaqPage />;
+  }
+
+  return (
+    <UserCollection>
+      <FaqPage />
+    </UserCollection>
+  );
+};
 
 const AppRouter = () => {
   return (
@@ -25,6 +42,7 @@ const AppRouter = () => {
         <Route path="/home" element={<Layout />}>
           <Route index element={<HomePage />} />
         </Route>
+        <Route path="faq" element={<FaqRoute />} />
 
         {/* pages protégées */}
         <Route element={<ProtectedRoute />}>
@@ -32,7 +50,6 @@ const AppRouter = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="galleries" element={<HomePage />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="faq" element={<FaqPage />} />
           </Route>
         </Route>
 

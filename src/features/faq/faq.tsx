@@ -7,41 +7,41 @@ import { useTranslation } from "react-i18next";
 function highlight(text: string, search: string) {
   if (!search) return text;
   const regex = new RegExp(`(${search})`, "gi");
-  return text.replace(regex, `<mark>$1</mark>`);
+  return text.replace(regex, "<mark>$1</mark>");
 }
 
 function Faq() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t: tFaq } = useTranslation("faq");
+  const { t: tCommon } = useTranslation("common");
 
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(FAQ_STRUCTURE[0].id);
-  const { t: tFaq } = useTranslation("faq");
-  const { t: tCommon } = useTranslation("common");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(
+    FAQ_STRUCTURE[0].category,
+  );
 
-  /* 🔗 Sync URL → état */
   useEffect(() => {
     const hash = location.hash.replace("#", "");
-    if (hash && FAQ_STRUCTURE.some((f) => f.id === hash)) {
-      setSelectedId(hash);
+    const fromHash = FAQ_STRUCTURE.find((f) => f.id === hash);
+    if (fromHash) {
+      setSelectedId(fromHash.id);
+      setSelectedCategory(fromHash.category);
     }
   }, [location.hash]);
 
-  /* 🔍 Filtrage */
   const filteredFaqs = useMemo(() => {
     if (!search) return FAQ_STRUCTURE;
-
     const q = search.toLowerCase();
+
     return FAQ_STRUCTURE.filter((item) => {
       const question = tFaq(`items.${item.id}.question`).toLowerCase();
       const answer = tFaq(`items.${item.id}.answer`).toLowerCase();
-
       return question.includes(q) || answer.includes(q);
     });
   }, [search, tFaq]);
 
-  /* 📂 Groupement par catégorie */
   const groupedFaqs = useMemo(() => {
     return filteredFaqs.reduce<Record<string, FaqItem[]>>((acc, item) => {
       acc[item.category] ??= [];
@@ -50,115 +50,127 @@ function Faq() {
     }, {});
   }, [filteredFaqs]);
 
-  /* KEYBOARD NAVIGATION */
+  const categories = Object.keys(groupedFaqs);
+
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (!search) return;
+    if (!categories.length) return;
+    if (!categories.includes(selectedCategory)) {
+      setSelectedCategory(categories[0]);
+    }
+  }, [categories, selectedCategory]);
 
-      if (e.key === "ArrowDown") {
-        setActiveIndex((i) => Math.min(i + 1, filteredFaqs.length - 1));
-      }
+  const itemsOfSelectedCategory = groupedFaqs[selectedCategory] ?? [];
 
-      if (e.key === "ArrowUp") {
-        setActiveIndex((i) => Math.max(i - 1, 0));
-      }
+  useEffect(() => {
+    if (!itemsOfSelectedCategory.length) return;
+    if (!itemsOfSelectedCategory.some((item) => item.id === selectedId)) {
+      setSelectedId(itemsOfSelectedCategory[0].id);
+    }
+  }, [itemsOfSelectedCategory, selectedId]);
 
-      if (e.key === "Enter") {
-        const item = filteredFaqs[activeIndex];
+  const orderedItems = useMemo(() => {
+    const selected = itemsOfSelectedCategory.find((item) => item.id === selectedId);
+    const rest = itemsOfSelectedCategory.filter((item) => item.id !== selectedId);
+    return selected ? [selected, ...rest] : itemsOfSelectedCategory;
+  }, [itemsOfSelectedCategory, selectedId]);
 
-        if (item) {
-          handleSelect(item.id);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handler);
-
-    return () => window.removeEventListener("keydown", handler);
-  }, [search, filteredFaqs, activeIndex]);
-
-  const handleSelect = (id: string) => {
-    setSelectedId(id);
-    navigate(`#${id}`, { replace: true });
+  const handleSelectQuestion = (item: FaqItem) => {
+    setSelectedId(item.id);
+    setSelectedCategory(item.category);
+    navigate(`#${item.id}`, { replace: true });
   };
 
-  const selectedFaq = FAQ_STRUCTURE.find((item) => item.id === selectedId);
-
   return (
-    <div className="w-full h-full bg-slate-50 p-2">
-      <div className="w-full flex space-x-2 items-center mb-4">
-        {/* 🔍 SEARCH */}
-        <div className="w-80">
+    <div className="faq-page">
+      <div className="faq-topbar">
+        <div className="faq-search">
           <input
             type="text"
-            placeholder={tCommon("search") + ` ` + tCommon("into") + `  FAQ...`}
+            placeholder={`${tCommon("search")} ${tCommon("into")} FAQ...`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-5/6 mx-2 px-3 py-2 border rounded-md"
           />
         </div>
-        <h1 className="text-2xl text-center mb-4 mx-auto">
-          ❓ {tFaq("title")}
-        </h1>
+        <h1>{tFaq("title")}</h1>
       </div>
 
-      <div className="faq-doc">
-        {/* ⬅️ SIDEBAR */}
-        <aside className="faq-sidebar my-2">
-          {Object.entries(groupedFaqs).map(([category, items]: any) => (
-            <div key={category}>
-              <div className="px-3 py-2 text-xs uppercase text-gray-500">
+      <div className="faq-layout">
+        <aside className="faq-categories">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={`faq-category-btn ${
+                selectedCategory === category ? "active" : ""
+              }`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              <span className="faq-category-title">
                 {tFaq(`categories.${category}`)}
-              </div>
-
-              {items.map((item: any) => {
-                const question = tFaq(`items.${item.id}.question`);
-
-                return (
-                  <button
-                    key={item.id}
-                    className={`faq-link ${
-                      selectedId === item.id ? "active" : ""
-                    }`}
-                    onClick={() => handleSelect(item.id)}
-                    dangerouslySetInnerHTML={{
-                      __html: highlight(question, search),
-                    }}
-                  />
-                );
-              })}
-            </div>
+              </span>
+              <span className="faq-category-count">
+                {groupedFaqs[category]?.length ?? 0}
+              </span>
+            </button>
           ))}
-
-          {filteredFaqs.length === 0 && (
-            <p className="p-4 text-sm text-gray-500">{tCommon("noresult")}</p>
+          {!categories.length && (
+            <p className="faq-empty">{tCommon("noresult")}</p>
           )}
         </aside>
 
-        {/* ➡️ CONTENT */}
-        <main className="faq-content w-4/6 h-5/6 mx-auto bg-white rounded-xl shadow-sm  p-4">
-          {selectedFaq && (
-            <>
-              <h2
-                dangerouslySetInnerHTML={{
-                  __html: highlight(
-                    tFaq(`items.${selectedFaq.id}.question`),
-                    search,
-                  ),
-                }}
-              />
+        <main className="faq-docs">
+          <section className="faq-article">
+            <h2>{tFaq(`categories.${selectedCategory}`)}</h2>
+            <p className="faq-intro">
+              Retrouvez ici les reponses detaillees. Utilisez le bloc "On this
+              page" pour naviguer rapidement entre les sous-themes.
+            </p>
 
-              <p
-                style={{ whiteSpace: "pre-line" }}
+            {orderedItems.map((item) => (
+              <article
+                id={item.id}
+                key={item.id}
+                className={`faq-article-block ${
+                  item.id === selectedId ? "active" : ""
+                }`}
+              >
+                <h3
+                  dangerouslySetInnerHTML={{
+                    __html: highlight(tFaq(`items.${item.id}.question`), search),
+                  }}
+                />
+                <p
+                  style={{ whiteSpace: "pre-line" }}
+                  dangerouslySetInnerHTML={{
+                    __html: highlight(tFaq(`items.${item.id}.answer`), search),
+                  }}
+                />
+                <p className="faq-extra-text">
+                  Conseil: verifiez egalement les parametres lies a ce theme
+                  pour personnaliser le comportement de l'application.
+                </p>
+              </article>
+            ))}
+
+            {!orderedItems.length && (
+              <p className="faq-empty">{tCommon("noresult")}</p>
+            )}
+          </section>
+
+          <div className="faq-toc">
+            <p className="faq-toc-title">On this page</p>
+            {orderedItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`faq-toc-link ${item.id === selectedId ? "active" : ""}`}
+                onClick={() => handleSelectQuestion(item)}
                 dangerouslySetInnerHTML={{
-                  __html: highlight(
-                    tFaq(`items.${selectedFaq.id}.answer`),
-                    search,
-                  ),
+                  __html: highlight(tFaq(`items.${item.id}.question`), search),
                 }}
               />
-            </>
-          )}
+            ))}
+          </div>
         </main>
       </div>
     </div>

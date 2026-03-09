@@ -1,45 +1,222 @@
-.faq-doc {
-    display: flex;
-    height: 100vh;
-    gap: 16px;
+.faq-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 12px;
+  background: #f8fafc;
 }
 
-/* ⬅️ Sidebar */
-.faq-sidebar {
-    width: 320px;
-    border-right: 1px solid #e5e5e5;
-    overflow-y: auto;
-    padding-bottom: 16px;
+.faq-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
 }
 
-.faq-link {
-    display: block;
+.faq-search {
+  width: min(360px, 100%);
+
+  input {
     width: 100%;
-    text-align: left;
-    padding: 10px 12px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-    font-size: 14px;
+    height: 40px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+    background: #fff;
+    outline: none;
+  }
+
+  input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px #dbeafe;
+  }
 }
 
-.faq-link:hover {
-    background: #f4f4f4;
+.faq-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 12px;
+  min-height: calc(100vh - 170px);
 }
 
-.faq-link.active {
-    background: #eef2ff;
-    color: #4f46e5;
-    font-weight: 600;
+.faq-categories {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 10px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* ➡️ Contenu */
-.faq-content {
-    // flex: 1;
-    padding-right: 40px;
+.faq-category-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.faq-content h2 {
-    margin-bottom: 16px;
+.faq-category-btn:hover {
+  background: #f8fafc;
+}
+
+.faq-category-btn.active {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.faq-category-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.faq-category-count {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.faq-docs {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.faq-article {
+  overflow: auto;
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #0f172a;
+  }
+}
+
+.faq-intro {
+  margin: 8px 0 14px 0;
+  font-size: 0.86rem;
+  color: #64748b;
+}
+
+.faq-article-block {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fff;
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    color: #0f172a;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #334155;
+  }
+}
+
+.faq-article-block.active {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.faq-extra-text {
+  margin-top: 8px !important;
+  font-size: 0.82rem !important;
+  color: #64748b !important;
+}
+
+.faq-toc {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px;
+  background: #f8fafc;
+  height: fit-content;
+  position: sticky;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-toc-title {
+  margin: 0 0 2px 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #0f172a;
+}
+
+.faq-toc-link {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 0.8rem;
+  color: #334155;
+  cursor: pointer;
+}
+
+.faq-toc-link:hover {
+  background: #e2e8f0;
+}
+
+.faq-toc-link.active {
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.faq-empty {
+  padding: 10px 12px;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+mark {
+  background: #fef3c7;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+@media (max-width: 1100px) {
+  .faq-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .faq-docs {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-toc {
+    position: static;
+  }
 }
