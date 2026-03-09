@@ -10,6 +10,8 @@ type NavbarMenuProps = {
 const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useTags(page);
+  const canGoPrev = page > 1;
+  const tags = data?.tags?.data ?? [];
 
   const nextTagPage = () => {
     setPage((p) => p + 1);
@@ -20,21 +22,50 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   };
 
   if (isLoading) return null;
-  if (error) return <span>Error while loading tags</span>;
+  if (error) return <span className="text-sm text-red-500">Error while loading tags</span>;
 
   return (
-    <div
-      className={
-        orientation === "horizontal"
-          ? "flex space-x-1 w-full overflow-x-auto"
-          : "flex flex-col space-y-1  h-full overflow-y-auto pt-4"
-      }
-    >
-      {data?.tags?.data?.map((t: TagsType) => (
-        <button key={t.id} className="p-1 border ">
-          {t.name}
-        </button>
-      ))}
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11px] uppercase tracking-wide text-slate-500 px-1">
+          Popular tags
+        </p>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={prevTagPage}
+            disabled={!canGoPrev}
+            className="w-7 h-7 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-100 disabled:opacity-50"
+          >
+            {"<"}
+          </button>
+          <button
+            type="button"
+            onClick={nextTagPage}
+            className="w-7 h-7 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-100"
+          >
+            {">"}
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={
+          orientation === "horizontal"
+            ? "flex gap-2 w-full overflow-x-auto pb-1"
+            : "flex flex-col gap-2 h-full overflow-y-auto pr-1"
+        }
+      >
+        {tags.map((t: TagsType) => (
+          <button
+            key={t.id}
+            type="button"
+            className="px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs text-left hover:bg-slate-50 hover:border-slate-300 whitespace-nowrap"
+          >
+            #{t.name}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

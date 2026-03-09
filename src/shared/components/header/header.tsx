@@ -5,7 +5,7 @@ import {
   type LayoutType,
 } from "../../../layouts/context/layout.context";
 import User from "../../../features/auth/user/user";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ModalMapping, type ModalKey } from "../../utils/modals.type";
 import Modal from "../modals/modal";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,52 +14,53 @@ import i18n, {
   LanguageList,
   type LanguageListType,
 } from "../../../assets/i18n";
-import { themes, useTheme, type ThemeType } from "../../context/themes";
+import { useTheme, type ThemeType } from "../../context/themes";
 import { useUpdatePreference } from "../../services/preferences.queries";
 import { useAuth } from "../../../features/auth/context/auth.context";
 import { getMergedPreference } from "../../../features/settings/utils/preference.utils";
 
-function header() {
+const languageOptions: Record<
+  LanguageListType,
+  { label: string; flag: string }
+> = {
+  en: { label: "EN", flag: "🇺🇸" },
+  fr: { label: "FR", flag: "🇫🇷" },
+  mg: { label: "MG", flag: "🇲🇬" },
+};
+
+function Header() {
   const { layout, setLayout } = useLayout();
-  const [isFixed, setIsFixed] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalKey | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const { t } = useTranslation("common");
-  const { Theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
+  const [themeMode, setThemeMode] = useState<ThemeType>(
+    () => (localStorage.getItem("Theme") as ThemeType) ?? "Light",
+  );
   const { user, isAuthenticated } = useAuth();
   const { mutate: updatePreference } = useUpdatePreference();
-  const languages: string[] = LanguageList;
+  const languages: LanguageListType[] = LanguageList;
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsFixed(window.scrollY > 25);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const showLayoutSelect = location.pathname === "/home";
+  const language = (i18n.language as LanguageListType) ?? "en";
+  const sliderPositionClass = useMemo(() => {
+    if (themeMode === "Dark") return "translate-x-0";
+    return "translate-x-[74px]";
+  }, [themeMode]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (search.trim()) {
-        navigate({
-          pathname: location.pathname,
-          search: `?q=${encodeURIComponent(search)}`,
-        });
-      } else {
-        navigate({
-          pathname: location.pathname,
-          search: "",
-        });
-      }
-    }, 400); // debounce
+      navigate({
+        pathname: location.pathname,
+        search: search.trim() ? `?q=${encodeURIComponent(search)}` : "",
+      });
+    }, 400);
 
     return () => clearTimeout(timeout);
-  }, [search]);
+  }, [location.pathname, navigate, search]);
 
   const searchGallery = () => {
     navigate({
@@ -67,6 +68,7 @@ function header() {
       search: search ? `?q=${encodeURIComponent(search)}` : "",
     });
   };
+
   const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -74,144 +76,173 @@ function header() {
     }
   };
 
-  const showLayoutSelect = location.pathname === "/home";
+  const savePreferencePatch = (
+    patch: Partial<{
+      language: LanguageListType;
+      theme: ThemeType;
+      layout: LayoutType;
+    }>,
+  ) => {
+    if (!isAuthenticated || !user?.id) return;
+    const savingPreference = getMergedPreference(user.preference, patch);
+    updatePreference({ user_id: user.id, preferences: savingPreference });
+  };
 
-  const changeLanguage = (lang: string) => {
+  // const resolveSystemTheme = (): ThemeType =>
+  //   window.matchMedia("(prefers-color-scheme: dark)").matches ? "Dark" : "Light";
+
+  const changeThemeMode = (mode: ThemeType) => {
+    setThemeMode(mode);
+    localStorage.setItem("Theme", mode);
+
+    const resolvedTheme = mode as ThemeType;
+    setTheme(resolvedTheme);
+    savePreferencePatch({ theme: resolvedTheme });
+  };
+
+  const changeLanguage = (lang: LanguageListType) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("lng", lang);
-    if (!isAuthenticated || !user?.id) return;
-
-    const savingPreference = getMergedPreference(user.preference, {
-      language: lang as LanguageListType,
-    });
-    updatePreference(
-      { user_id: user.id, preferences: savingPreference },
-      {
-        onSuccess: () => {
-          console.log(savingPreference);
-        },
-      },
-    );
+    savePreferencePatch({ language: lang });
   };
 
-  const changeTheme = (newTheme: ThemeType) => {
-    setTheme(newTheme);
-    if (!isAuthenticated || !user?.id) return;
-
-    const savingPreference = getMergedPreference(user.preference, {
-      theme: newTheme,
-    });
-    updatePreference(
-      { user_id: user.id, preferences: savingPreference },
-      {
-        onSuccess: () => {
-          console.log(savingPreference);
-        },
-      },
-    );
+  const changeLayout = (newLayout: string) => {
+    setLayout(newLayout as LayoutType);
+    savePreferencePatch({ layout: newLayout as LayoutType });
   };
-
-  const changeLayout = (layout: string) => {
-    setLayout(layout as LayoutType);
-    if (!isAuthenticated || !user?.id) return;
-
-    const savingPreference = getMergedPreference(user.preference, {
-      layout: layout as LayoutType,
-    });
-    updatePreference(
-      { user_id: user.id, preferences: savingPreference },
-      {
-        onSuccess: () => {
-          console.log(savingPreference);
-        },
-      },
-    );
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      const currentTheme = (localStorage.getItem("Theme") ??
-        "Light") as ThemeType;
-      setTheme(currentTheme);
-    }, 200);
-  }, []);
 
   return (
-    <div
-      className={`
-        w-full flex justify-between items-center px-2 py-1 bg-white z-50
-        transition-transform duration-300
-        ${isFixed ? "fixed top-0 left-0 drop-shadow-xl" : "relative"}
-      `}
-    >
-      <div
-        className="w-32 flex items-center hover:cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        <img src="/vite.svg" alt="LOGO" className="h-6" />
-        <p>LOGO</p>
-      </div>
-      <div className="w-2/4 flex items-center space-x-3">
-        <input
-          type="text"
-          placeholder={t("general.search")}
-          className="w-3/4 border-2 border-gray-200 p-2 rounded-md text-base"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => onEnterPressed(e)}
-        />
-        <button className="bg-black" onClick={() => searchGallery()}>
-          <img src="/images/search.svg" alt="search" className="w-4 h-4" />
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+      <div className="mx-auto max-w-7xl px-3 md:px-5 py-2.5 flex items-center gap-3">
+        <button
+          type="button"
+          className="flex items-center gap-2 min-w-fit"
+          onClick={() => navigate("/")}
+        >
+          <div className="w-8 h-8 rounded-lg bg-slate-900 text-white grid place-items-center text-xs font-bold">
+            M
+          </div>
+          <div className="hidden sm:block text-left">
+            <p className="text-sm font-semibold text-slate-800 leading-none">
+              Mediatheque
+            </p>
+            <p className="text-[11px] text-slate-500 leading-none mt-1">
+              Photo platform
+            </p>
+          </div>
         </button>
-      </div>
-      <div className="flex items-center space-x-2">
-        <select
-          className="border-2 border-gray-200 p-2 rounded-md selection"
-          value={Theme}
-          onChange={(e) => changeTheme(e.target.value as ThemeType)}
-        >
-          {themes.map((el) => (
-            <option key={el} value={el}>
-              {el}
-            </option>
-          ))}
-        </select>
-        {/* 🌍 Language Select */}
-        <select
-          className="border-2 border-gray-200 p-2 rounded-md selection uppercase"
-          value={i18n.language}
-          onChange={(e) => changeLanguage(e.target.value)}
-        >
-          {languages.map((el) => (
-            <option key={el} value={el} className="uppercase">
-              {el}
-            </option>
-          ))}
-        </select>
 
-        {showLayoutSelect && (
-          <select
-            name="layoutSelection"
-            id="layoutSelection"
-            className="border-2 border-gray-200 p-2 rounded-md selection"
-            value={layout}
-            onChange={(e) => changeLayout(e.target.value)}
+        <div className="flex-1">
+          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+            <span className="text-slate-400 mr-2 text-xs">Find</span>
+            <input
+              type="text"
+              placeholder={t("general.search")}
+              className="w-full bg-transparent text-sm outline-none"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => onEnterPressed(e)}
+            />
+            <button
+              type="button"
+              className="ml-2 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs hover:bg-slate-700"
+              onClick={searchGallery}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div className="hidden lg:flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => navigate("/home")}
+            className="px-3 py-1.5 text-xs rounded-lg border border-slate-200 hover:bg-slate-100"
           >
-            {Layouts.map((el) => (
+            Explore
+          </button>
+          {isAuthenticated && (
+            <>
+              <button
+                type="button"
+                onClick={() => navigate("/galleries")}
+                className="px-3 py-1.5 text-xs rounded-lg border border-slate-200 hover:bg-slate-100"
+              >
+                Gallery
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/profile")}
+                className="px-3 py-1.5 text-xs rounded-lg border border-slate-200 hover:bg-slate-100"
+              >
+                Profile
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="relative w-[112px] h-9 rounded-lg border border-slate-200 bg-slate-100 p-1">
+            <div
+              className={`absolute top-1 left-1 w-[35px] h-7 rounded-md bg-white border border-slate-200 transition-transform ${sliderPositionClass}`}
+            />
+            <div className="relative z-10 flex items-center">
+              <button
+                type="button"
+                className="w-[35px] h-7 text-[11px] text-slate-600"
+                onClick={() => changeThemeMode("Dark")}
+                title="Dark"
+              >
+                D
+              </button>
+              <button
+                type="button"
+                className="w-[35px] h-7 text-[11px] text-slate-600"
+                onClick={() => changeThemeMode("Light")}
+                title="Light"
+              >
+                L
+              </button>
+            </div>
+          </div>
+
+          <select
+            className="border border-slate-200 p-2 rounded-lg text-xs bg-white"
+            value={language}
+            onChange={(e) => changeLanguage(e.target.value as LanguageListType)}
+          >
+            {languages.map((el) => (
               <option key={el} value={el}>
-                {el}
+                {languageOptions[el].flag} {languageOptions[el].label}
               </option>
             ))}
           </select>
-        )}
-        <div
-          className="w-10 h-10 rounded-full cursor-pointer flex items-center justify-center border  hover:bg-gray-100"
-          onClick={() => navigate("faq")}
-        >
-          ?
-        </div>
 
-        <div className="">
+          {showLayoutSelect && (
+            <select
+              name="layoutSelection"
+              id="layoutSelection"
+              className="hidden md:block border border-slate-200 p-2 rounded-lg text-xs bg-white"
+              value={layout}
+              onChange={(e) => changeLayout(e.target.value)}
+            >
+              {Layouts.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+          )}
+
+          <button
+            type="button"
+            className="w-9 h-9 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 inline-flex items-center justify-center leading-none"
+            onClick={() => navigate("faq")}
+            title="FAQ"
+          >
+            ?
+          </button>
+
           <User openModal={setActiveModal}></User>
           <Modal isOpen={!!activeModal} onClose={() => setActiveModal(null)}>
             {ModalContent && (
@@ -223,8 +254,8 @@ function header() {
           </Modal>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
-export default header;
+export default Header;

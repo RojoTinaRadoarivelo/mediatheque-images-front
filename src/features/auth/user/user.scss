@@ -1,11 +1,13 @@
 .dropdown-item {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.72rem 0.9rem;
     text-align: left;
-    font-size: 0.875rem;
+    font-size: 0.82rem;
     cursor: pointer;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .dropdown-item:hover {
-    background-color: #f3f4f6;
+    background-color: #f8fafc;
 }

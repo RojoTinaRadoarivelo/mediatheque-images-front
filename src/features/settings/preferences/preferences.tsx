@@ -17,6 +17,14 @@ function Preference() {
   const [defaultSort, setDefaultSorting] = useState<sortingType>(
     (localStorage.getItem("sort") ?? "Default") as sortingType,
   );
+  const [downloadQuality, setDownloadQuality] = useState<
+    "Original" | "High" | "Medium"
+  >("High");
+  const [autoLikeDoubleClick, setAutoLikeDoubleClick] = useState(false);
+  const [safeSearch, setSafeSearch] = useState(true);
+  const [defaultHomepage, setDefaultHomepage] = useState<
+    "Explore" | "Trending" | "Following"
+  >("Explore");
 
   const { user, isAuthenticated } = useAuth();
   const { mutate: updatePreference } = useUpdatePreference();
@@ -107,6 +115,98 @@ function Preference() {
             ))}
           </select>
         </div>
+
+        <div className="rounded-xl border border-slate-200 p-4">
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
+            Default Download Quality
+          </label>
+          <p className="text-xs text-slate-500 mb-3">
+            Default quality for quick downloads.
+          </p>
+          <select
+            className="border border-slate-300 p-2 rounded-md selection w-full"
+            value={downloadQuality}
+            onChange={(e) =>
+              setDownloadQuality(
+                e.target.value as "Original" | "High" | "Medium",
+              )
+            }
+          >
+            <option value="Original">Original</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+          </select>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 p-4">
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
+            Default Homepage
+          </label>
+          <p className="text-xs text-slate-500 mb-3">
+            Choose where the app opens first.
+          </p>
+          <select
+            className="border border-slate-300 p-2 rounded-md selection w-full"
+            value={defaultHomepage}
+            onChange={(e) =>
+              setDefaultHomepage(
+                e.target.value as "Explore" | "Trending" | "Following",
+              )
+            }
+          >
+            <option value="Explore">Explore</option>
+            <option value="Trending">Trending</option>
+            <option value="Following">Following</option>
+          </select>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 p-4 space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-slate-700">
+                Auto-like on double click
+              </p>
+              <p className="text-xs text-slate-500 mt-1">
+                Automatically like image on double click.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAutoLikeDoubleClick((prev) => !prev)}
+              className={`relative w-12 h-7 rounded-full transition-colors ${
+                autoLikeDoubleClick ? "bg-blue-600" : "bg-slate-300"
+              }`}
+            >
+              <span
+                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
+                  autoLikeDoubleClick ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-slate-700">Safe search</p>
+              <p className="text-xs text-slate-500 mt-1">
+                Filter sensitive content in results.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSafeSearch((prev) => !prev)}
+              className={`relative w-12 h-7 rounded-full transition-colors ${
+                safeSearch ? "bg-blue-600" : "bg-slate-300"
+              }`}
+            >
+              <span
+                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
+                  safeSearch ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-4">
@@ -117,6 +217,8 @@ function Preference() {
           </span>
           {" | "}
           <span className="font-medium text-slate-700">{defaultSort}</span>
+          {" | "}
+          <span className="font-medium text-slate-700">{downloadQuality}</span>
           {isAuthenticated && user?.id ? "" : " | mode local uniquement"}
         </p>
       </div>

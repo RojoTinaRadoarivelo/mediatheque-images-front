@@ -15,8 +15,8 @@ import frProfile from "./fr/profile.json";
 import frFaq from "./fr/faq.json";
 
 // languages list
-export type LanguageListType = "en" | "fr";
-export const LanguageList = ["en", "fr"];
+export type LanguageListType = "en" | "fr" | "mg";
+export const LanguageList: LanguageListType[] = ["en", "fr", "mg"];
 
 i18n
     .use(initReactI18next)
@@ -30,6 +30,14 @@ i18n
                 faq: enFaq
             },
             fr: {
+                common: frCommon,
+                settings: frSettings,
+                gallery: frGallery,
+                profile: frProfile,
+                faq: frFaq
+            },
+            // Malagasy fallback uses FR copy for now
+            mg: {
                 common: frCommon,
                 settings: frSettings,
                 gallery: frGallery,

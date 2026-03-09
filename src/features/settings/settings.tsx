@@ -5,6 +5,9 @@ import Appearance from "./appearance/appearance";
 import Preference from "./preferences/preferences";
 import Security from "./security/security";
 import { useAuth } from "../auth/context/auth.context";
+import Notifications from "./notifications/notifications";
+import Privacy from "./privacy/privacy";
+import Advanced from "./advanced/advanced";
 
 function Settings() {
   const [activeTab, setActiveTab] = useState("appearance");
@@ -17,6 +20,7 @@ function Settings() {
     { key: "security", label: t("settings:security") },
     { key: "notifications", label: t("settings:notifications") },
     { key: "privacy", label: t("settings:privacy") },
+    { key: "advanced", label: t("settings:advanced") },
   ];
 
   return (
@@ -60,14 +64,9 @@ function Settings() {
           {activeTab === "appearance" && <Appearance></Appearance>}
           {activeTab === "preferences" && <Preference></Preference>}
           {activeTab === "security" && <Security></Security>}
-          {activeTab === "notifications" && (
-            <div className="text-sm text-slate-500">
-              Notifications a venir.
-            </div>
-          )}
-          {activeTab === "privacy" && (
-            <div className="text-sm text-slate-500">Privacy a venir.</div>
-          )}
+          {activeTab === "notifications" && <Notifications></Notifications>}
+          {activeTab === "privacy" && <Privacy></Privacy>}
+          {activeTab === "advanced" && <Advanced></Advanced>}
         </section>
       </div>
     </div>

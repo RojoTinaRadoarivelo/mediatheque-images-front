@@ -9,6 +9,13 @@ function Security() {
   const { t } = useTranslation();
 
   const { mutate: deleteUser } = useDeleteUser();
+  const securityActions = [
+    "Change password",
+    "Two-factor authentication (2FA)",
+    "Email verification",
+    "Login activity (sessions)",
+    "Logout all devices",
+  ];
 
   const Delete = (id: string) => {
     deleteUser(id, {
@@ -46,10 +53,20 @@ function Security() {
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <p className="text-sm text-slate-500">
-          {t("common:general.save")} des parametres de securite plus avances a
-          venir (2FA, sessions actives, appareils connectes).
+        <p className="text-sm text-slate-500 mb-4">
+          {t("common:general.save")} des parametres de securite plus avances:
         </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {securityActions.map((action) => (
+            <button
+              key={action}
+              type="button"
+              className="rounded-lg border border-slate-200 px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+            >
+              {action}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

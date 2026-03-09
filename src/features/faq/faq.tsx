@@ -85,7 +85,7 @@ function Faq() {
   const selectedFaq = FAQ_STRUCTURE.find((item) => item.id === selectedId);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-slate-50 p-2">
       <div className="w-full flex space-x-2 items-center mb-4">
         {/* 🔍 SEARCH */}
         <div className="w-80">
@@ -97,12 +97,14 @@ function Faq() {
             className="w-5/6 mx-2 px-3 py-2 border rounded-md"
           />
         </div>
-        <h1 className="text-2xl text-center mb-4">❓ {tFaq("title")}</h1>
+        <h1 className="text-2xl text-center mb-4 mx-auto">
+          ❓ {tFaq("title")}
+        </h1>
       </div>
 
       <div className="faq-doc">
         {/* ⬅️ SIDEBAR */}
-        <aside className="faq-sidebar">
+        <aside className="faq-sidebar my-2">
           {Object.entries(groupedFaqs).map(([category, items]: any) => (
             <div key={category}>
               <div className="px-3 py-2 text-xs uppercase text-gray-500">
@@ -134,7 +136,7 @@ function Faq() {
         </aside>
 
         {/* ➡️ CONTENT */}
-        <main className="faq-content bg-white p-4">
+        <main className="faq-content w-4/6 h-5/6 mx-auto bg-white rounded-xl shadow-sm  p-4">
           {selectedFaq && (
             <>
               <h2

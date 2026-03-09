@@ -1,4 +1,6 @@
 #app-container {
+  --header-height: 68px;
+  --header-gap: 22px;
   display: flex;
   flex-direction: column;
   min-height: 100vh; // important pour prendre toute la hauteur  
@@ -9,6 +11,7 @@
   background-color: #fff;
   color: #888;
   font-size: large;
+  min-height: var(--header-height);
 }
 
 /* Le contenu prend tout l'espace restant */
@@ -17,14 +20,14 @@
   display: flex; // si Layout utilise aussi du flex 
   flex-direction: column; // selon ton Layout Vertical / Horizontal 
   gap: 1rem; // facultatif, espace entre enfants 
-  padding: 1rem 0;
+  padding: calc(var(--header-gap) + 0.35rem) 0 1rem;
 }
 
 /* Footer fixe en hauteur */
 #footer-container {
-  background-color: #6a6a6a;
-  color: #fff;
-  font-size: large;
-  max-height: 100px;
-  padding: 1rem 2rem;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  max-height: none;
+  padding: 0;
 }
