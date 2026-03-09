@@ -78,7 +78,7 @@ function User({ openModal }: UserProps) {
           {!isAuthenticated ? (
             <>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => {
                   openModal("sign-up");
                   setIsOpen(false);
@@ -87,7 +87,7 @@ function User({ openModal }: UserProps) {
                 {t("auth.signup")}
               </button>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => {
                   openModal("sign-in");
                   setIsOpen(false);
@@ -99,31 +99,31 @@ function User({ openModal }: UserProps) {
           ) : (
             <>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => navigate("/settings")}
               >
                 {t("settings")}
               </button>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => navigate("/profile")}
               >
                 {t("profile")}
               </button>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => navigateToGalery()}
               >
                 {t("gallery")}
               </button>
               <button
-                className="dropdown-item"
+                className="dropdown-item button-reset"
                 onClick={() => navigate("/faq")}
               >
                 FAQ
               </button>
               <button
-                className="dropdown-item text-red-500"
+                className="dropdown-item button-reset text-red-500"
                 onClick={() => signOut()}
               >
                 {t("auth.signout")}

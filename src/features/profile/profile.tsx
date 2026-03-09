@@ -140,7 +140,7 @@ function Profile() {
     <div className="w-full min-h-screen bg-slate-50 p-4 md:p-6">
       <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-4">
         <form
-          className="rounded-xl border border-slate-200 bg-white p-5 md:p-6 h-fit"
+          className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 h-fit shadow-sm"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col items-center gap-4 mb-7">
@@ -180,7 +180,7 @@ function Profile() {
                 type="email"
                 placeholder="email@example.com"
                 {...register("email")}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -195,7 +195,7 @@ function Profile() {
                 type="text"
                 placeholder="Username"
                 {...register("userName")}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
               {errors.userName && (
                 <p className="text-red-500 text-sm mt-1">{errors.userName.message}</p>
@@ -207,20 +207,20 @@ function Profile() {
             <button
               type="button"
               onClick={cancelChanges}
-              className="px-5 py-2 border border-slate-300 rounded-lg hover:bg-slate-100"
+              className="button-reset h-10 px-5 rounded-xl border border-slate-300 text-sm text-slate-700 hover:bg-slate-100"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+              className="button-reset h-10 px-5 rounded-xl text-sm font-semibold text-white bg-slate-900 hover:bg-slate-700"
             >
               Save
             </button>
           </div>
         </form>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-5 md:p-6">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div>
               <h3 className="text-base font-semibold text-slate-800">
@@ -234,7 +234,7 @@ function Profile() {
               <button
                 type="button"
                 onClick={() => setMode("monthly")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
+                className={`button-reset h-8 px-3 text-xs rounded-md ${
                   mode === "monthly"
                     ? "bg-white shadow text-slate-800"
                     : "text-slate-500"
@@ -245,7 +245,7 @@ function Profile() {
               <button
                 type="button"
                 onClick={() => setMode("yearly")}
-                className={`px-3 py-1.5 text-sm rounded-md ${
+                className={`button-reset h-8 px-3 text-xs rounded-md ${
                   mode === "yearly"
                     ? "bg-white shadow text-slate-800"
                     : "text-slate-500"

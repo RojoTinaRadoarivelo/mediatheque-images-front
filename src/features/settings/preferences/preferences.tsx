@@ -11,6 +11,20 @@ import {
 import { useUpdatePreference } from "../../../shared/services/preferences.queries";
 import { useAuth } from "../../auth/context/auth.context";
 import { getMergedPreference } from "../utils/preference.utils";
+import ToggleSwitch from "../../../shared/components/ui/custom-switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
+
+const languageOptions: Record<LanguageListType, { label: string; flag: string }> = {
+  en: { label: "EN", flag: "/flags/EN.svg" },
+  fr: { label: "FR", flag: "/flags/FR.svg" },
+  mg: { label: "MG", flag: "/flags/MG.svg" },
+};
 
 function Preference() {
   const { t } = useTranslation();
@@ -28,10 +42,14 @@ function Preference() {
 
   const { user, isAuthenticated } = useAuth();
   const { mutate: updatePreference } = useUpdatePreference();
-  const languages: string[] = LanguageList;
+  const languages: LanguageListType[] = LanguageList;
   const sortingList: string[] = sortings;
+  const currentLanguage = (i18n.language as LanguageListType) ?? "en";
+  const currentLanguageOption = languageOptions[currentLanguage];
+  const selectClassName =
+    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
 
-  const changeLanguage = (lang: string) => {
+  const changeLanguage = (lang: LanguageListType) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("lng", lang);
   };
@@ -81,17 +99,37 @@ function Preference() {
           <p className="text-xs text-slate-500 mb-3">
             Langue d'affichage de l'interface.
           </p>
-          <select
-            className="border border-slate-300 p-2 rounded-md selection w-full uppercase"
-            value={i18n.language}
-            onChange={(e) => changeLanguage(e.target.value)}
+          <Select
+            value={currentLanguage}
+            onValueChange={(value) => changeLanguage(value as LanguageListType)}
           >
-            {languages.map((el) => (
-              <option key={el} value={el} className="uppercase">
-                {el}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="h-10 w-full rounded-xl border-slate-200 bg-white text-sm">
+              <SelectValue>
+                <span className="inline-flex items-center gap-2 uppercase">
+                  <img
+                    src={currentLanguageOption.flag}
+                    alt={currentLanguageOption.label}
+                    className="w-4 h-4 rounded-sm"
+                  />
+                  {currentLanguageOption.label}
+                </span>
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {languages.map((el) => (
+                <SelectItem key={el} value={el}>
+                  <span className="inline-flex items-center gap-2 uppercase">
+                    <img
+                      src={languageOptions[el].flag}
+                      alt={languageOptions[el].label}
+                      className="w-4 h-4 rounded-sm"
+                    />
+                    {languageOptions[el].label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="rounded-xl border border-slate-200 p-4">
@@ -104,7 +142,7 @@ function Preference() {
           <select
             name="sortingSelection"
             id="sortingSelection"
-            className="border border-slate-300 p-2 rounded-md selection w-full"
+            className={selectClassName}
             value={defaultSort}
             onChange={(e) => changeDefaultSorting(e.target.value)}
           >
@@ -124,7 +162,7 @@ function Preference() {
             Default quality for quick downloads.
           </p>
           <select
-            className="border border-slate-300 p-2 rounded-md selection w-full"
+            className={selectClassName}
             value={downloadQuality}
             onChange={(e) =>
               setDownloadQuality(
@@ -146,7 +184,7 @@ function Preference() {
             Choose where the app opens first.
           </p>
           <select
-            className="border border-slate-300 p-2 rounded-md selection w-full"
+            className={selectClassName}
             value={defaultHomepage}
             onChange={(e) =>
               setDefaultHomepage(
@@ -170,19 +208,15 @@ function Preference() {
                 Automatically like image on double click.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setAutoLikeDoubleClick((prev) => !prev)}
-              className={`relative w-12 h-7 rounded-full transition-colors ${
-                autoLikeDoubleClick ? "bg-blue-600" : "bg-slate-300"
-              }`}
-            >
-              <span
-                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
-                  autoLikeDoubleClick ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
+            <ToggleSwitch
+              checked={autoLikeDoubleClick}
+              onChange={setAutoLikeDoubleClick}
+              trackBg={autoLikeDoubleClick ? "bg-blue-600" : "bg-slate-300"}
+              thumbBg="bg-white"
+              width={44}
+              height={24}
+              thumbSize={18}
+            />
           </div>
 
           <div className="flex items-center justify-between gap-4">
@@ -192,19 +226,15 @@ function Preference() {
                 Filter sensitive content in results.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setSafeSearch((prev) => !prev)}
-              className={`relative w-12 h-7 rounded-full transition-colors ${
-                safeSearch ? "bg-blue-600" : "bg-slate-300"
-              }`}
-            >
-              <span
-                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
-                  safeSearch ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
+            <ToggleSwitch
+              checked={safeSearch}
+              onChange={setSafeSearch}
+              trackBg={safeSearch ? "bg-blue-600" : "bg-slate-300"}
+              thumbBg="bg-white"
+              width={44}
+              height={24}
+              thumbSize={18}
+            />
           </div>
         </div>
       </div>

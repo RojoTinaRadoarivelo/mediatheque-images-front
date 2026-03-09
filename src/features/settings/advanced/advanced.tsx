@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ToggleSwitch from "../../../shared/components/ui/custom-switch";
 
 function Advanced() {
   const { t } = useTranslation();
@@ -27,20 +28,15 @@ function Advanced() {
             {t("settings:advanced_items.betaFeatures_desc")}
           </p>
         </div>
-        <button
-          type="button"
-          aria-label={t("settings:advanced_items.betaFeatures")}
-          onClick={() => setBetaFeatures((prev) => !prev)}
-          className={`relative w-12 h-7 rounded-full transition-colors ${
-            betaFeatures ? "bg-blue-600" : "bg-slate-300"
-          }`}
-        >
-          <span
-            className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
-              betaFeatures ? "translate-x-6" : "translate-x-1"
-            }`}
-          />
-        </button>
+        <ToggleSwitch
+          checked={betaFeatures}
+          onChange={setBetaFeatures}
+          trackBg={betaFeatures ? "bg-blue-600" : "bg-slate-300"}
+          thumbBg="bg-white"
+          width={44}
+          height={24}
+          thumbSize={18}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

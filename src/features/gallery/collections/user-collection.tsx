@@ -2,7 +2,11 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import "./user-collection.scss";
 import { useTranslation } from "react-i18next";
 
-function UserCollection() {
+type UserCollectionProps = {
+  children?: React.ReactNode;
+};
+
+function UserCollection({ children }: UserCollectionProps) {
   const location = useLocation();
   const { t } = useTranslation("common");
 
@@ -48,7 +52,7 @@ function UserCollection() {
 
       <main className="flex flex-col w-11/12 max-sm:w-full">
         <div className="w-full min-h-screen">
-          <Outlet />
+          {children ?? <Outlet />}
         </div>
       </main>
     </div>

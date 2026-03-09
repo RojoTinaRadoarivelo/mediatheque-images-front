@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ToggleSwitch from "../../../shared/components/ui/custom-switch";
 
 function Notifications() {
   const { t } = useTranslation();
@@ -57,20 +58,15 @@ function Notifications() {
               <p className="text-sm font-semibold text-slate-700">{row.title}</p>
               <p className="text-xs text-slate-500 mt-1">{row.subtitle}</p>
             </div>
-            <button
-              type="button"
-              aria-label={row.title}
-              onClick={() => toggle(row.key)}
-              className={`relative w-12 h-7 rounded-full transition-colors ${
-                state[row.key] ? "bg-blue-600" : "bg-slate-300"
-              }`}
-            >
-              <span
-                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
-                  state[row.key] ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
+            <ToggleSwitch
+              checked={state[row.key]}
+              onChange={() => toggle(row.key)}
+              trackBg={state[row.key] ? "bg-blue-600" : "bg-slate-300"}
+              thumbBg="bg-white"
+              width={44}
+              height={24}
+              thumbSize={18}
+            />
           </div>
         ))}
       </div>

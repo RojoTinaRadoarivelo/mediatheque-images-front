@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ToggleSwitch from "../../../shared/components/ui/custom-switch";
 
 function Privacy() {
   const { t } = useTranslation();
+  const selectClassName =
+    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
   const [visibility, setVisibility] = useState<"Public" | "Private">("Public");
   const [options, setOptions] = useState({
     showLikes: true,
@@ -51,7 +54,7 @@ function Privacy() {
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value as "Public" | "Private")}
-          className="border border-slate-300 p-2 rounded-md selection w-full md:w-72"
+          className={`${selectClassName} md:w-72`}
         >
           <option value="Public">{t("settings:privacy_visibility.public")}</option>
           <option value="Private">{t("settings:privacy_visibility.private")}</option>
@@ -70,20 +73,15 @@ function Privacy() {
               <p className="text-sm font-semibold text-slate-700">{row.title}</p>
               <p className="text-xs text-slate-500 mt-1">{row.subtitle}</p>
             </div>
-            <button
-              type="button"
-              aria-label={row.title}
-              onClick={() => toggle(row.key)}
-              className={`relative w-12 h-7 rounded-full transition-colors ${
-                options[row.key] ? "bg-blue-600" : "bg-slate-300"
-              }`}
-            >
-              <span
-                className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${
-                  options[row.key] ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
+            <ToggleSwitch
+              checked={options[row.key]}
+              onChange={() => toggle(row.key)}
+              trackBg={options[row.key] ? "bg-blue-600" : "bg-slate-300"}
+              thumbBg="bg-white"
+              width={44}
+              height={24}
+              thumbSize={18}
+            />
           </div>
         ))}
       </div>
