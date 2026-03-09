@@ -69,6 +69,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setIsAuthenticated(true);
       setUser(searchUser.data);
+
+      const preference = searchUser.data.preference ?? null;
+      if (preference) {
+        localStorage.setItem("lng", preference.language);
+        localStorage.setItem("layout", preference.layout);
+        localStorage.setItem("Theme", preference.theme);
+        localStorage.setItem("sort", preference.predispositions.sorting);
+        localStorage.setItem(
+          "visibility",
+          preference.privacy.profileVisibility,
+        );
+      }
     }
   };
 

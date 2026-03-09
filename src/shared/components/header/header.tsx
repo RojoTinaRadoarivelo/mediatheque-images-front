@@ -10,8 +10,14 @@ import { ModalMapping, type ModalKey } from "../../utils/modals.type";
 import Modal from "../modals/modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import i18n, { LanguageList } from "../../../assets/i18n";
+import i18n, {
+  LanguageList,
+  type LanguageListType,
+} from "../../../assets/i18n";
 import { themes, useTheme, type ThemeType } from "../../context/themes";
+import { useUpdatePreference } from "../../services/preferences.queries";
+import { useAuth } from "../../../features/auth/context/auth.context";
+import { getMergedPreference } from "../../../features/settings/utils/preference.utils";
 
 function header() {
   const { layout, setLayout } = useLayout();
@@ -22,6 +28,8 @@ function header() {
   const [search, setSearch] = useState("");
   const { t } = useTranslation("common");
   const { Theme, setTheme } = useTheme();
+  const { user, isAuthenticated } = useAuth();
+  const { mutate: updatePreference } = useUpdatePreference();
   const languages: string[] = LanguageList;
 
   const ModalContent = activeModal ? ModalMapping[activeModal] : null;
@@ -71,19 +79,62 @@ function header() {
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("lng", lang);
+    if (!isAuthenticated || !user?.id) return;
+
+    const savingPreference = getMergedPreference(user.preference, {
+      language: lang as LanguageListType,
+    });
+    updatePreference(
+      { user_id: user.id, preferences: savingPreference },
+      {
+        onSuccess: () => {
+          console.log(savingPreference);
+        },
+      },
+    );
   };
 
   const changeTheme = (newTheme: ThemeType) => {
     setTheme(newTheme);
+    if (!isAuthenticated || !user?.id) return;
+
+    const savingPreference = getMergedPreference(user.preference, {
+      theme: newTheme,
+    });
+    updatePreference(
+      { user_id: user.id, preferences: savingPreference },
+      {
+        onSuccess: () => {
+          console.log(savingPreference);
+        },
+      },
+    );
+  };
+
+  const changeLayout = (layout: string) => {
+    setLayout(layout as LayoutType);
+    if (!isAuthenticated || !user?.id) return;
+
+    const savingPreference = getMergedPreference(user.preference, {
+      layout: layout as LayoutType,
+    });
+    updatePreference(
+      { user_id: user.id, preferences: savingPreference },
+      {
+        onSuccess: () => {
+          console.log(savingPreference);
+        },
+      },
+    );
   };
 
   useEffect(() => {
     setTimeout(() => {
       const currentTheme = (localStorage.getItem("Theme") ??
         "Light") as ThemeType;
-      changeTheme(currentTheme);
+      setTheme(currentTheme);
     }, 200);
-  }, [Theme]);
+  }, []);
 
   return (
     <div
@@ -144,7 +195,7 @@ function header() {
             id="layoutSelection"
             className="border-2 border-gray-200 p-2 rounded-md selection"
             value={layout}
-            onChange={(e) => setLayout(e.target.value as LayoutType)}
+            onChange={(e) => changeLayout(e.target.value)}
           >
             {Layouts.map((el) => (
               <option key={el} value={el}>

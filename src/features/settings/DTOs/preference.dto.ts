@@ -14,7 +14,7 @@ export type UserPreferenceDto = {
 
 }
 
-type PreferenceJSON = {
+export type PreferenceJSON = {
     language: LanguageListType,
     layout: LayoutType,
     theme: ThemeType,
@@ -32,4 +32,25 @@ type PreferenceJSON = {
     }
 
 
+}
+
+export function getDefaultPreference(): PreferenceJSON {
+    return {
+        language: (localStorage.getItem("lng") as LanguageListType) || "en",
+        layout: (localStorage.getItem("layout") as LayoutType) || "Vertical",
+        theme: (localStorage.getItem("Theme") as ThemeType) || "Light",
+        predispositions: {
+            sorting: (localStorage.getItem("sort") as sortingType) || "Default",
+        },
+        notifications: {
+            newLikes: false,
+            newFollower: false,
+        },
+        privacy: {
+            profileVisibility:
+                (localStorage.getItem("visibility") as visibilityProfile) || "Public",
+            showLikes: false,
+            showDownloadCount: false,
+        },
+    };
 }

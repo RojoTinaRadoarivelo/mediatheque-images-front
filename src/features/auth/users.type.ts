@@ -1,8 +1,15 @@
+import type { PreferenceJSON } from "../settings/DTOs/preference.dto";
+
+export type UserPreferenceType = PreferenceJSON & {
+    id?: string;
+};
+
 export class UsersType {
     id?: string;
     email?: string;
     avatar?: string;
     userName?: string;
+    preference?: UserPreferenceType | null;
 
 }
 
