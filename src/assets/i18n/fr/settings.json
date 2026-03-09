@@ -1,7 +1,44 @@
 {
   "appearance": "apparence",
-  "preferences": "préférences",
-  "security": "sécurité",
+  "preferences": "preferences",
+  "security": "securite",
   "notifications": "notifications",
-  "privacy": "privacy"
+  "privacy": "confidentialite",
+  "advanced": "avance",
+  "notifications_intro": "Choisis comment et quand tu veux etre notifie.",
+  "privacy_intro": "Controle ce que les autres peuvent voir de ton profil et de ton activite.",
+  "advanced_intro": "Options avancees pour les donnees, tests beta et services connectes.",
+  "notifications_items": {
+    "emailLikesComments": "Notifications email (likes, commentaires)",
+    "emailLikesComments_desc": "Recois les interactions principales par email.",
+    "pushNotifications": "Notifications push",
+    "pushNotifications_desc": "Active les alertes push dans l'app et le navigateur.",
+    "newFollowerAlert": "Alerte nouveau follower",
+    "newFollowerAlert_desc": "Recois une alerte quand quelqu'un te suit.",
+    "weeklyReport": "Rapport hebdomadaire",
+    "weeklyReport_desc": "Resume optionnel de tes stats chaque semaine."
+  },
+  "privacy_items": {
+    "profileVisibility": "Visibilite du profil",
+    "showLikes": "Afficher les likes publiquement",
+    "showLikes_desc": "Affiche les photos aimees sur ton profil public.",
+    "showDownloads": "Afficher les telechargements publiquement",
+    "showDownloads_desc": "Partage publiquement tes metriques de telechargement.",
+    "hideCollections": "Masquer les collections",
+    "hideCollections_desc": "Masque tes collections de la vue publique.",
+    "appearInSearch": "Apparaitre dans les resultats de recherche",
+    "appearInSearch_desc": "Autorise l'indexation de ton profil et de tes photos."
+  },
+  "privacy_visibility": {
+    "public": "Public",
+    "private": "Prive"
+  },
+  "advanced_items": {
+    "exportData": "Exporter les donnees utilisateur",
+    "dataUsage": "Informations sur l'utilisation des donnees",
+    "betaFeatures": "Activer les fonctionnalites beta",
+    "betaFeatures_desc": "Tester les nouveautes avant la sortie generale.",
+    "clearCache": "Vider le cache",
+    "connectedAccounts": "Comptes connectes (Google, GitHub)"
+  }
 }
