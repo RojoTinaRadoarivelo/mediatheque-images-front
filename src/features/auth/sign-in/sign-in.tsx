@@ -39,58 +39,58 @@ function SignIn({
   }, [isAuthenticated, closeModal]);
 
   return (
-    <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      {t("common:auth.signin")}
-      <form
-        className="w-5/6 space-y-4 mt-4"
-        onSubmit={handleSubmit(handleSignin)}
-      >
-        {/* Email */}
+    <div className="w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="mb-4">
+        <p className="text-lg font-semibold text-slate-900">
+          {t("common:auth.signin")}
+        </p>
+        <p className="mt-1 text-xs text-slate-500">
+          Access your account to manage galleries and preferences.
+        </p>
+      </div>
+      <form className="space-y-4" onSubmit={handleSubmit(handleSignin)}>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
             {t("common:general.email")}
           </label>
           <input
             type="email"
             placeholder="email@example.com"
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-red-500">{errors.email.message}</p>
+            <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
           )}
         </div>
 
-        {/* Password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
             {t("common:auth.password")}
           </label>
           <input
             type="password"
-            placeholder="••••••••"
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="........"
+            className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
             {...register("password")}
           />
           {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
+            <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
           )}
         </div>
 
-        {/* Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+          className="button-reset mt-1 h-10 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-700"
         >
           {t("common:auth.signin")}
         </button>
       </form>
-      {/* Signup link */}
-      <p className="text-sm text-center text-gray-600 mt-6">
+      <p className="mt-5 text-center text-sm text-slate-600">
         {t("common:auth.dontHaveAccount")}{" "}
         <a
           onClick={() => switchModal("sign-up")}
-          className="text-blue-600 font-medium hover:cursor-pointer"
+          className="font-semibold text-slate-900 hover:cursor-pointer hover:underline"
         >
           {t("common:auth.signup")}
         </a>
