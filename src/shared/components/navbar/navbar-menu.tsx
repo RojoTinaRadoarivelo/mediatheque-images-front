@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { TagsType } from "../../../features/tags/tags.type";
 import { useTags } from "../../services/tags.queries";
 import "./navbar-menu.scss";
+import { useNavigate } from "react-router-dom";
 
 type NavbarMenuProps = {
   orientation: "horizontal" | "vertical";
@@ -12,6 +13,8 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   const { data, isLoading, error } = useTags(page);
   const canGoPrev = page > 1;
   const tags = data?.tags?.data ?? [];
+  const [tagFiltering, setFilter] = useState<TagsType[]>([]);
+  const navigate = useNavigate();
 
   const nextTagPage = () => {
     setPage((p) => p + 1);
@@ -22,7 +25,29 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   };
 
   if (isLoading) return null;
-  if (error) return <span className="text-sm text-red-500">Error while loading tags</span>;
+  if (error)
+    return (
+      <span className="text-sm text-red-500">Error while loading tags</span>
+    );
+
+  const handleGalleryFilter = (tag: TagsType) => {
+    setFilter((prev) => {
+      let newTags;
+      if (prev.find((t) => t.id === tag.id)) {
+        newTags = prev.filter((t) => t.id !== tag.id);
+      } else {
+        newTags = [...prev, tag];
+      }
+      if (newTags.length) {
+        const tagNames = newTags.map((t) => t.name).join(",");
+        navigate(`/home?tags=${tagNames}`, { replace: true });
+      } else {
+        navigate(`/home`, { replace: true });
+      }
+
+      return newTags;
+    });
+  };
 
   return (
     <div className="w-full">
@@ -56,15 +81,23 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
             : "flex flex-col gap-2 h-full overflow-y-auto pr-1"
         }
       >
-        {tags.map((t: TagsType) => (
-          <button
-            key={t.id}
-            type="button"
-            className="px-3 py-2 rounded-xl border border-border bg-background text-foreground text-xs text-left hover:bg-muted whitespace-nowrap"
-          >
-            #{t.name}
-          </button>
-        ))}
+        {tags.map((t: TagsType) => {
+          const isSelected = tagFiltering.some((f) => f.id === t.id);
+          return (
+            <button
+              key={t.id}
+              type="button"
+              className={`px-3 py-2 rounded-xl border ${
+                isSelected
+                  ? "border-blue-500 bg-blue-100 text-blue-700"
+                  : "border-border bg-background text-foreground"
+              } text-xs text-left hover:bg-muted whitespace-nowrap`}
+              onClick={() => handleGalleryFilter(t)}
+            >
+              #{t.name}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
