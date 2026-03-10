@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import {
   useCreateTag,
@@ -28,14 +30,17 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagSearch, setTagSearch] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
   const { t } = useTranslation();
 
-  const { data, isLoading } = useTags(0);
+  const { data } = useTags(0);
   const allTags: TagsType[] = data?.tags?.data ?? [];
 
   const { mutate: createTag } = useCreateTag();
   const { mutate: updatePhoto } = useUpdatePhoto();
+
+  const textareaClassName =
+    "mt-1 w-full rounded-xl border border-input bg-transparent px-3 py-2.5 text-sm text-foreground shadow-sm outline-none transition placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 resize-none dark:bg-input/30";
 
   // react-hook-form setup with default values
   const { register, handleSubmit, reset } = useForm({
@@ -140,23 +145,26 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
   };
 
   return (
-    <form className="w-full max-w-5xl p-6" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex gap-6">
+    <form
+      className="w-full p-6 h-full flex flex-col"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="flex flex-1 min-h-0 overflow-auto flex-col md:flex-row gap-6">
         {/* IMAGE */}
         <label
           htmlFor="photo"
-          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center border-2 border-dashed rounded-lg cursor-pointer hover:border-primary transition"
+          className="w-full md:w-[65%] min-h-0 h-full flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/30 cursor-pointer hover:border-ring transition overflow-hidden"
         >
           {preview ? (
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-contain bg-background rounded-2xl"
             />
           ) : (
             <>
-              <div className="text-6xl text-gray-400">+</div>
-              <p className="text-sm text-gray-500 mt-2">
+              <div className="text-6xl text-muted-foreground">+</div>
+              <p className="text-sm text-muted-foreground mt-2">
                 {t("common:upload") + " " + t("common:photo")}
               </p>
             </>
@@ -171,19 +179,19 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
         </label>
 
         {/* FORM */}
-        <div className="w-7/12 flex flex-col gap-4">
+        <div className="w-full md:w-[35%] flex flex-col gap-4 min-h-0 pr-1">
           <h3 className="text-xl font-semibold">
             {t("common:general.updating") + " " + t("common:photo")}
           </h3>
 
-          <input
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <Input
+            className="h-10 rounded-xl px-3"
             placeholder={t("common:name")}
             {...register("name", { required: true })}
           />
 
-          <input
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <Input
+            className="h-10 rounded-xl px-3"
             placeholder={t("common:alt")}
             {...register("title")}
           />
@@ -194,12 +202,12 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
               {selectedTags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2.5 py-0.5 text-sm rounded-full bg-gray-700 text-white flex items-center gap-2"
+                  className="px-2.5 py-0.5 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 dark:bg-secondary dark:text-secondary-foreground dark:border-transparent flex items-center gap-2"
                 >
                   {tag}
                   <button
                     type="button"
-                    className="btn-small"
+                    className="button-reset text-xs text-muted-foreground hover:text-foreground"
                     onClick={() => removeTag(tag)}
                   >
                     ✕
@@ -208,8 +216,8 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
               ))}
             </div>
 
-            <input
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <Input
+              className="h-10 rounded-xl px-3"
               placeholder={
                 t("common:general.search") +
                 " " +
@@ -224,14 +232,14 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
 
             {tagSearch && (
               <div
-                className={`mt-2 max-h-40 overflow-y-auto bg-white ${
-                  !tagExistsGlobally ? "border rounded-lg shadow" : ""
+                className={`mt-2 max-h-40 overflow-y-auto rounded-lg bg-popover text-popover-foreground ${
+                  !tagExistsGlobally ? "border border-border shadow-sm" : ""
                 }`}
               >
                 {filteredTags.map((tag) => (
                   <div
                     key={tag.id}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="px-3 py-2 text-sm hover:bg-muted cursor-pointer"
                     onClick={() => addTag(tag.name!)}
                   >
                     {tag.name}
@@ -240,7 +248,7 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
 
                 {!filteredTags.length && !tagExistsGlobally && (
                   <div
-                    className="px-4 py-2 text-primary cursor-pointer"
+                    className="px-3 py-2 text-sm text-primary cursor-pointer hover:bg-muted"
                     onClick={() => addTag(tagSearch)}
                   >
                     + {t("common:general.create")} "{tagSearch}"
@@ -251,7 +259,7 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
           </div>
 
           <textarea
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className={textareaClassName}
             rows={3}
             placeholder={t("common:description")}
             {...register("description")}
@@ -260,20 +268,23 @@ const UpdatePhotoForm = ({ photo, onClose }: UpdatePhotoFormProps) => {
       </div>
 
       {/* ACTIONS */}
-      <div className="flex justify-end gap-3 mt-6">
-        <button
+      <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-border">
+        <Button
           type="button"
           onClick={Cancel}
-          className="px-6 py-2 bordered rounded-lg hover:bg-gray-500 hover:text-white"
+          variant="outline"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5"
         >
           {t("common:general.cancel")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
-          className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5 font-semibold"
         >
           {t("common:general.update")}
-        </button>
+        </Button>
       </div>
     </form>
   );

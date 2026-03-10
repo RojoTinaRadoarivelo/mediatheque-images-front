@@ -5,7 +5,7 @@ import ToggleSwitch from "../../../shared/components/ui/custom-switch";
 function Privacy() {
   const { t } = useTranslation();
   const selectClassName =
-    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+    "h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground shadow-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40";
   const [visibility, setVisibility] = useState<"Public" | "Private">("Public");
   const [options, setOptions] = useState({
     showLikes: true,
@@ -42,13 +42,13 @@ function Privacy() {
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">{t("settings:privacy_intro")}</p>
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">{t("settings:privacy_intro")}</p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 p-4">
-        <label className="block text-sm font-semibold text-slate-700 mb-2">
+      <div className="rounded-xl border border-border bg-background p-4">
+        <label className="block text-sm font-semibold mb-2">
           {t("settings:privacy_items.profileVisibility")}
         </label>
         <select
@@ -61,17 +61,17 @@ function Privacy() {
         </select>
       </div>
 
-      <div className="rounded-xl border border-slate-200 overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden">
         {rows.map((row, index) => (
           <div
             key={row.key}
             className={`p-4 flex items-center justify-between gap-4 ${
-              index !== rows.length - 1 ? "border-b border-slate-100" : ""
+              index !== rows.length - 1 ? "border-b border-border" : ""
             }`}
           >
             <div>
-              <p className="text-sm font-semibold text-slate-700">{row.title}</p>
-              <p className="text-xs text-slate-500 mt-1">{row.subtitle}</p>
+              <p className="text-sm font-semibold">{row.title}</p>
+              <p className="text-xs text-muted-foreground mt-1">{row.subtitle}</p>
             </div>
             <ToggleSwitch
               checked={options[row.key]}

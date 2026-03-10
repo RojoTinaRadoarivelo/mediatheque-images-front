@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteUser } from "../../../shared/services/user.queries";
 import { useAuth } from "../../auth/context/auth.context";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function Security() {
   const navigate = useNavigate();
@@ -27,9 +28,9 @@ function Security() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">
           Gere les actions sensibles du compte. Verifie bien avant de confirmer
           une suppression definitive.
         </p>
@@ -42,18 +43,20 @@ function Security() {
           deletion.
         </p>
 
-        <button
+        <Button
           type="button"
           disabled={!user?.id}
           onClick={() => user?.id && Delete(user.id)}
-          className="text-sm px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+          variant="destructive"
+          size="lg"
+          className="button-reset h-10 rounded-lg px-4 text-sm font-semibold"
         >
           Delete my account
-        </button>
+        </Button>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <p className="text-sm text-slate-500 mb-4">
+      <div className="rounded-xl border border-border bg-background p-4">
+        <p className="text-sm text-muted-foreground mb-4">
           {t("common:general.save")} des parametres de securite plus avances:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -61,7 +64,7 @@ function Security() {
             <button
               key={action}
               type="button"
-              className="rounded-lg border border-slate-200 px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+              className="button-reset rounded-lg border border-border bg-background px-4 py-3 text-left text-sm text-foreground hover:bg-muted whitespace-normal"
             >
               {action}
             </button>

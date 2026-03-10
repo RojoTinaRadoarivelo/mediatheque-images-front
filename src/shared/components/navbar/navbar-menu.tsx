@@ -27,7 +27,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-[11px] uppercase tracking-wide text-slate-500 px-1">
+        <p className="text-[11px] uppercase tracking-wide text-muted-foreground px-1">
           Popular tags
         </p>
         <div className="flex items-center gap-1">
@@ -35,14 +35,14 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
             type="button"
             onClick={prevTagPage}
             disabled={!canGoPrev}
-            className="w-7 h-7 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-100 disabled:opacity-50"
+            className="w-7 h-7 rounded-md border border-border bg-background text-xs text-muted-foreground hover:bg-muted disabled:opacity-50"
           >
             {"<"}
           </button>
           <button
             type="button"
             onClick={nextTagPage}
-            className="w-7 h-7 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-100"
+            className="w-7 h-7 rounded-md border border-border bg-background text-xs text-muted-foreground hover:bg-muted"
           >
             {">"}
           </button>
@@ -60,7 +60,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
           <button
             key={t.id}
             type="button"
-            className="px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs text-left hover:bg-slate-50 hover:border-slate-300 whitespace-nowrap"
+            className="px-3 py-2 rounded-xl border border-border bg-background text-foreground text-xs text-left hover:bg-muted whitespace-nowrap"
           >
             #{t.name}
           </button>

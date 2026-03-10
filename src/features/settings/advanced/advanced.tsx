@@ -14,17 +14,19 @@ function Advanced() {
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">{t("settings:advanced_intro")}</p>
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">
+          {t("settings:advanced_intro")}
+        </p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 p-4 flex items-center justify-between">
+      <div className="rounded-xl border border-border bg-background p-4 flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-slate-700">
+          <p className="text-sm font-semibold">
             {t("settings:advanced_items.betaFeatures")}
           </p>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {t("settings:advanced_items.betaFeatures_desc")}
           </p>
         </div>
@@ -44,7 +46,7 @@ function Advanced() {
           <button
             key={action}
             type="button"
-            className="rounded-lg border border-slate-200 px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-border bg-background px-4 py-3 text-left text-sm text-foreground hover:bg-muted"
           >
             {action}
           </button>

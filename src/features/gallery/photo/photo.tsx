@@ -41,9 +41,6 @@ const Photo = ({
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const {
     mutate: deletePhoto,
-    isPending: isCreatingPhoto,
-    isError: isdeletePhotoError,
-    error: deletePhotoError,
   } = useDeletePhoto();
   const { t } = useTranslation(["common", "gallery"]);
 
@@ -129,7 +126,9 @@ const Photo = ({
                 <Modal
                   isOpen={isUpdateModalOpen}
                   onClose={() => setUpdateModalOpen(false)}
-                  width="w-1-2"
+                  width="80vw"
+                  height="80vh"
+                  contentClassName="p-0 h-full"
                 >
                   <UpdatePhotoForm
                     photo={{

@@ -8,6 +8,7 @@ import { useAuth } from "../context/auth.context";
 import { useForm } from "react-hook-form";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function SignUp({ closeModal }: { closeModal: () => void }) {
   const [step, setStep] = useState<"form" | "code">("form");
@@ -62,13 +63,11 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
   }, [step, errors]);
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="w-full bg-background p-5 text-foreground">
       <div className="mb-4">
-        <p className="text-lg font-semibold text-slate-900">
-          {t("common:auth.signup")}
-        </p>
+        <p className="text-lg font-semibold">{t("common:auth.signup")}</p>
       </div>
-      <p className="mt-1 text-xs text-slate-500">
+      <p className="mt-1 text-xs text-muted-foreground">
         {step === "form"
           ? "Create your account in two quick steps."
           : "Enter the verification code sent to your email."}
@@ -76,9 +75,9 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
 
       <div className="my-4 flex items-center gap-2 text-xs">
         <span
-          className={`h-2.5 w-2.5 rounded-full ${step === "form" ? "bg-slate-900" : "bg-slate-300"}`}
+          className={`h-2.5 w-2.5 rounded-full ${step === "form" ? "bg-primary" : "bg-muted-foreground/40"}`}
         />
-        <span className="text-slate-600">
+        <span className="text-muted-foreground">
           {step === "form" ? "Credentials" : "Verification"}
         </span>
       </div>
@@ -98,7 +97,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             style={{ position: "absolute", top: 0, left: 0, width: "100%" }}
           >
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {t("common:general.email")}
               </label>
               <input
@@ -106,7 +105,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 placeholder="email@example.com"
                 autoComplete="email"
                 {...register("email")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-500">
@@ -116,7 +115,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {t("common:auth.password")}
               </label>
               <input
@@ -124,7 +123,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 placeholder="........"
                 autoComplete="new-password"
                 {...register("password")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.password && (
                 <p className="mt-1 text-xs text-red-500">
@@ -134,7 +133,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {t("common:auth.confirmPassword")}
               </label>
               <input
@@ -142,7 +141,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 placeholder="........"
                 autoComplete="new-password"
                 {...register("confirmPassword")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.confirmPassword && (
                 <p className="mt-1 text-xs text-red-500">
@@ -151,13 +150,14 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
               )}
             </div>
 
-            <button
+            <Button
               type="button"
               onClick={handleSendCode}
-              className="button-reset mt-1 h-10 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-700"
+              size="lg"
+              className="button-reset mt-1 h-10 w-full rounded-xl text-sm font-semibold"
             >
               {t("common:auth.sendCode")}
-            </button>
+            </Button>
           </div>
 
           <div
@@ -170,7 +170,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             style={{ position: "absolute", top: 0, left: 0, width: "100%" }}
           >
             <div className="my-4">
-              <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {t("common:auth.validationCode")}
               </label>
               <input
@@ -180,7 +180,7 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
                 inputMode="numeric"
                 maxLength={8}
                 {...register("code")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.code && (
                 <p className="mt-1 text-xs text-red-500">
@@ -190,20 +190,23 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
             </div>
 
             <div className="mt-1 w-full flex justify-between ">
-              <button
+              <Button
                 type="button"
                 onClick={handleBackToForm}
-                className="button-reset w-24 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600 hover:text-slate-900 hover:cursor-pointer"
+                variant="ghost"
+                size="sm"
+                className="button-reset w-24 inline-flex items-center justify-start gap-2 px-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-foreground"
               >
                 <span aria-hidden="true">&larr;</span>
                 <span>Back</span>
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
-                className="button-reset w-24  h-10  rounded-xl bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-700"
+                size="lg"
+                className="button-reset w-24 h-10 rounded-xl text-sm font-semibold"
               >
                 {t("common:general.save")}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

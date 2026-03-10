@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const languageOptions: Record<LanguageListType, { label: string; flag: string }> = {
   en: { label: "EN", flag: "/flags/EN.svg" },
@@ -47,7 +48,7 @@ function Preference() {
   const currentLanguage = (i18n.language as LanguageListType) ?? "en";
   const currentLanguageOption = languageOptions[currentLanguage];
   const selectClassName =
-    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+    "h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground shadow-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40";
 
   const changeLanguage = (lang: LanguageListType) => {
     i18n.changeLanguage(lang);
@@ -83,27 +84,27 @@ function Preference() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">
           Configure tes preferences linguistiques et de tri pour personnaliser
           ton experience.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             {t("common:general.language")}
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Langue d'affichage de l'interface.
           </p>
           <Select
             value={currentLanguage}
             onValueChange={(value) => changeLanguage(value as LanguageListType)}
           >
-            <SelectTrigger className="h-10 w-full rounded-xl border-slate-200 bg-white text-sm">
+            <SelectTrigger className="h-10 w-full rounded-xl border-border bg-background text-sm">
               <SelectValue>
                 <span className="inline-flex items-center gap-2 uppercase">
                   <img
@@ -132,11 +133,11 @@ function Preference() {
           </Select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             Sorting
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Ordre par defaut des contenus.
           </p>
           <select
@@ -154,11 +155,11 @@ function Preference() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             Default Download Quality
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Default quality for quick downloads.
           </p>
           <select
@@ -176,11 +177,11 @@ function Preference() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             Default Homepage
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Choose where the app opens first.
           </p>
           <select
@@ -198,13 +199,13 @@ function Preference() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4 space-y-4">
+        <div className="rounded-xl border border-border bg-background p-4 space-y-4">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm font-semibold">
                 Auto-like on double click
               </p>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Automatically like image on double click.
               </p>
             </div>
@@ -221,8 +222,8 @@ function Preference() {
 
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-slate-700">Safe search</p>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-sm font-semibold">Safe search</p>
+              <p className="text-xs text-muted-foreground mt-1">
                 Filter sensitive content in results.
               </p>
             </div>
@@ -239,16 +240,18 @@ function Preference() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <p className="text-sm text-slate-500">
+      <div className="rounded-xl border border-border bg-background p-4">
+        <p className="text-sm text-muted-foreground">
           Valeurs actuelles:{" "}
-          <span className="font-medium text-slate-700 uppercase">
+          <span className="font-medium text-foreground uppercase">
             {i18n.language}
           </span>
           {" | "}
-          <span className="font-medium text-slate-700">{defaultSort}</span>
+          <span className="font-medium text-foreground">{defaultSort}</span>
           {" | "}
-          <span className="font-medium text-slate-700">{downloadQuality}</span>
+          <span className="font-medium text-foreground">
+            {downloadQuality}
+          </span>
           {isAuthenticated && user?.id ? "" : " | mode local uniquement"}
         </p>
       </div>
@@ -256,19 +259,22 @@ function Preference() {
       {/* ACTIONS */}
       <div className="mt-6 flex justify-start">
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={() => Cancel()}
-            className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
+            variant="outline"
+            size="lg"
+            className="button-reset h-10 rounded-xl px-5"
           >
             {t("common:general.cancel")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             onClick={() => handleSubmit()}
-            className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+            size="lg"
+            className="button-reset h-10 rounded-xl px-5 font-semibold"
           >
             {t("common:general.save")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

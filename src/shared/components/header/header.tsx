@@ -19,6 +19,7 @@ import { useUpdatePreference } from "../../services/preferences.queries";
 import { useAuth } from "../../../features/auth/context/auth.context";
 import { getMergedPreference } from "../../../features/settings/utils/preference.utils";
 import ToggleSwitch from "../ui/custom-switch";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -107,71 +108,78 @@ function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/80 bg-background/90 text-foreground shadow-sm shadow-black/5 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto w-full max-w-[90rem] px-3 md:px-5 py-2 md:py-2.5 flex items-center gap-2">
         <button
           type="button"
           className="flex items-center gap-2 min-w-fit"
           onClick={() => navigate("/")}
         >
-          <div className="w-8 h-8 rounded-lg bg-slate-900 text-white grid place-items-center text-xs font-bold">
+          <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground grid place-items-center text-xs font-bold">
             M
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-sm font-semibold text-slate-800 leading-none">
+            <p className="text-sm font-semibold leading-none">
               Mediatheque
             </p>
-            <p className="text-[11px] text-slate-500 leading-none mt-1">
+            <p className="text-[11px] text-muted-foreground leading-none mt-1">
               Photo platform
             </p>
           </div>
         </button>
 
         <div className="flex-1">
-          <div className="flex h-10 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 focus-within:ring-2 focus-within:ring-blue-500">
-            <span className="text-slate-400 mr-2 text-sm">Find</span>
+          <div className="flex h-10 items-center rounded-xl border border-border bg-muted px-3 focus-within:ring-2 focus-within:ring-ring">
+            <span className="text-muted-foreground mr-2 text-sm">Find</span>
             <input
               type="text"
               placeholder={t("general.search")}
-              className="w-full bg-transparent text-sm outline-none"
+              className="w-full bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => onEnterPressed(e)}
             />
-            <button
+            <Button
               type="button"
-              className="button-reset ml-2 h-8 px-3.5 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-700"
+              size="sm"
+              className="button-reset ml-2 h-8 px-3.5 rounded-lg"
               onClick={searchGallery}
             >
               Search
-            </button>
+            </Button>
           </div>
         </div>
 
         <div className="hidden lg:flex items-center gap-2">
-          <button
+          <Button
             type="button"
             onClick={() => navigate("/home")}
-            className="button-reset h-8 px-3 text-xs font-medium rounded-lg border border-slate-200 hover:bg-slate-100"
+            variant="outline"
+            size="sm"
+            className="button-reset h-8 rounded-lg px-3 text-xs font-medium"
           >
             Explore
-          </button>
+          </Button>
           {isAuthenticated && (
             <>
-              <button
+              <Button
                 type="button"
                 onClick={() => navigate("/galleries")}
-                className="button-reset h-8 px-3 text-xs font-medium rounded-lg border border-slate-200 hover:bg-slate-100"
+                variant="outline"
+                size="sm"
+                className="button-reset h-8 rounded-lg px-3 text-xs font-medium"
               >
                 Gallery
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={() => navigate("/profile")}
-                className="button-reset h-8 px-3 text-xs font-medium rounded-lg border border-slate-200 hover:bg-slate-100"
+                variant="outline"
+                size="sm"
+                className="button-reset h-8 rounded-lg px-3 text-xs font-medium"
               >
                 Profile
-              </button>
+              </Button>
             </>
           )}
         </div>
@@ -199,7 +207,7 @@ function Header() {
             value={language}
             onValueChange={(value) => changeLanguage(value as LanguageListType)}
           >
-            <SelectTrigger className="h-8 min-w-[76px] border-slate-200 bg-white text-[11px]">
+            <SelectTrigger className="h-8 min-w-[76px] border-border bg-background text-[11px]">
               <SelectValue>
                 <span className="inline-flex items-center gap-2">
                   <img
@@ -230,7 +238,7 @@ function Header() {
           {showLayoutSelect && (
             <div className="hidden md:block">
               <Select value={layout} onValueChange={changeLayout}>
-                <SelectTrigger className="h-8 min-w-[92px] border-slate-200 bg-white text-[11px]">
+                <SelectTrigger className="h-8 min-w-[92px] border-border bg-background text-[11px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -244,14 +252,16 @@ function Header() {
             </div>
           )}
 
-          <button
+          <Button
             type="button"
-            className="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 inline-flex items-center justify-center leading-none"
+            variant="outline"
+            size="icon"
+            className="button-reset w-8 h-8 rounded-lg text-muted-foreground"
             onClick={() => navigate("faq")}
             title="FAQ"
           >
             ?
-          </button>
+          </Button>
 
           <User openModal={setActiveModal}></User>
           <Modal isOpen={!!activeModal} onClose={() => setActiveModal(null)}>

@@ -9,6 +9,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateUser } from "../../shared/services/user.queries";
 import { ENV } from "../../environment/env.local";
+import { Button } from "@/components/ui/button";
 
 type StatsMode = "monthly" | "yearly";
 type ChartPoint = {
@@ -137,19 +138,19 @@ function Profile() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 p-4 md:p-6">
+    <div className="w-full min-h-screen bg-background p-4 md:p-6 text-foreground">
       <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-4">
         <form
-          className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 h-fit shadow-sm"
+          className="rounded-2xl border border-border bg-card p-5 md:p-6 h-fit shadow-sm"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col items-center gap-4 mb-7">
-            <h2 className="uppercase text-xs tracking-wide text-slate-500">
+            <h2 className="uppercase text-xs tracking-wide text-muted-foreground">
               Photographer profile
             </h2>
             <label
               htmlFor="photo"
-              className="relative w-44 h-44 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center cursor-pointer overflow-hidden hover:border-blue-500 transition"
+              className="relative w-44 h-44 rounded-full border-2 border-dashed border-border bg-muted/30 flex items-center justify-center cursor-pointer overflow-hidden hover:border-ring transition"
               title="Upload photo"
             >
               {previewSrc ? (
@@ -159,7 +160,7 @@ function Profile() {
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <div className="text-5xl text-slate-400">+</div>
+                <div className="text-5xl text-muted-foreground">+</div>
               )}
               <input
                 id="photo"
@@ -173,14 +174,14 @@ function Profile() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700">
+              <label className="block text-sm font-medium">
                 Email
               </label>
               <input
                 type="email"
                 placeholder="email@example.com"
                 {...register("email")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -188,14 +189,14 @@ function Profile() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700">
+              <label className="block text-sm font-medium">
                 Username
               </label>
               <input
                 type="text"
                 placeholder="Username"
                 {...register("userName")}
-                className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
               />
               {errors.userName && (
                 <p className="text-red-500 text-sm mt-1">{errors.userName.message}</p>
@@ -204,40 +205,43 @@ function Profile() {
           </div>
 
           <div className="mt-6 flex justify-end gap-3">
-            <button
+            <Button
               type="button"
               onClick={cancelChanges}
-              className="button-reset h-10 px-5 rounded-xl border border-slate-300 text-sm text-slate-700 hover:bg-slate-100"
+              variant="outline"
+              size="lg"
+              className="button-reset h-10 rounded-xl px-5"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="button-reset h-10 px-5 rounded-xl text-sm font-semibold text-white bg-slate-900 hover:bg-slate-700"
+              size="lg"
+              className="button-reset h-10 rounded-xl px-5 text-sm font-semibold"
             >
               Save
-            </button>
+            </Button>
           </div>
         </form>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm">
+        <section className="rounded-2xl border border-border bg-card p-5 md:p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div>
-              <h3 className="text-base font-semibold text-slate-800">
+              <h3 className="text-base font-semibold">
                 Popularity analytics (demo)
               </h3>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 Random test numbers for likes, downloads and donations.
               </p>
             </div>
-            <div className="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-50">
+            <div className="inline-flex rounded-lg border border-border p-1 bg-muted">
               <button
                 type="button"
                 onClick={() => setMode("monthly")}
                 className={`button-reset h-8 px-3 text-xs rounded-md ${
                   mode === "monthly"
-                    ? "bg-white shadow text-slate-800"
-                    : "text-slate-500"
+                    ? "bg-background shadow text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 Monthly
@@ -247,8 +251,8 @@ function Profile() {
                 onClick={() => setMode("yearly")}
                 className={`button-reset h-8 px-3 text-xs rounded-md ${
                   mode === "yearly"
-                    ? "bg-white shadow text-slate-800"
-                    : "text-slate-500"
+                    ? "bg-background shadow text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 Yearly
@@ -257,27 +261,27 @@ function Profile() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs text-slate-500">Likes</p>
-              <p className="text-xl font-semibold text-slate-800">
+            <div className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Likes</p>
+              <p className="text-xl font-semibold">
                 {totals.likes.toLocaleString()}
               </p>
             </div>
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs text-slate-500">Downloads</p>
-              <p className="text-xl font-semibold text-slate-800">
+            <div className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Downloads</p>
+              <p className="text-xl font-semibold">
                 {totals.downloads.toLocaleString()}
               </p>
             </div>
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs text-slate-500">Donations</p>
-              <p className="text-xl font-semibold text-slate-800">
+            <div className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Donations</p>
+              <p className="text-xl font-semibold">
                 ${totals.donations.toLocaleString()}
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 p-4">
+          <div className="rounded-xl border border-border p-4">
             <div className="h-72 flex items-end gap-2">
               {chartData.map((item) => (
                 <div key={item.label} className="flex-1 flex flex-col items-center gap-1">
@@ -298,11 +302,13 @@ function Profile() {
                       title={`Donations: ${item.donations}`}
                     />
                   </div>
-                  <span className="text-[11px] text-slate-500">{item.label}</span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {item.label}
+                  </span>
                 </div>
               ))}
             </div>
-            <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-600">
+            <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <span className="w-3 h-3 rounded bg-blue-500" />
                 Likes

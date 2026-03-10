@@ -39,24 +39,24 @@ function Notifications() {
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">
           {t("settings:notifications_intro")}
         </p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden">
         {rows.map((row, index) => (
           <div
             key={row.key}
             className={`p-4 flex items-center justify-between gap-4 ${
-              index !== rows.length - 1 ? "border-b border-slate-100" : ""
+              index !== rows.length - 1 ? "border-b border-border" : ""
             }`}
           >
             <div>
-              <p className="text-sm font-semibold text-slate-700">{row.title}</p>
-              <p className="text-xs text-slate-500 mt-1">{row.subtitle}</p>
+              <p className="text-sm font-semibold">{row.title}</p>
+              <p className="text-xs text-muted-foreground mt-1">{row.subtitle}</p>
             </div>
             <ToggleSwitch
               checked={state[row.key]}

@@ -5,10 +5,10 @@
     font-size: 0.78rem;
     line-height: 1.2;
     cursor: pointer;
-    color: #1e293b;
-    border-bottom: 1px solid #f1f5f9;
+    color: var(--foreground);
+    border-bottom: 1px solid var(--border);
 }
 
 .dropdown-item:hover {
-    background-color: #f8fafc;
+    background-color: var(--muted);
 }

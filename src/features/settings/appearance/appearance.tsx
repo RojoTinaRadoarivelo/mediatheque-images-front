@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Layouts,
   useLayout,
@@ -10,6 +10,7 @@ import { useUpdatePreference } from "../../../shared/services/preferences.querie
 import { useAuth } from "../../auth/context/auth.context";
 import { getMergedPreference } from "../utils/preference.utils";
 import ToggleSwitch from "../../../shared/components/ui/custom-switch";
+import { Button } from "@/components/ui/button";
 
 function Appearance() {
   const { layout, setLayout } = useLayout();
@@ -28,16 +29,11 @@ function Appearance() {
     "Left",
   );
   const selectClassName =
-    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+    "h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground shadow-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40";
 
   const changeThemeMode = (mode: ThemeType) => {
     setTheme(mode);
   };
-
-  useEffect(() => {
-    const currentTheme = (localStorage.getItem("Theme") ?? "Light") as ThemeType;
-    setTheme(currentTheme);
-  }, [setTheme]);
 
   const handleSubmit = () => {
     if (!isAuthenticated || !user?.id) return;
@@ -64,22 +60,24 @@ function Appearance() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-        <p className="text-sm text-slate-600">
+    <div className="space-y-5 text-foreground">
+      <div className="rounded-xl border border-border bg-muted/60 p-4">
+        <p className="text-sm text-muted-foreground">
           Controle l'affichage global de l'application. Les changements sont
           appliques immediatement.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             Theme
           </label>
-          <p className="text-xs text-slate-500 mb-3">Switch between Light and Dark.</p>
+          <p className="text-xs text-muted-foreground mb-3">
+            Switch between Light and Dark.
+          </p>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-muted-foreground">
               {Theme === "Dark" ? "Dark" : "Light"}
             </span>
             <ToggleSwitch
@@ -100,11 +98,11 @@ function Appearance() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             App Layout
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Organisation des grilles et sections.
           </p>
           <select
@@ -122,14 +120,14 @@ function Appearance() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
+        <div className="rounded-xl border border-border bg-background p-4">
           <label
             htmlFor="Theme"
-            className="block text-sm font-semibold text-slate-700 mb-2"
+            className="block text-sm font-semibold mb-2"
           >
             Gallery Layout
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Grid, Masonry or Compact for feed display.
           </p>
           <select
@@ -146,11 +144,11 @@ function Appearance() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <div className="rounded-xl border border-border bg-background p-4">
+          <label className="block text-sm font-semibold mb-2">
             Default Image Size
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Size used in initial gallery render.
           </p>
           <select
@@ -166,11 +164,11 @@ function Appearance() {
           </select>
         </div>
 
-        <div className="rounded-xl border border-slate-200 p-4 space-y-4">
+        <div className="rounded-xl border border-border bg-background p-4 space-y-4">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-slate-700">Animations</p>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-sm font-semibold">Animations</p>
+              <p className="text-xs text-muted-foreground mt-1">
                 Enable or disable transitions.
               </p>
             </div>
@@ -186,7 +184,7 @@ function Appearance() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold mb-2">
               Sidebar Position
             </label>
             <select
@@ -203,14 +201,14 @@ function Appearance() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <p className="text-sm text-slate-500">
+      <div className="rounded-xl border border-border bg-background p-4">
+        <p className="text-sm text-muted-foreground">
           Etat actuel:{" "}
-          <span className="font-medium text-slate-700">{Theme}</span>
+          <span className="font-medium text-foreground">{Theme}</span>
           {" | "}
-          <span className="font-medium text-slate-700">{layout}</span>
+          <span className="font-medium text-foreground">{layout}</span>
           {" | "}
-          <span className="font-medium text-slate-700">{galleryLayout}</span>
+          <span className="font-medium text-foreground">{galleryLayout}</span>
           {isAuthenticated && user?.id ? "" : " | mode local uniquement"}
         </p>
       </div>
@@ -218,19 +216,22 @@ function Appearance() {
       {/* ACTIONS */}
       <div className="mt-6 flex justify-start">
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={() => Cancel()}
-            className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
+            variant="outline"
+            size="lg"
+            className="button-reset h-10 rounded-xl px-5"
           >
             {t("common:general.cancel")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => handleSubmit()}
-            className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+            size="lg"
+            className="button-reset h-10 rounded-xl px-5 font-semibold"
           >
             {t("common:general.save")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

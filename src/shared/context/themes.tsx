@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 export type ThemeType = "Light" | "Dark";
 export const themes: string[] = ["Light", "Dark"];
 interface ThemeContextProps {
@@ -12,14 +12,22 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [Theme, setThemeState] = useState<ThemeType>(
     (localStorage.getItem("Theme") as ThemeType) || "Light",
   );
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const isDark = Theme === "Dark";
+    root.classList.toggle("dark", isDark);
+    // helps built-in form controls match the current theme
+    root.style.colorScheme = isDark ? "dark" : "light";
+  }, [Theme]);
+
   const setTheme = (newTheme: ThemeType) => {
     setThemeState(newTheme);
     localStorage.setItem("Theme", newTheme);
   };
   return (
     <ThemeContext.Provider value={{ Theme, setTheme }}>
-      {" "}
-      {children}{" "}
+      {children}
     </ThemeContext.Provider>
   );
 };

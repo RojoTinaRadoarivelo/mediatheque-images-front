@@ -9,6 +9,7 @@ import { useAuth } from "../context/auth.context";
 import { useEffect } from "react";
 import type { ModalKey } from "../../../shared/utils/modals.type";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function SignIn({
   closeModal,
@@ -39,24 +40,22 @@ function SignIn({
   }, [isAuthenticated, closeModal]);
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="w-full  bg-background p-5  text-foreground">
       <div className="mb-4">
-        <p className="text-lg font-semibold text-slate-900">
-          {t("common:auth.signin")}
-        </p>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="text-lg font-semibold">{t("common:auth.signin")}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
           Access your account to manage galleries and preferences.
         </p>
       </div>
       <form className="space-y-4" onSubmit={handleSubmit(handleSignin)}>
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("common:general.email")}
           </label>
           <input
             type="email"
             placeholder="email@example.com"
-            className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+            className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
             {...register("email")}
           />
           {errors.email && (
@@ -65,32 +64,35 @@ function SignIn({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("common:auth.password")}
           </label>
           <input
             type="password"
             placeholder="........"
-            className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+            className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
             {...register("password")}
           />
           {errors.password && (
-            <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+            <p className="mt-1 text-xs text-red-500">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="button-reset mt-1 h-10 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-700"
+          size="lg"
+          className="button-reset mt-1 h-10 w-full rounded-xl text-sm font-semibold"
         >
           {t("common:auth.signin")}
-        </button>
+        </Button>
       </form>
-      <p className="mt-5 text-center text-sm text-slate-600">
+      <p className="mt-5 text-center text-sm text-muted-foreground">
         {t("common:auth.dontHaveAccount")}{" "}
         <a
           onClick={() => switchModal("sign-up")}
-          className="font-semibold text-slate-900 hover:cursor-pointer hover:underline"
+          className="font-semibold text-foreground hover:cursor-pointer hover:underline"
         >
           {t("common:auth.signup")}
         </a>

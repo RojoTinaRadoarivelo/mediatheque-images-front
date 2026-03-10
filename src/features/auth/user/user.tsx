@@ -56,7 +56,7 @@ function User({ openModal }: UserProps) {
     <div className="relative" ref={menuRef}>
       {/* Avatar */}
       <div
-        className="w-10 h-10 rounded-full cursor-pointer inline-flex items-center justify-center hover:bg-slate-200 border border-slate-300 bg-slate-700 text-white"
+        className="w-10 h-10 rounded-full cursor-pointer inline-flex items-center justify-center border border-border bg-muted text-foreground hover:bg-muted/80"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isAuthenticated ? (
@@ -74,7 +74,7 @@ function User({ openModal }: UserProps) {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-56 bg-background border border-border rounded-xl shadow-lg z-50 overflow-hidden text-foreground">
           {!isAuthenticated ? (
             <>
               <button

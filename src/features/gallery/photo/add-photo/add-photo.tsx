@@ -1,11 +1,16 @@
 import { useState } from "react";
-import "./add-photo.scss";
-import { useCreateTag, useTags } from "../../../../shared/services/tags.queries";
+import {
+  useCreateTag,
+  useTags,
+} from "../../../../shared/services/tags.queries";
 import type { TagsType } from "../../../tags/tags.type";
 import { useCreatePhoto } from "../../../../shared/services/gallery.queries";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../auth/context/auth.context";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 const AddPhotoForm = () => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -16,15 +21,18 @@ const AddPhotoForm = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  const { mutate: createTag, isError: isCreateTagError, error: createTagError } =
-    useCreateTag();
+  const {
+    mutate: createTag,
+    isError: isCreateTagError,
+    error: createTagError,
+  } = useCreateTag();
   const { mutate: createPhoto } = useCreatePhoto();
 
   const { register, handleSubmit, reset } = useForm();
 
   const allTags: TagsType[] = data?.tags?.data ?? [];
-  const inputClassName =
-    "h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+  const textareaClassName =
+    "w-full rounded-xl border border-input bg-transparent px-3 py-2.5 text-sm text-foreground shadow-xs outline-none transition placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 resize-none dark:bg-input/30";
 
   const filteredTags = allTags.filter(
     (tag) =>
@@ -108,18 +116,25 @@ const AddPhotoForm = () => {
   };
 
   return (
-    <form className="w-full max-w-5xl p-5 md:p-6" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="w-full max-w-5xl p-5 md:p-6"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex gap-6">
         <label
           htmlFor="photo"
-          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 cursor-pointer hover:border-blue-400 transition"
+          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/30 cursor-pointer hover:border-ring transition"
         >
           {preview ? (
-            <img src={preview} alt="Preview" className="w-full h-full object-cover rounded-2xl" />
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-full h-full object-cover rounded-2xl"
+            />
           ) : (
             <>
-              <div className="text-5xl text-slate-400">+</div>
-              <p className="text-sm text-slate-500 mt-2">
+              <div className="text-5xl text-muted-foreground">+</div>
+              <p className="text-sm text-muted-foreground mt-2">
                 {t("common:upload")} {t("common:photo")}
               </p>
             </>
@@ -134,18 +149,18 @@ const AddPhotoForm = () => {
         </label>
 
         <div className="w-7/12 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold text-slate-800">
+          <h3 className="text-xl font-semibold text-foreground">
             {t("common:general.new_f")} {t("common:photo")}
           </h3>
 
-          <input
-            className={inputClassName}
+          <Input
+            className="h-10 rounded-xl px-3 shadow-xs"
             placeholder={t("common:name")}
             {...register("name", { required: true })}
           />
 
-          <input
-            className={inputClassName}
+          <Input
+            className="h-10 rounded-xl px-3 shadow-xs"
             placeholder={t("common:alt")}
             {...register("title")}
           />
@@ -153,24 +168,29 @@ const AddPhotoForm = () => {
           <div>
             <div className="flex flex-wrap gap-2 mb-2">
               {selectedTags.map((tag) => (
-                <span
+                <Badge
                   key={tag}
-                  className="px-2.5 py-0.5 text-xs rounded-full bg-slate-700 text-white flex items-center gap-2"
+                  variant="secondary"
+                  className="gap-2 h-6 rounded-full px-2.5 bg-primary/10 text-primary border border-primary/20 dark:bg-secondary dark:text-secondary-foreground dark:border-transparent"
                 >
-                  {tag}
-                  <button
+                  <span>{tag}</span>
+                  <Button
                     type="button"
-                    className="button-reset text-xs"
+                    variant="ghost"
+                    size="icon-xs"
+                    className="button-reset -mr-1"
                     onClick={() => removeTag(tag)}
+                    aria-label={`Remove tag ${tag}`}
+                    title={`Remove tag ${tag}`}
                   >
-                    x
-                  </button>
-                </span>
+                    ×
+                  </Button>
+                </Badge>
               ))}
             </div>
 
-            <input
-              className={inputClassName}
+            <Input
+              className="h-10 rounded-xl px-3 shadow-xs"
               placeholder={`${t("common:general.search")} ${t("common:or")} ${t("common:general.add")} tag...`}
               value={tagSearch}
               onChange={(e) => setTagSearch(e.target.value)}
@@ -178,14 +198,14 @@ const AddPhotoForm = () => {
 
             {tagSearch && (
               <div
-                className={`mt-2 max-h-40 overflow-y-auto bg-white ${
-                  !tagExistsGlobally ? "border rounded-lg shadow" : ""
+                className={`mt-2 max-h-40 overflow-y-auto rounded-lg bg-popover text-popover-foreground ${
+                  !tagExistsGlobally ? "border border-border shadow-sm" : ""
                 }`}
               >
                 {filteredTags.map((tag) => (
                   <div
                     key={tag?.id}
-                    className="px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 cursor-pointer"
+                    className="px-3 py-2 text-sm hover:bg-muted cursor-pointer"
                     onClick={() => addTag(tag.name!)}
                   >
                     {tag?.name}
@@ -194,7 +214,7 @@ const AddPhotoForm = () => {
 
                 {!filteredTags.length && !tagExistsGlobally && (
                   <div
-                    className="px-3 py-2 text-sm text-blue-600 cursor-pointer"
+                    className="px-3 py-2 text-sm text-primary cursor-pointer hover:bg-muted"
                     onClick={() => addTag(tagSearch)}
                   >
                     + {t("common:general.create")} "{tagSearch}"
@@ -202,7 +222,8 @@ const AddPhotoForm = () => {
                 )}
                 {isCreateTagError && (
                   <p className="text-red-500 text-sm mt-1 px-3 pb-2">
-                    {(createTagError as any)?.message ?? "Error while creating tag"}
+                    {(createTagError as any)?.message ??
+                      "Error while creating tag"}
                   </p>
                 )}
               </div>
@@ -210,7 +231,7 @@ const AddPhotoForm = () => {
           </div>
 
           <textarea
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100 resize-none"
+            className={textareaClassName}
             rows={3}
             placeholder={t("common:description")}
             {...register("description")}
@@ -219,19 +240,22 @@ const AddPhotoForm = () => {
       </div>
 
       <div className="flex justify-start gap-3 mt-6">
-        <button
+        <Button
           type="button"
           onClick={cancel}
-          className="button-reset h-10 px-5 rounded-xl border border-slate-300 text-sm text-slate-700 hover:bg-slate-100"
+          variant="outline"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5"
         >
           {t("common:general.cancel")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
-          className="button-reset h-10 px-5 rounded-xl text-sm font-semibold text-white bg-slate-900 hover:bg-slate-700"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5 font-semibold"
         >
           {t("common:general.save")}
-        </button>
+        </Button>
       </div>
     </form>
   );
