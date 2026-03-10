@@ -1,0 +1,44 @@
+{
+  "appearance": "appearance",
+  "preferences": "preferences",
+  "security": "security",
+  "notifications": "notifications",
+  "privacy": "privacy",
+  "advanced": "advanced",
+  "notifications_intro": "Choose how and when you want to be notified.",
+  "privacy_intro": "Control what other users can see from your profile and activity.",
+  "advanced_intro": "Advanced controls for data, experiments and connected services.",
+  "notifications_items": {
+    "emailLikesComments": "Email notifications (likes, comments)",
+    "emailLikesComments_desc": "Receive key interactions by email.",
+    "pushNotifications": "Push notifications",
+    "pushNotifications_desc": "Enable in-app and browser push alerts.",
+    "newFollowerAlert": "New follower alert",
+    "newFollowerAlert_desc": "Get notified when someone follows you.",
+    "weeklyReport": "Weekly report",
+    "weeklyReport_desc": "Optional digest with your weekly stats."
+  },
+  "privacy_items": {
+    "profileVisibility": "Profile visibility",
+    "showLikes": "Show likes publicly",
+    "showLikes_desc": "Display liked photos on your public profile.",
+    "showDownloads": "Show download count publicly",
+    "showDownloads_desc": "Share your download metrics publicly.",
+    "hideCollections": "Hide collections",
+    "hideCollections_desc": "Hide your collections from public view.",
+    "appearInSearch": "Appear in search results",
+    "appearInSearch_desc": "Allow your profile and photos to be indexed."
+  },
+  "privacy_visibility": {
+    "public": "Public",
+    "private": "Private"
+  },
+  "advanced_items": {
+    "exportData": "Export user data",
+    "dataUsage": "Data usage info",
+    "betaFeatures": "Beta features toggle",
+    "betaFeatures_desc": "Try upcoming features before general release.",
+    "clearCache": "Clear cache",
+    "connectedAccounts": "Connected accounts (Google, GitHub)"
+  }
+}

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-type LayoutType = "Vertical" | "Horizontal";
+export type LayoutType = "Vertical" | "Horizontal";
+export const Layouts = ["Vertical", "Horizontal"];
 interface LayoutContextProps {
   layout: LayoutType;
   setLayout: (layout: LayoutType) => void;

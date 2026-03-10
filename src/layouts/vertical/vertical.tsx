@@ -4,13 +4,13 @@ import "./vertical.scss";
 
 const Vertical = () => {
   return (
-    <div className="w-full h-full flex gap-0.5 max-sm:flex-col">
-      <div className="px-1 w-1/12 max-sm:w-full min-w-[140px] bg-white  text-center">
+    <div className="w-full min-h-screen flex gap-3 max-sm:flex-col overflow-y-auto px-3">
+      <aside className="w-1/12 max-sm:w-full min-w-[180px] bg-card border border-border rounded-xl p-2 h-fit sticky top-20">
         <NavbarMenu orientation="vertical"></NavbarMenu>
-      </div>
-      <div className="px-1 w-11/12 max-sm:w-full">
+      </aside>
+      <main className="w-11/12 max-sm:w-full">
         <Gallery />
-      </div>
+      </main>
     </div>
   );
 };

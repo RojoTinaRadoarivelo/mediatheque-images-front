@@ -47,6 +47,9 @@
     justify-content: space-between;
     padding: 0.5rem;
     transition: opacity 0.3s ease;
+    font-size: 0.85rem; // taille générale plus petite pour l'overlay
+    line-height: 1.2;
+    overflow-y: auto; // scroll si trop de contenu
 
     &.visible {
         opacity: 1;
@@ -57,6 +60,14 @@
         flex-direction: column;
         gap: 0.2rem;
         animation: fadeDown 0.3s ease forwards;
+
+        strong {
+            font-size: 1.2rem; // titre principal
+        }
+
+        span {
+            font-size: 0.8rem; // sous-titre
+        }
     }
 
     .overlay-bottom {
@@ -65,15 +76,33 @@
         flex-direction: column;
         gap: 0.3rem;
 
+        p {
+            font-size: 0.75rem; // description
+        }
+
         .tags {
             display: flex;
             gap: 0.3rem;
             flex-wrap: wrap;
+
+            span {
+                font-size: 0.72rem; // tags
+                padding: 0.18rem 0.45rem;
+                border-radius: 9999px;
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                background: rgba(15, 23, 42, 0.45);
+                backdrop-filter: blur(2px);
+            }
         }
 
         .actions {
             display: flex;
             gap: 0.5rem;
+
+            button {
+                font-size: 0.8rem; // boutons
+                padding: 0.25rem 0.5rem;
+            }
         }
     }
 }

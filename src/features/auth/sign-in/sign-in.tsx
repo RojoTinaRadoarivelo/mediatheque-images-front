@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/auth.context";
 import { useEffect } from "react";
 import type { ModalKey } from "../../../shared/utils/modals.type";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function SignIn({
   closeModal,
@@ -25,6 +27,7 @@ function SignIn({
   });
 
   const { login, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   const handleSignin = (data: SigninFormData): void => {
     login(data);
@@ -37,60 +40,61 @@ function SignIn({
   }, [isAuthenticated, closeModal]);
 
   return (
-    <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Signin
-      <form
-        className="w-5/6 space-y-4 mt-4"
-        onSubmit={handleSubmit(handleSignin)}
-      >
-        {/* Email */}
+    <div className="w-full  bg-background p-5  text-foreground">
+      <div className="mb-4">
+        <p className="text-lg font-semibold">{t("common:auth.signin")}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Access your account to manage galleries and preferences.
+        </p>
+      </div>
+      <form className="space-y-4" onSubmit={handleSubmit(handleSignin)}>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Email
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("common:general.email")}
           </label>
           <input
             type="email"
             placeholder="email@example.com"
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-red-500">{errors.email.message}</p>
+            <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
           )}
         </div>
 
-        {/* Password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Password
+          <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("common:auth.password")}
           </label>
           <input
             type="password"
-            placeholder="••••••••"
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="........"
+            className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
             {...register("password")}
           />
           {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
+            <p className="mt-1 text-xs text-red-500">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
-        {/* Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+          size="lg"
+          className="button-reset mt-1 h-10 w-full rounded-xl text-sm font-semibold"
         >
-          Connexion
-        </button>
+          {t("common:auth.signin")}
+        </Button>
       </form>
-      {/* Signup link */}
-      <p className="text-sm text-center text-gray-600 mt-6">
-        Don't have an account ?{" "}
+      <p className="mt-5 text-center text-sm text-muted-foreground">
+        {t("common:auth.dontHaveAccount")}{" "}
         <a
           onClick={() => switchModal("sign-up")}
-          className="text-blue-600 font-medium hover:cursor-pointer"
+          className="font-semibold text-foreground hover:cursor-pointer hover:underline"
         >
-          Signup
+          {t("common:auth.signup")}
         </a>
       </p>
     </div>

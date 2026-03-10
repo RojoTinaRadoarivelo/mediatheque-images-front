@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GalleryService } from "../../features/gallery/gallery.service";
-import { useAuth } from "../../features/auth/context/auth.context";
 import { MAX_LIST_LIMIT } from "../utils/queryClient";
 
 const galleryService = new GalleryService();
@@ -34,7 +33,6 @@ export function useGallery(userId: string | undefined, isAuthenticated = false, 
 
 export function useCreatePhoto() {
     const queryClient = useQueryClient();
-    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (data: FormData) =>
@@ -50,7 +48,6 @@ export function useCreatePhoto() {
 
 export function useUpdatePhoto() {
     const queryClient = useQueryClient();
-    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (data: FormData) =>
@@ -66,7 +63,6 @@ export function useUpdatePhoto() {
 
 export function useDeletePhoto() {
     const queryClient = useQueryClient();
-    const { user } = useAuth();
 
     return useMutation({
         mutationFn: (id: string) =>

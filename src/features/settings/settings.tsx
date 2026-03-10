@@ -1,64 +1,76 @@
+import { useTranslation } from "react-i18next";
 import "./settings.scss";
+import { useState } from "react";
+import Appearance from "./appearance/appearance";
+import Preference from "./preferences/preferences";
+import Security from "./security/security";
+import { useAuth } from "../auth/context/auth.context";
+import Notifications from "./notifications/notifications";
+import Privacy from "./privacy/privacy";
+import Advanced from "./advanced/advanced";
 
-function settings() {
+function Settings() {
+  const [activeTab, setActiveTab] = useState("appearance");
+  const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+
+  const tabs = [
+    { key: "appearance", label: t("settings:appearance") },
+    { key: "preferences", label: t("settings:preferences") },
+    { key: "security", label: t("settings:security") },
+    { key: "notifications", label: t("settings:notifications") },
+    { key: "privacy", label: t("settings:privacy") },
+    { key: "advanced", label: t("settings:advanced") },
+  ];
+
   return (
-    <div className="w-full h-screen flex gap-4">
-      <div className="border-r border-r-gray-500 w-96 p-2"></div>
-      <div className="flex flex-col flex-1 p-2 bg-white">
-        <form className="">
-          {/* user form */}
-          <div className="w-full pr-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Language
-              </label>
-              <input
-                type="email"
-                placeholder="email@exemple.com"
-                // {...register("email")}
-                className="mt-1 w-1/2 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {/* {errors.email && (
-                <p className="text-red-500">{errors.email.message}</p>
-              )} */}
-            </div>
+    <div className="w-full min-h-screen bg-background text-foreground p-4 md:p-6">
+      <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4">
+        <aside className="rounded-xl border border-border bg-card p-3 md:p-4 h-fit">
+          <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase mb-3">
+            Settings
+          </p>
+          <ul className="space-y-1.5">
+            {tabs.map((tab) => (
+              <li key={tab.key}>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`button-reset w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                    activeTab === tab.key
+                      ? "bg-muted text-foreground font-medium"
+                      : "text-muted-foreground hover:bg-muted/60"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Layout
-              </label>
-              <input
-                type="text"
-                placeholder="Username"
-                // {...register("userName")}
-                className="mt-1 w-1/2 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {/* {errors.userName && (
-                <p className="text-red-500">{errors.userName.message}</p>
-              )} */}
-            </div>
+        <section className="rounded-xl border border-border bg-card p-4 md:p-6">
+          <div className="mb-5 pb-4 border-b border-border">
+            <h2 className="text-lg font-semibold text-foreground">
+              {tabs.find((tab) => tab.key === activeTab)?.label}
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {isAuthenticated
+                ? "Vos changements sont sauvegardes localement et en backend."
+                : "Mode invite: changements locaux uniquement, sans sauvegarde backend."}
+            </p>
           </div>
-          {/* ACTIONS */}
-          <div className="mt-6 flex justify-start">
-            <div className="flex gap-3">
-              <button
-                // onClick={() => Cancel()}
-                className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </form>
+
+          {activeTab === "appearance" && <Appearance></Appearance>}
+          {activeTab === "preferences" && <Preference></Preference>}
+          {activeTab === "security" && <Security></Security>}
+          {activeTab === "notifications" && <Notifications></Notifications>}
+          {activeTab === "privacy" && <Privacy></Privacy>}
+          {activeTab === "advanced" && <Advanced></Advanced>}
+        </section>
       </div>
     </div>
   );
 }
 
-export default settings;
+export default Settings;

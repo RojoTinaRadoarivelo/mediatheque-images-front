@@ -1,43 +1,44 @@
-import { useEffect } from "react";
+import type { CSSProperties } from "react";
 import { type ModalProps } from "../../utils/modals.type";
-import { createPortal } from "react-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
-function Modal({ isOpen, onClose, children, width, height }: ModalProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+function Modal({
+  isOpen,
+  onClose,
+  children,
+  width,
+  height,
+  className,
+  contentClassName,
+}: ModalProps) {
+  const widthIsClass =
+    width && (width.startsWith("max-w-") || width.startsWith("w-"));
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  const widthClassName = widthIsClass ? width : undefined;
+  const widthStyle: CSSProperties | undefined =
+    width && !widthIsClass ? { width, maxWidth: width } : undefined;
 
-  if (!isOpen) return null;
+  const defaultMaxWidth = width ? "max-w-none" : "max-w-lg sm:max-w-2xl";
 
-  return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-
-      {/* content */}
-      <div
-        // className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6 z-10"
-        className={`relative bg-white rounded-xl shadow-xl z-10 ${width ?? "w-full max-w-md"} ${height ?? "auto"}`}
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent
+        className={cn(
+          "w-full p-0 overflow-x-hidden overflow-y-auto",
+          defaultMaxWidth,
+          widthClassName,
+          "max-h-[calc(100dvh-2rem)]",
+          className,
+        )}
+        style={{
+          ...(height ? { height } : {}),
+          ...(widthStyle ?? {}),
+        }}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-black"
-        >
-          ✕
-        </button>
-
-        {children}
-      </div>
-    </div>,
-    document.body,
+        <div className={cn("p-6", contentClassName)}>{children}</div>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -5,10 +5,10 @@ import "./horizontal.scss";
 const Horizontal = () => {
   return (
     <>
-      <div className="mb-2 p-1 flex justify-center bg-white">
+      <div className="mx-3 mb-3 p-2 flex justify-center bg-card border border-border rounded-xl">
         <NavbarMenu orientation="horizontal"></NavbarMenu>
       </div>
-      <div className="p-0.5">
+      <div className="px-3">
         <Gallery />
       </div>
     </>

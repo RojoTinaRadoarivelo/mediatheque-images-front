@@ -1,0 +1,7 @@
+{
+  "download": "télécharger",
+  "deletion": {
+    "title": "Suppression d'une image",
+    "message": "Voulez-vous vraiment supprimer l'image ?"
+  }
+}

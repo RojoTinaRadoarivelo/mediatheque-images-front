@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import "./add-photo.scss";
+import { useState } from "react";
 import {
   useCreateTag,
   useTags,
@@ -8,38 +7,32 @@ import type { TagsType } from "../../../tags/tags.type";
 import { useCreatePhoto } from "../../../../shared/services/gallery.queries";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../auth/context/auth.context";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 const AddPhotoForm = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagSearch, setTagSearch] = useState("");
-  const { data, isLoading, error: tagsError } = useTags(0);
+  const { data } = useTags(0);
   const [file, setFile] = useState<File | null>(null);
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
+  const { t } = useTranslation();
 
   const {
     mutate: createTag,
-    isPending: isCreatingTag,
     isError: isCreateTagError,
     error: createTagError,
   } = useCreateTag();
+  const { mutate: createPhoto } = useCreatePhoto();
 
-  const {
-    mutate: createPhoto,
-    isPending: isCreatingPhoto,
-    isError: isCreatePhotoError,
-    error: createPhotoError,
-  } = useCreatePhoto();
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const allTags: TagsType[] = data?.tags?.data ?? [];
+  const textareaClassName =
+    "w-full rounded-xl border border-input bg-transparent px-3 py-2.5 text-sm text-foreground shadow-xs outline-none transition placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 resize-none dark:bg-input/30";
 
   const filteredTags = allTags.filter(
     (tag) =>
@@ -55,12 +48,11 @@ const AddPhotoForm = () => {
 
   const addTag = (tag: string) => {
     const normalized = normalizeTag(tag);
-
     if (selectedTags.includes(normalized)) return;
 
     const tagAlreadyExists = allTags.some(
       (t) =>
-        normalizeTag(t.name ?? "")?.toLowerCase() === normalized.toLowerCase(),
+        normalizeTag(t.name ?? "").toLowerCase() === normalized.toLowerCase(),
     );
 
     if (tagAlreadyExists) {
@@ -87,7 +79,6 @@ const AddPhotoForm = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
-
     setFile(selectedFile);
     setPreview(URL.createObjectURL(selectedFile));
   };
@@ -99,30 +90,25 @@ const AddPhotoForm = () => {
     }
 
     const formData = new FormData();
-
     formData.append("objectFile", file);
     formData.append("name", data.name);
     formData.append("title", data.title);
     formData.append("description", data.description);
 
-    const tagsIds: string[] = [];
     selectedTags.forEach((tag) => {
       const found = allTags.find((el) => el.name === tag)?.id;
-      if (found) {
-        tagsIds.push(found);
-        formData.append("tags_id", found);
-      }
+      if (found) formData.append("tags_id", found);
     });
-    formData.append("user_id", user?.id!);
+    formData.append("user_id", user?.id ?? "");
 
     createPhoto(formData, {
-      onSuccess: (res) => {
-        Cancel();
+      onSuccess: () => {
+        cancel();
       },
     });
   };
 
-  const Cancel = () => {
+  const cancel = () => {
     reset();
     setSelectedTags([]);
     setPreview(null);
@@ -130,23 +116,27 @@ const AddPhotoForm = () => {
   };
 
   return (
-    <form className="w-full max-w-5xl p-6 " onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="w-full max-w-5xl p-5 md:p-6"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex gap-6">
-        {/* IMAGE */}
         <label
           htmlFor="photo"
-          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center border-2 border-dashed rounded-lg cursor-pointer hover:border-primary transition"
+          className="w-5/12 min-h-[280px] flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/30 cursor-pointer hover:border-ring transition"
         >
           {preview ? (
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-2xl"
             />
           ) : (
             <>
-              <div className="text-6xl text-gray-400">+</div>
-              <p className="text-sm text-gray-500 mt-2">Upload photo</p>
+              <div className="text-5xl text-muted-foreground">+</div>
+              <p className="text-sm text-muted-foreground mt-2">
+                {t("common:upload")} {t("common:photo")}
+              </p>
             </>
           )}
           <input
@@ -158,55 +148,64 @@ const AddPhotoForm = () => {
           />
         </label>
 
-        {/* FORM */}
         <div className="w-7/12 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold">Add photo</h3>
+          <h3 className="text-xl font-semibold text-foreground">
+            {t("common:general.new_f")} {t("common:photo")}
+          </h3>
 
-          <input
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Name"
+          <Input
+            className="h-10 rounded-xl px-3 shadow-xs"
+            placeholder={t("common:name")}
             {...register("name", { required: true })}
           />
 
-          <input
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Title ( alt )"
+          <Input
+            className="h-10 rounded-xl px-3 shadow-xs"
+            placeholder={t("common:alt")}
             {...register("title")}
           />
 
-          {/* TAGS */}
           <div>
             <div className="flex flex-wrap gap-2 mb-2">
               {selectedTags.map((tag) => (
-                <span
+                <Badge
                   key={tag}
-                  className="px-2.5 py-0.5 text-sm rounded-full bg-gray-700 text-white flex items-center gap-2"
+                  variant="secondary"
+                  className="gap-2 h-6 rounded-full px-2.5 bg-primary/10 text-primary border border-primary/20 dark:bg-secondary dark:text-secondary-foreground dark:border-transparent"
                 >
-                  {tag}
-                  <button className="btn-small" onClick={() => removeTag(tag)}>
-                    ✕
-                  </button>
-                </span>
+                  <span>{tag}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-xs"
+                    className="button-reset -mr-1"
+                    onClick={() => removeTag(tag)}
+                    aria-label={`Remove tag ${tag}`}
+                    title={`Remove tag ${tag}`}
+                  >
+                    ×
+                  </Button>
+                </Badge>
               ))}
             </div>
 
-            <input
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search or add tag..."
+            <Input
+              className="h-10 rounded-xl px-3 shadow-xs"
+              placeholder={`${t("common:general.search")} ${t("common:or")} ${t("common:general.add")} tag...`}
               value={tagSearch}
               onChange={(e) => setTagSearch(e.target.value)}
             />
 
             {tagSearch && (
               <div
-                className={`mt-2 max-h-40 overflow-y-auto bg-white
-                  ${!tagExistsGlobally ? "border rounded-lg shadow" : ""}
-                `}
+                className={`mt-2 max-h-40 overflow-y-auto rounded-lg bg-popover text-popover-foreground ${
+                  !tagExistsGlobally ? "border border-border shadow-sm" : ""
+                }`}
               >
                 {filteredTags.map((tag) => (
                   <div
                     key={tag?.id}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="px-3 py-2 text-sm hover:bg-muted cursor-pointer"
                     onClick={() => addTag(tag.name!)}
                   >
                     {tag?.name}
@@ -215,16 +214,16 @@ const AddPhotoForm = () => {
 
                 {!filteredTags.length && !tagExistsGlobally && (
                   <div
-                    className="px-4 py-2 text-primary cursor-pointer"
+                    className="px-3 py-2 text-sm text-primary cursor-pointer hover:bg-muted"
                     onClick={() => addTag(tagSearch)}
                   >
-                    + Create "{tagSearch}"
+                    + {t("common:general.create")} "{tagSearch}"
                   </div>
                 )}
                 {isCreateTagError && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-sm mt-1 px-3 pb-2">
                     {(createTagError as any)?.message ??
-                      "Erreur lors de la création du tag"}
+                      "Error while creating tag"}
                   </p>
                 )}
               </div>
@@ -232,28 +231,31 @@ const AddPhotoForm = () => {
           </div>
 
           <textarea
-            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus: hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className={textareaClassName}
             rows={3}
-            placeholder="Short description"
+            placeholder={t("common:description")}
             {...register("description")}
           />
         </div>
       </div>
 
-      {/* ACTIONS */}
       <div className="flex justify-start gap-3 mt-6">
-        <button
-          onClick={() => Cancel()}
-          className="px-6 py-2  bordered  rounded-lg hover:bg-gray-500 hover:text-white "
+        <Button
+          type="button"
+          onClick={cancel}
+          variant="outline"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5"
         >
-          Cancel
-        </button>
-        <button
+          {t("common:general.cancel")}
+        </Button>
+        <Button
           type="submit"
-          className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+          size="lg"
+          className="button-reset h-10 rounded-xl px-5 font-semibold"
         >
-          Save
-        </button>
+          {t("common:general.save")}
+        </Button>
       </div>
     </form>
   );

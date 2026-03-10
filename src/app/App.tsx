@@ -4,25 +4,28 @@ import Footer from "../shared/components/footer/footer";
 import Header from "../shared/components/header/header";
 import { AuthProvider } from "../features/auth/context/auth.context";
 import AppRouter from "./App.route";
+import { ThemeProvider } from "../shared/context/themes";
 
 function App() {
   return (
     <>
       <AuthProvider>
-        <LayoutProvider>
-          <div id="app-container">
-            <div id="header-container">
-              <Header></Header>
-            </div>
+        <ThemeProvider>
+          <LayoutProvider>
+            <div id="app-container">
+              <div id="header-container">
+                <Header></Header>
+              </div>
 
-            <div id="main-container">
-              <AppRouter></AppRouter>
+              <div id="main-container">
+                <AppRouter></AppRouter>
+              </div>
+              <div id="footer-container">
+                <Footer></Footer>
+              </div>
             </div>
-            <div id="footer-container">
-              <Footer></Footer>
-            </div>
-          </div>
-        </LayoutProvider>
+          </LayoutProvider>
+        </ThemeProvider>
       </AuthProvider>
     </>
   );
