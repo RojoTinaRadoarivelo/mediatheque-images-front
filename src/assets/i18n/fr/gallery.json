@@ -3,5 +3,6 @@
   "deletion": {
     "title": "Suppression d'une image",
     "message": "Voulez-vous vraiment supprimer l'image ?"
-  }
+  },
+  "noImagesFound": "Aucune image trouvée"
 }

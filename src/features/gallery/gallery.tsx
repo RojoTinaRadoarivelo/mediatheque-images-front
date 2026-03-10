@@ -15,6 +15,7 @@ const Gallery = () => {
   const [images, setImages] = useState<GalleryType[]>([]);
   const [page, setPage] = useState(1);
   const { t } = useTranslation("common");
+  const { t: tGallery } = useTranslation("gallery");
 
   const params = new URLSearchParams(location.search);
 
@@ -97,6 +98,11 @@ const Gallery = () => {
           <button className="load-more-btn" onClick={handleLoadMore}>
             {t("seemore")}...
           </button>
+        </div>
+      )}
+      {images.length === 0 && (
+        <div style={{ textAlign: "center", margin: "1rem 0" }}>
+          <p>{tGallery("noImagesFound")}</p>
         </div>
       )}
     </>
