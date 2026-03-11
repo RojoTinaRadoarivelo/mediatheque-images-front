@@ -9,3 +9,5 @@ export class TagsType {
 export type TagDto = {
     name: string;
 }
+
+export type TagMode = 'search' | 'exact';

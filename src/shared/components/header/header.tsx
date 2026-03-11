@@ -55,20 +55,40 @@ function Header() {
   const activeLanguageOption = languageOptions[language];
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("q") ?? "";
+    setSearch(q);
+  }, [location.search]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
-      navigate({
-        pathname: location.pathname,
-        search: search.trim() ? `?q=${encodeURIComponent(search)}` : "",
-      });
+      const params = new URLSearchParams(location.search);
+      const nextQ = search.trim();
+
+      if (nextQ) params.set("q", nextQ);
+      else params.delete("q");
+
+      const nextSearch = params.toString();
+      navigate(
+        { pathname: location.pathname, search: nextSearch ? `?${nextSearch}` : "" },
+        { replace: true },
+      );
     }, 400);
 
     return () => clearTimeout(timeout);
-  }, [location.pathname, navigate, search]);
+  }, [location.pathname, location.search, navigate, search]);
 
   const searchGallery = () => {
+    const params = new URLSearchParams(location.search);
+    const nextQ = search.trim();
+
+    if (nextQ) params.set("q", nextQ);
+    else params.delete("q");
+
+    const nextSearch = params.toString();
     navigate({
       pathname: location.pathname === "/galleries" ? "/galleries" : "/home",
-      search: search ? `?q=${encodeURIComponent(search)}` : "",
+      search: nextSearch ? `?${nextSearch}` : "",
     });
   };
 

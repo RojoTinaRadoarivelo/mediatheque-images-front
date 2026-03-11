@@ -1,13 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TagService } from "../../features/tags/tags.service";
+import { MAX_LIST_LIMIT } from "../utils/queryClient";
 
 
 const tagService = new TagService();
 
-export function useTags(page: number) {
+export function useTags(
+    page: number,
+    options?: {
+        limit?: number;
+    },
+) {
+    const limit = options?.limit ?? MAX_LIST_LIMIT;
     return useQuery({
-        queryKey: ["tags"],
-        queryFn: () => tagService.getAllTags(+page),
+        queryKey: ["tags", page, limit],
+        queryFn: () => tagService.getAllTags(+page, limit),
         staleTime: 5 * 60 * 1000, // 5 min
     });
 }
@@ -23,7 +30,7 @@ export function useCreateTag() {
         onSuccess: () => {
             // 🔥 refresh automatique de useTags
             queryClient.invalidateQueries({
-                queryKey: ["tags"],
+                predicate: (query) => query.queryKey[0] === "tags",
             });
         },
     });

@@ -8,6 +8,7 @@ import { useAuth } from "../auth/context/auth.context";
 import { useLocation } from "react-router-dom";
 import AddPhotoForm from "./photo/add-photo/add-photo";
 import { useTranslation } from "react-i18next";
+import type { TagMode } from "../tags/tags.type";
 
 const Gallery = () => {
   const { isAuthenticated, user } = useAuth();
@@ -22,6 +23,11 @@ const Gallery = () => {
   const searchQuery = params.get("q") ?? "";
   const tagQuery = params.get("tags") ?? "";
   const withTags = tagQuery ? tagQuery.split(",") : undefined;
+  const mode: TagMode | undefined = withTags?.length
+    ? "exact"
+    : searchQuery.trim()
+      ? "search"
+      : undefined;
 
   // Détecte la route pour savoir si on affiche tout ou filtré
   const pathName = location.pathname;
@@ -51,6 +57,7 @@ const Gallery = () => {
     pathName,
     searchQuery,
     withTags,
+    mode,
   );
 
   const handleLoadMore = () => {

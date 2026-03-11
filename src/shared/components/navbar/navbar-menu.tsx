@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { TagsType } from "../../../features/tags/tags.type";
 import { useTags } from "../../services/tags.queries";
 import "./navbar-menu.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { MAX_LIST_LIMIT } from "@/shared/utils/queryClient";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type NavbarMenuProps = {
   orientation: "horizontal" | "vertical";
@@ -10,18 +13,38 @@ type NavbarMenuProps = {
 
 const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, error } = useTags(page);
-  const canGoPrev = page > 1;
-  const tags = data?.tags?.data ?? [];
-  const [tagFiltering, setFilter] = useState<TagsType[]>([]);
+  const { data, isLoading, error } = useTags(0);
+  const allTags = Array.isArray(data?.tags?.data) ? data?.tags?.data : [];
+  const totalPages = Math.max(1, Math.ceil(allTags.length / MAX_LIST_LIMIT));
+  const safePage = Math.min(page, totalPages);
+  const startIndex = (safePage - 1) * MAX_LIST_LIMIT;
+  const tags = allTags.slice(startIndex, startIndex + MAX_LIST_LIMIT);
+  const canGoPrev = safePage > 1;
+  const canGoNext = safePage < totalPages;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setPage((p) => Math.min(Math.max(1, p), totalPages));
+  }, [totalPages]);
+
+  const selectedTagNames = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const tagsParam = params.get("tags") ?? "";
+    return new Set(
+      tagsParam
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    );
+  }, [location.search]);
 
   const nextTagPage = () => {
-    setPage((p) => p + 1);
+    setPage((p) => Math.min(p + 1, totalPages));
   };
 
   const prevTagPage = () => {
-    setPage((p) => (p > 1 ? p - 1 : p));
+    setPage((p) => (p > 1 ? p - 1 : 1));
   };
 
   if (isLoading) return null;
@@ -31,22 +54,20 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
     );
 
   const handleGalleryFilter = (tag: TagsType) => {
-    setFilter((prev) => {
-      let newTags;
-      if (prev.find((t) => t.id === tag.id)) {
-        newTags = prev.filter((t) => t.id !== tag.id);
-      } else {
-        newTags = [...prev, tag];
-      }
-      if (newTags.length) {
-        const tagNames = newTags.map((t) => t.name).join(",");
-        navigate(`/home?tags=${tagNames}`, { replace: true });
-      } else {
-        navigate(`/home`, { replace: true });
-      }
+    const tagName = tag.name?.trim();
+    if (!tagName) return;
 
-      return newTags;
-    });
+    const params = new URLSearchParams(location.search);
+    const next = new Set(selectedTagNames);
+
+    if (next.has(tagName)) next.delete(tagName);
+    else next.add(tagName);
+
+    if (next.size) params.set("tags", Array.from(next).join(","));
+    else params.delete("tags");
+
+    const nextSearch = params.toString();
+    navigate(`/home${nextSearch ? `?${nextSearch}` : ""}`, { replace: true });
   };
 
   return (
@@ -56,21 +77,31 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
           Popular tags
         </p>
         <div className="flex items-center gap-1">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon-sm"
             onClick={prevTagPage}
             disabled={!canGoPrev}
-            className="w-7 h-7 rounded-md border border-border bg-background text-xs text-muted-foreground hover:bg-muted disabled:opacity-50"
+            aria-label="Previous tag page"
+            title="Previous"
           >
-            {"<"}
-          </button>
-          <button
+            <ChevronLeft className="size-4" />
+          </Button>
+          <span className="w-7 text-center text-xs tabular-nums text-muted-foreground">
+            {safePage}
+          </span>
+          <Button
             type="button"
+            variant="outline"
+            size="icon-sm"
             onClick={nextTagPage}
-            className="w-7 h-7 rounded-md border border-border bg-background text-xs text-muted-foreground hover:bg-muted"
+            disabled={!canGoNext}
+            aria-label="Next tag page"
+            title="Next"
           >
-            {">"}
-          </button>
+            <ChevronRight className="size-4" />
+          </Button>
         </div>
       </div>
 
@@ -82,19 +113,20 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
         }
       >
         {tags.map((t: TagsType) => {
-          const isSelected = tagFiltering.some((f) => f.id === t.id);
+          const tagName = t.name?.trim() ?? "";
+          const isSelected = tagName ? selectedTagNames.has(tagName) : false;
           return (
             <button
               key={t.id}
               type="button"
               className={`px-3 py-2 rounded-xl border ${
                 isSelected
-                  ? "border-blue-500 bg-blue-100 text-blue-700"
+                  ? "border-primary/30 bg-primary/10 text-primary"
                   : "border-border bg-background text-foreground"
               } text-xs text-left hover:bg-muted whitespace-nowrap`}
               onClick={() => handleGalleryFilter(t)}
             >
-              #{t.name}
+              #{tagName}
             </button>
           );
         })}

@@ -1,25 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GalleryService } from "../../features/gallery/gallery.service";
 import { MAX_LIST_LIMIT } from "../utils/queryClient";
+import type { TagMode } from "@/features/tags/tags.type";
 
 const galleryService = new GalleryService();
 
-export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string, search?: string, withTags?: string[]) {
+export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string, search?: string, withTags?: string[], tagMode?: TagMode) {
     return useQuery({
-        queryKey: ["photos", userId ?? "all", isAuthenticated, page, route, search, withTags],
+        queryKey: ["photos", userId ?? "all", isAuthenticated, page, route, search, withTags, tagMode],
         queryFn: () => {
             const isAuth = route === "/galleries" ? true : isAuthenticated;
+            const trimmedSearch = search?.trim() ?? "";
+            const hasSearch = Boolean(trimmedSearch);
+            const hasTags = Boolean(withTags && withTags.length > 0);
+            const effectiveTagNames = hasTags
+                ? withTags
+                : hasSearch
+                    ? [trimmedSearch]
+                    : undefined;
+            const effectiveTagMode = hasTags
+                ? (tagMode ?? undefined)
+                : hasSearch
+                    ? "search"
+                    : undefined;
             const queryParams: any = {
                 userId: userId ?? undefined,
                 isAuthentified: isAuth,
-                title: search || undefined,
-                name: search || undefined,
-                tagNames: withTags && withTags.length > 0 ? withTags : search ? [search] : undefined,
+                title: hasSearch ? trimmedSearch : undefined,
+                name: hasSearch ? trimmedSearch : undefined,
+                tagNames: effectiveTagNames,
+                tagMode: effectiveTagMode,
                 page,
                 limit: MAX_LIST_LIMIT,
             };
 
-            if (search || (withTags && withTags.length > 0)) {
+            if (hasSearch || hasTags) {
                 return galleryService.getFilteredPhoto(queryParams);
             } else if (userId && isAuthenticated) {
                 return galleryService.getFilteredPhoto(queryParams);
