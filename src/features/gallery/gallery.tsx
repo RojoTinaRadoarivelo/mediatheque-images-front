@@ -8,6 +8,7 @@ import { useAuth } from "../auth/context/auth.context";
 import { useLocation } from "react-router-dom";
 import AddPhotoForm from "./photo/add-photo/add-photo";
 import { useTranslation } from "react-i18next";
+import type { TagMode } from "../tags/tags.type";
 
 const Gallery = () => {
   const { isAuthenticated, user } = useAuth();
@@ -15,12 +16,18 @@ const Gallery = () => {
   const [images, setImages] = useState<GalleryType[]>([]);
   const [page, setPage] = useState(1);
   const { t } = useTranslation("common");
+  const { t: tGallery } = useTranslation("gallery");
 
   const params = new URLSearchParams(location.search);
 
   const searchQuery = params.get("q") ?? "";
   const tagQuery = params.get("tags") ?? "";
   const withTags = tagQuery ? tagQuery.split(",") : undefined;
+  const mode: TagMode | undefined = withTags?.length
+    ? "exact"
+    : searchQuery.trim()
+      ? "search"
+      : undefined;
 
   // Détecte la route pour savoir si on affiche tout ou filtré
   const pathName = location.pathname;
@@ -50,6 +57,7 @@ const Gallery = () => {
     pathName,
     searchQuery,
     withTags,
+    mode,
   );
 
   const handleLoadMore = () => {
@@ -97,6 +105,11 @@ const Gallery = () => {
           <button className="load-more-btn" onClick={handleLoadMore}>
             {t("seemore")}...
           </button>
+        </div>
+      )}
+      {images.length === 0 && (
+        <div style={{ textAlign: "center", margin: "1rem 0" }}>
+          <p>{tGallery("noImagesFound")}</p>
         </div>
       )}
     </>
