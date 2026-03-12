@@ -1,6 +1,11 @@
 import type { CSSProperties } from "react";
 import { type ModalProps } from "../../utils/modals.type";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 function Modal({
@@ -36,6 +41,10 @@ function Modal({
           ...(widthStyle ?? {}),
         }}
       >
+        <DialogTitle className="sr-only">Dialog</DialogTitle>
+        <DialogDescription className="sr-only">
+          Modal content
+        </DialogDescription>
         <div className={cn("p-6", contentClassName)}>{children}</div>
       </DialogContent>
     </Dialog>
