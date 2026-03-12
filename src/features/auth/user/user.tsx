@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ENV } from "../../../environment/env.local";
+import { ENV } from "../../../environment/env";
 
 type UserProps = {
   openModal: (key: "sign-in" | "sign-up") => void;

@@ -9,7 +9,7 @@ import {
 } from "../../../../shared/services/tags.queries";
 import { useUpdatePhoto } from "../../../../shared/services/gallery.queries";
 import type { TagsType } from "../../../tags/tags.type";
-import { ENV } from "../../../../environment/env.local";
+import { ENV } from "../../../../environment/env";
 import { useAuth } from "../../../auth/context/auth.context";
 import { useTranslation } from "react-i18next";
 

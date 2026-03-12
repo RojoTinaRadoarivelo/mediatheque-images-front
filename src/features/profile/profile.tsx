@@ -8,7 +8,7 @@ import {
 } from "../auth/validators/user.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateUser } from "../../shared/services/user.queries";
-import { ENV } from "../../environment/env.local";
+import { ENV } from "../../environment/env";
 import { Button } from "@/components/ui/button";
 
 type StatsMode = "monthly" | "yearly";

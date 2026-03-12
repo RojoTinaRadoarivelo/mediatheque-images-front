@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./photo.scss";
-import { ENV } from "../../../environment/env.local";
+import { ENV } from "../../../environment/env";
 import { useAuth } from "../../auth/context/auth.context";
 import ConfirmModal from "../../../shared/components/modals/confirmation-modal/confirmation-modal";
 import {

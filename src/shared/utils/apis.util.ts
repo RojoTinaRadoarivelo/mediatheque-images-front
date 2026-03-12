@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosPromise, type AxiosResponse } from "axios";
-import { ENV } from "../../environment/env.local";
+import { ENV } from "../../environment/env";
 import type { ApiResult } from "../interfaces/api-response.interface";
 
 /**
