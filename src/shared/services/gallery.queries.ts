@@ -5,9 +5,9 @@ import type { TagMode } from "@/features/tags/tags.type";
 
 const galleryService = new GalleryService();
 
-export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, route?: string, search?: string, withTags?: string[], tagMode?: TagMode) {
+export function useGallery(userId: string | undefined, isAuthenticated = false, page: number, limit: number = MAX_LIST_LIMIT, route?: string, search?: string, withTags?: string[], tagMode?: TagMode) {
     return useQuery({
-        queryKey: ["photos", userId ?? "all", isAuthenticated, page, route, search, withTags, tagMode],
+        queryKey: ["photos", userId ?? "all", isAuthenticated, page, route, search, withTags, tagMode, limit],
         queryFn: () => {
             const isAuth = route === "/galleries" ? true : isAuthenticated;
             const trimmedSearch = search?.trim() ?? "";
@@ -30,16 +30,14 @@ export function useGallery(userId: string | undefined, isAuthenticated = false, 
                 name: hasSearch ? trimmedSearch : undefined,
                 tagNames: effectiveTagNames,
                 tagMode: effectiveTagMode,
-                page,
-                limit: MAX_LIST_LIMIT,
             };
 
             if (hasSearch || hasTags) {
-                return galleryService.getFilteredPhoto(queryParams);
+                return galleryService.getFilteredPhoto(queryParams, +page, +limit);
             } else if (userId && isAuthenticated) {
-                return galleryService.getFilteredPhoto(queryParams);
+                return galleryService.getFilteredPhoto(queryParams, +page, +limit);
             } else {
-                return galleryService.getAllPhotos(page);
+                return galleryService.getAllPhotos(+page, +limit);
             }
         },
         staleTime: 5 * 60 * 1000, // 5 min    

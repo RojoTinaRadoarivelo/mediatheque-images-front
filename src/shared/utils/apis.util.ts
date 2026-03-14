@@ -19,7 +19,10 @@ function parseApiResponse<T = any>(
                     success: false,
                     message: respData?.message ?? error.message ?? "Erreur inconnue",
                     data: respData?.data,
-                    statusCode: respData?.statusCode ?? error.response.status,
+                    statusCode: respData?.statusCode ?? (error.response ? error.response.status : undefined),
+                    page: respData?.page,
+                    total: respData?.total,
+                    totalPages: respData?.totalPages,
                 };
             }
             // Pas de réponse du serveur (network, timeout...)
@@ -38,6 +41,9 @@ function parseApiResponse<T = any>(
             message: respData?.message ?? "",
             data: respData?.data,
             statusCode: respData?.statusCode ?? resp.status,
+            page: respData?.page,
+            total: respData?.total,
+            totalPages: respData?.totalPages,
         };
     } catch (e: any) {
         return {

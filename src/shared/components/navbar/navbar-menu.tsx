@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { TagsType } from "../../../features/tags/tags.type";
 import { useTags } from "../../services/tags.queries";
 import "./navbar-menu.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-import { MAX_LIST_LIMIT } from "@/shared/utils/queryClient";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -13,20 +12,15 @@ type NavbarMenuProps = {
 
 const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, error } = useTags(0);
-  const allTags = Array.isArray(data?.tags?.data) ? data?.tags?.data : [];
-  const totalPages = Math.max(1, Math.ceil(allTags.length / MAX_LIST_LIMIT));
-  const safePage = Math.min(page, totalPages);
-  const startIndex = (safePage - 1) * MAX_LIST_LIMIT;
-  const tags = allTags.slice(startIndex, startIndex + MAX_LIST_LIMIT);
-  const canGoPrev = safePage > 1;
-  const canGoNext = safePage < totalPages;
+  const { data, isLoading, error } = useTags(page);
+  const tagsResult = data?.tags;
+  const tags = Array.isArray(tagsResult?.data) ? tagsResult?.data : [];
+  const currentPage = tagsResult?.page ?? page;
+  const totalPages = tagsResult?.totalPages ?? 1;
+  const canGoPrev = currentPage > 1;
+  const canGoNext = currentPage < totalPages;
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    setPage((p) => Math.min(Math.max(1, p), totalPages));
-  }, [totalPages]);
 
   const selectedTagNames = useMemo(() => {
     const params = new URLSearchParams(location.search);
@@ -40,11 +34,11 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
   }, [location.search]);
 
   const nextTagPage = () => {
-    setPage((p) => Math.min(p + 1, totalPages));
+    if (canGoNext) setPage((p) => p + 1);
   };
 
   const prevTagPage = () => {
-    setPage((p) => (p > 1 ? p - 1 : 1));
+    if (canGoPrev) setPage((p) => p - 1);
   };
 
   if (isLoading) return null;
@@ -89,7 +83,7 @@ const NavbarMenu = ({ orientation }: NavbarMenuProps) => {
             <ChevronLeft className="size-4" />
           </Button>
           <span className="w-7 text-center text-xs tabular-nums text-muted-foreground">
-            {safePage}
+            {currentPage}
           </span>
           <Button
             type="button"

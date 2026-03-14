@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./gallery.scss";
 import Photo from "./photo/photo";
 import { useGallery } from "../../shared/services/gallery.queries";
@@ -22,12 +22,10 @@ const Gallery = () => {
 
   const searchQuery = params.get("q") ?? "";
   const tagQuery = params.get("tags") ?? "";
-  const withTags = tagQuery ? tagQuery.split(",") : undefined;
-  const mode: TagMode | undefined = withTags?.length
-    ? "exact"
-    : searchQuery.trim()
-      ? "search"
-      : undefined;
+  const withTags = useMemo(() => (tagQuery ? tagQuery.split(",") : undefined), [tagQuery]);
+  const mode: TagMode | undefined = useMemo(() => {
+    return withTags?.length ? "exact" : searchQuery.trim() ? "search" : undefined;
+  }, [withTags, searchQuery]);
 
   // Détecte la route pour savoir si on affiche tout ou filtré
   const pathName = location.pathname;
@@ -50,31 +48,51 @@ const Gallery = () => {
   }
 
   // On inclut la route dans la queryKey pour que React Query recharge automatiquement
-  const { data: listPhoto, error: photoError } = useGallery(
+  const { data: listPhoto, error: photoError, isFetching } = useGallery(
     effectiveUserId,
     effectiveAuth,
     page,
+    MAX_LIST_LIMIT,
     pathName,
     searchQuery,
     withTags,
     mode,
   );
 
+  const photosResult = listPhoto?.Photos;
+  const totalPages = photosResult?.totalPages ?? 1;
+  const hasMore =
+    page < totalPages && (photosResult?.data?.length ?? 0) >= MAX_LIST_LIMIT;
+
   const handleLoadMore = () => {
-    // On ajoute les nouvelles images
-    setImages((prev) => [...prev, ...listPhoto?.Photos.data]);
+    if (hasMore) {
+      setPage((prev) => prev + 1);
+    }
   };
 
   useEffect(() => {
-    // Reset images et page dès que l'utilisateur, la recherche ou la route change
-    setImages([]);
-    setPage(1);
+    // On ne traite les data que si elles existent et qu'on n'est pas en train de charger un changement de filtre (si page === 1)
+    if (photosResult?.data && Array.isArray(photosResult.data)) {
+      setImages((prev) => {
+        if (page === 1) {
+          return photosResult.data;
+        }
 
-    // Dès que listPhoto arrive, on met à jour les images
-    if (listPhoto?.Photos?.data && Array.isArray(listPhoto.Photos.data)) {
-      setImages(listPhoto.Photos.data);
+        const existingIds = new Set(prev.map((img: GalleryType) => img.photo?.id));
+        const newImages = photosResult.data.filter(
+          (img: GalleryType) => !existingIds.has(img.photo?.id)
+        );
+
+        if (newImages.length === 0) return prev;
+        return [...prev, ...newImages];
+      });
     }
-  }, [listPhoto, user?.id, searchQuery, pathName]);
+  }, [photosResult?.data, page]);
+
+  // 👉 Réinitialise SEULEMENT la page au changement de filtres
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery, tagQuery, pathName, user?.id]);
 
   if (photoError) return <p>{t("loadingImagesError")}</p>;
 
@@ -100,14 +118,20 @@ const Gallery = () => {
           </div>
         ))}
       </div>
-      {images.length >= MAX_LIST_LIMIT && (
+        {images.length > 0 && (
         <div style={{ textAlign: "center", margin: "1rem 0" }}>
-          <button className="load-more-btn" onClick={handleLoadMore}>
+          <button
+            type="button"
+            className="load-more-btn"
+            disabled={!hasMore}
+            onClick={handleLoadMore}
+          >
             {t("seemore")}...
           </button>
         </div>
       )}
-      {images.length === 0 && (
+      
+      {!isFetching && images.length === 0 && (
         <div style={{ textAlign: "center", margin: "1rem 0" }}>
           <p>{tGallery("noImagesFound")}</p>
         </div>

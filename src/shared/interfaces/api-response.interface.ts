@@ -4,4 +4,7 @@ export interface ApiResult<T = any> {
     message?: string;
     data?: T | T[] | any;
     statusCode?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
 }

@@ -10,4 +10,4 @@ export const queryClient = new QueryClient({
     },
 });
 
-export const MAX_LIST_LIMIT = 12;
+export const MAX_LIST_LIMIT = 10;

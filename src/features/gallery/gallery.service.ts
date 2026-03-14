@@ -23,10 +23,17 @@ export class GalleryService {
         return { Photos };
     }
 
-    async getFilteredPhoto(query: any) {
-        const Photos = await safeApiCall<GalleryType | null>(
-            API.post(`/gallery/photos-filtered`, query)
-        );
+    async getFilteredPhoto(query: any, page?: number, limit: number = MAX_LIST_LIMIT) {
+        let Photos: ApiResult<GalleryType[]>
+        if (!page || page === 0) {
+            Photos = await safeApiCall<GalleryType[]>(
+                API.post(`/gallery/photos-filtered`, query)
+            );
+        } else {
+            Photos = await safeApiCall<GalleryType[]>(
+                API.post(`/gallery/photos-filtered?page=${page}&limit=${limit}`, query)
+            );
+        }
 
         return { Photos };
     }
