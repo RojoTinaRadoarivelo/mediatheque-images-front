@@ -1,12 +1,21 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import "./assets/styles/tailwind.css"; // Tailwind
 import "./index.scss";
 import App from "./app/App.tsx";
+import { queryClient } from "./shared/utils/queryClient.ts";
+// translation
+import "./assets/i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 );

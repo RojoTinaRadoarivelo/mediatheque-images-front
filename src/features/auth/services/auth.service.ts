@@ -57,8 +57,7 @@ export class AuthService {
             API.post(`/auth/sign-out`, {})
         );
         window.localStorage.removeItem("SESS_ID")
-        window.location.replace("/");
-        window.location.reload();
+
         return { userSignout }
     }
 

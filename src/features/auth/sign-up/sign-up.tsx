@@ -2,14 +2,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   SIGNUP_SCHEMA,
   type SignUpFormData,
-} from "../sign-in/validators/sign-up.validator";
+} from "../validators/sign-up.validator";
 import "./sign-up.scss";
 import { useAuth } from "../context/auth.context";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function SignUp({ closeModal }: { closeModal: () => void }) {
   const [step, setStep] = useState<"form" | "code">("form");
+  const [panelHeight, setPanelHeight] = useState<number>(0);
+  const formPanelRef = useRef<HTMLDivElement | null>(null);
+  const codePanelRef = useRef<HTMLDivElement | null>(null);
+  const { t } = useTranslation();
 
   const {
     register,
@@ -36,114 +42,171 @@ function SignUp({ closeModal }: { closeModal: () => void }) {
   }, [isAuthenticated, closeModal]);
 
   const handleSendCode = async () => {
-    // On valide uniquement les champs du premier step
     const isValid = await trigger(["email", "password", "confirmPassword"]);
+    if (!isValid) return;
 
-    if (!isValid) {
-      // S'il y a des erreurs, on ne fait rien et on laisse les messages d'erreur s'afficher
-      return;
-    }
-
-    // Sinon on continue
-    const email = localStorage.getItem("sentTo") ?? getValues("email");
+    const email = getValues("email");
     await sendingEmailVerification(email);
     setStep("code");
   };
 
+  const handleBackToForm = () => {
+    setStep("form");
+  };
+
+  useLayoutEffect(() => {
+    const activePanel =
+      step === "form" ? formPanelRef.current : codePanelRef.current;
+    if (activePanel) {
+      setPanelHeight(activePanel.scrollHeight);
+    }
+  }, [step, errors]);
+
   return (
-    <div className="w-full flex flex-col items-center my-2 px-2 bg-white z-50">
-      Inscription
-      <form className="space-y-4 mt-4" onSubmit={handleSubmit(handleSignUp)}>
-        <div className="relative overflow-hidden w-full">
+    <div className="w-full bg-background p-5 text-foreground">
+      <div className="mb-4">
+        <p className="text-lg font-semibold">{t("common:auth.signup")}</p>
+      </div>
+      <p className="mt-1 text-xs text-muted-foreground">
+        {step === "form"
+          ? "Create your account in two quick steps."
+          : "Enter the verification code sent to your email."}
+      </p>
+
+      <div className="my-4 flex items-center gap-2 text-xs">
+        <span
+          className={`h-2.5 w-2.5 rounded-full ${step === "form" ? "bg-primary" : "bg-muted-foreground/40"}`}
+        />
+        <span className="text-muted-foreground">
+          {step === "form" ? "Credentials" : "Verification"}
+        </span>
+      </div>
+
+      <form className="space-y-4" onSubmit={handleSubmit(handleSignUp)}>
+        <div
+          className="relative w-full overflow-hidden transition-[height] duration-300"
+          style={{ height: panelHeight ? `${panelHeight}px` : "auto" }}
+        >
           <div
-            className={`flex transition-transform duration-500 ${
-              step === "code"
-                ? "-translate-x-1/2 h-36 -ml-1"
-                : "translate-x-0 ml-2"
+            ref={formPanelRef}
+            className={`space-y-4 transition-all duration-300 ${
+              step === "form"
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0 pointer-events-none"
             }`}
-            style={{ width: "200%" }}
+            style={{ position: "absolute", top: 0, left: 0, width: "100%" }}
           >
-            {/* STEP 1 */}
-            <div className="w-1/2 pr-4 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="email@exemple.com"
-                  {...register("email")}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Mot de passe
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  {...register("password")}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.password && (
-                  <p className="text-red-500">{errors.password.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Confirmer mot de passe
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  {...register("confirmPassword")}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.confirmPassword && (
-                  <p className="text-red-500">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleSendCode}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-              >
-                Envoyer le code
-              </button>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("common:general.email")}
+              </label>
+              <input
+                type="email"
+                placeholder="email@example.com"
+                autoComplete="email"
+                {...register("email")}
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
+              />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
-            {/* STEP 2 */}
-            <div className="w-1/2 pl-4 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Code de vérification
-                </label>
-                <input
-                  type="text"
-                  placeholder="XXXXXXXX"
-                  {...register("code")}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.code && (
-                  <p className="text-red-500">{errors.code.message}</p>
-                )}
-              </div>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("common:auth.password")}
+              </label>
+              <input
+                type="password"
+                placeholder="........"
+                autoComplete="new-password"
+                {...register("password")}
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
+              />
+              {errors.password && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
 
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("common:auth.confirmPassword")}
+              </label>
+              <input
+                type="password"
+                placeholder="........"
+                autoComplete="new-password"
+                {...register("confirmPassword")}
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
+              />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="button"
+              onClick={handleSendCode}
+              size="lg"
+              className="button-reset mt-1 h-10 w-full rounded-xl text-sm font-semibold"
+            >
+              {t("common:auth.sendCode")}
+            </Button>
+          </div>
+
+          <div
+            ref={codePanelRef}
+            className={`space-y-4 transition-all duration-300 ${
+              step === "code"
+                ? "translate-x-0 opacity-100"
+                : "translate-x-full opacity-0 pointer-events-none"
+            }`}
+            style={{ position: "absolute", top: 0, left: 0, width: "100%" }}
+          >
+            <div className="my-4">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("common:auth.validationCode")}
+              </label>
+              <input
+                type="text"
+                placeholder="xxxxxxxx"
+                autoComplete="one-time-code"
+                inputMode="numeric"
+                maxLength={8}
+                {...register("code")}
+                className="mt-1 h-10 w-full rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/40"
+              />
+              {errors.code && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.code.message}
+                </p>
+              )}
+            </div>
+
+            <div className="mt-1 w-full flex justify-between ">
+              <Button
+                type="button"
+                onClick={handleBackToForm}
+                variant="ghost"
+                size="sm"
+                className="button-reset w-24 inline-flex items-center justify-start gap-2 px-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-foreground"
               >
-                Créer le compte
-              </button>
+                <span aria-hidden="true">&larr;</span>
+                <span>Back</span>
+              </Button>
+              <Button
+                type="submit"
+                size="lg"
+                className="button-reset w-24 h-10 rounded-xl text-sm font-semibold"
+              >
+                {t("common:general.save")}
+              </Button>
             </div>
           </div>
         </div>

@@ -1,14 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { SigninDto, SignupDto, UsersType } from "../users.type";
 import { AuthService } from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   user: UsersType | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (data: SigninDto) => Promise<void>;
   signup: (data: SignupDto) => Promise<void>;
   sendingEmailVerification: (email: string) => Promise<void>;
   logout: () => void;
+  refreshingUserData: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,6 +23,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<UsersType | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const login = async (data: SigninDto) => {
     const { session, searchUser } = await authService.logIn(data);
@@ -27,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setUser(searchUser.data);
       setIsAuthenticated(true);
+      navigate("/galleries");
     }
   };
 
@@ -36,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setUser(searchUser.data);
       setIsAuthenticated(true);
+      navigate("/galleries");
     }
   };
 
@@ -62,16 +69,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (session.success && searchUser.data) {
       setIsAuthenticated(true);
       setUser(searchUser.data);
+
+      const preference = searchUser.data.preference ?? null;
+      if (preference) {
+        localStorage.setItem("lng", preference.language);
+        localStorage.setItem("layout", preference.layout);
+        localStorage.setItem("Theme", preference.theme);
+        localStorage.setItem("sort", preference.predispositions.sorting);
+        localStorage.setItem(
+          "visibility",
+          preference.privacy.profileVisibility,
+        );
+      }
     }
   };
 
   // 🔥 Rechargement automatique si refresh page
   useEffect(() => {
     const sessId = localStorage.getItem("SESS_ID");
-    if (sessId) {
-      setIsAuthenticated(true);
-      refreshingUserData();
-    }
+    const initAuth = async () => {
+      if (sessId) {
+        setIsAuthenticated(true);
+        refreshingUserData();
+      }
+      setIsLoading(false);
+    };
+    initAuth();
   }, []);
 
   return (
@@ -79,10 +102,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         isAuthenticated,
+        isLoading,
         login,
         signup,
         sendingEmailVerification,
         logout,
+        refreshingUserData,
       }}
     >
       {children}

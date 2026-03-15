@@ -1,0 +1,147 @@
+{
+  "title": "FAQ — Foire aux questions",
+
+  "categories": {
+    "general": "Général",
+    "gallery": "Galerie & Images",
+    "collections": "Collections",
+    "profile": "Compte & Profil",
+    "settings": "Paramètres",
+    "security": "Sécurité & Confidentialité",
+    "issues": "Problèmes fréquents",
+    "support": "Support & Contact",
+    "future": "Améliorations futures"
+  },
+
+  "items": {
+    "general-what-is-platform": {
+      "question": "Qu'est-ce que cette plateforme ?",
+      "answer": "Cette plateforme est une médiathèque d'images qui vous permet de centraliser, organiser, parcourir et télécharger vos images facilement."
+    },
+
+    "general-who-is-it-for": {
+      "question": "À qui s'adresse cette application ?",
+      "answer": "Elle s'adresse aux photographes, designers, créateurs de contenu, entreprises et à toute personne souhaitant organiser efficacement ses images."
+    },
+
+    "general-account-required": {
+      "question": "Dois-je créer un compte ?",
+      "answer": "Oui. Un compte est nécessaire pour protéger vos images et sauvegarder vos préférences."
+    },
+
+    "gallery-import-image": {
+      "question": "Comment importer une image ?",
+      "answer": "Rendez-vous dans la galerie puis cliquez sur Importer."
+    },
+
+    "gallery-supported-formats": {
+      "question": "Quels formats d'image sont supportés ?",
+      "answer": "Les formats actuellement supportés sont JPG, PNG et WEBP."
+    },
+
+    "gallery-image-size-limit": {
+      "question": "Y a-t-il une limite de taille ?",
+      "answer": "Oui, les images ne doivent pas dépasser la taille maximale autorisée."
+    },
+
+    "gallery-image-not-visible": {
+      "question": "Pourquoi mon image n'apparaît pas ?",
+      "answer": "Cela peut être dû au format, à la taille ou à un problème de connexion."
+    },
+
+    "gallery-edit-delete-image": {
+      "question": "Puis-je modifier ou supprimer une image ?",
+      "answer": "Oui. Cependant la suppression est définitive."
+    },
+
+    "collections-what-is-collection": {
+      "question": "Qu'est-ce qu'une collection ?",
+      "answer": "Une collection est un dossier personnalisé permettant de regrouper vos images."
+    },
+
+    "collections-create": {
+      "question": "Comment créer une collection ?",
+      "answer": "Allez dans la section Collections puis cliquez sur Créer une collection."
+    },
+
+    "collections-multiple": {
+      "question": "Une image peut-elle appartenir à plusieurs collections ?",
+      "answer": "Oui, la même image peut être utilisée dans plusieurs collections."
+    },
+
+    "profile-edit-info": {
+      "question": "Où modifier mes informations ?",
+      "answer": "Dans la section Profil."
+    },
+
+    "profile-change-password": {
+      "question": "Comment changer mon mot de passe ?",
+      "answer": "Utilisez l'option Changer le mot de passe dans votre profil."
+    },
+
+    "profile-forgot-password": {
+      "question": "J'ai oublié mon mot de passe",
+      "answer": "Utilisez la fonction Mot de passe oublié."
+    },
+
+    "settings-purpose": {
+      "question": "À quoi servent les paramètres ?",
+      "answer": "Ils permettent de personnaliser votre expérience."
+    },
+
+    "settings-language": {
+      "question": "Puis-je changer la langue ?",
+      "answer": "Oui depuis la page paramètres."
+    },
+
+    "settings-dark-mode": {
+      "question": "Le mode sombre est-il disponible ?",
+      "answer": "Oui."
+    },
+
+    "settings-save-preferences": {
+      "question": "Mes paramètres sont-ils sauvegardés ?",
+      "answer": "Oui."
+    },
+
+    "security-privacy-images": {
+      "question": "Mes images sont-elles privées ?",
+      "answer": "Oui, elles sont accessibles uniquement par vous."
+    },
+
+    "security-delete-account": {
+      "question": "Puis-je supprimer mon compte ?",
+      "answer": "Oui depuis les paramètres de sécurité."
+    },
+
+    "security-logout-all-devices": {
+      "question": "Puis-je me déconnecter de tous les appareils ?",
+      "answer": "Oui."
+    },
+
+    "issues-slow-page": {
+      "question": "La page est lente",
+      "answer": "Vérifiez votre connexion internet."
+    },
+
+    "issues-feature-not-working": {
+      "question": "Une fonctionnalité ne fonctionne pas",
+      "answer": "Essayez de rafraîchir la page."
+    },
+
+    "support-contact": {
+      "question": "Comment contacter le support ?",
+      "answer": "Envoyez un email au support."
+    },
+
+    "support-report-bug": {
+      "question": "Comment signaler un bug ?",
+      "answer": "Décrivez le problème et les étapes pour le reproduire."
+    },
+
+    "future-features": {
+      "question": "La plateforme va-t-elle évoluer ?",
+      "answer": "Oui, de nouvelles fonctionnalités sont prévues."
+    }
+  }
+}

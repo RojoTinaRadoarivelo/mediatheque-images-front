@@ -1,0 +1,159 @@
+.photo-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+/* L'image invisible au début mais dans le DOM pour onLoad */
+.photo {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.photo.visible {
+    opacity: 1;
+    position: relative;
+    /* devient normale */
+}
+
+/* Placeholder gris animé */
+.placeholder {
+    width: 100%;
+    padding-top: 66%;
+    /* ratio 3:2 approximatif */
+    background: #ccc;
+    animation: pulse 1.5s infinite;
+    border-radius: 0.75rem;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+    transition: opacity 0.3s ease;
+    font-size: 0.85rem; // taille générale plus petite pour l'overlay
+    line-height: 1.2;
+    overflow-y: auto; // scroll si trop de contenu
+
+    &.visible {
+        opacity: 1;
+    }
+
+    .overlay-top {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        animation: fadeDown 0.3s ease forwards;
+
+        strong {
+            font-size: 1.2rem; // titre principal
+        }
+
+        span {
+            font-size: 0.8rem; // sous-titre
+        }
+    }
+
+    .overlay-bottom {
+        animation: fadeUp 0.3s ease forwards;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        p {
+            font-size: 0.75rem; // description
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+
+            span {
+                font-size: 0.72rem; // tags
+                padding: 0.18rem 0.45rem;
+                border-radius: 9999px;
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                background: rgba(15, 23, 42, 0.45);
+                backdrop-filter: blur(2px);
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+
+            button {
+                font-size: 0.8rem; // boutons
+                padding: 0.25rem 0.5rem;
+            }
+        }
+    }
+}
+
+.edit-btn {
+    border: 1px solid var(--color-gray-100);
+
+    &:hover {
+        background-color: var(--color-gray-400);
+        border: 1px solid var(--color-gray-100);
+    }
+}
+
+.delete-btn {
+    background-color: var(--color-red-500);
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        background-color: #ddd;
+    }
+
+    50% {
+        background-color: #ccc;
+    }
+
+    100% {
+        background-color: #ddd;
+    }
+}

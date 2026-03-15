@@ -1,0 +1,43 @@
+{
+  "general": {
+    "search": "rechercher",
+    "save": "enregistrer",
+    "cancel": "annuler",
+    "update": "modifier",
+    "delete": "supprimer",
+    "confirm": "confirmer",
+    "deletionWarning": "cette action est irreversible",
+    "add": "ajouter",
+    "new": "nouveau",
+    "new_f": "nouvelle",
+    "create": "créer",
+    "updating": "modification",
+    "creation": "creation",
+    "language": "langue"
+  },
+  "auth": {
+    "signin": "se connecter",
+    "signup": "s'inscrire",
+    "signout": "se déconnecter",
+    "password": "mot de passe",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "sendCode": "envoyer le code",
+    "validationCode": "code de validation",
+    "confirmPassword": "confirmer le mot de passe"
+  },
+  "gallery": "gallerie",
+  "profile": "profile",
+  "settings": "paramètres",
+  "loadingImagesError": "Il y a eu une erreur lors du chargement des images",
+  "seemore": "voir plus",
+  "into": "dans",
+  "noresult": "Aucun resultat trouvé",
+  "image": "image",
+  "avatar": "avatar",
+  "photo": "photo",
+  "upload": "téléverser",
+  "name": "nom",
+  "description": "description",
+  "or": "ou",
+  "alt": "alt"
+}
